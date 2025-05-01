@@ -1,0 +1,7 @@
+# ninja log v6
+21	1213	1746131544756530921	CMakeFiles/Model_Viewer.dir/src/Window.cpp.o	96dff3725127df4d
+2	68	1746132851578057451	build.ninja	ffd96f4482c679e7
+20	1218	1746131544755156375	CMakeFiles/Model_Viewer.dir/src/main.cpp.o	7e121c47687d462d
+21	1217	1746131544756777673	CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o	8217280aeebf6fd1
+974	1213	1746131096636402983	Model_Viewer	58102a2cef5634a4
+2	67	1746132851578057451	build.ninja	ffd96f4482c679e7
