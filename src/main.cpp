@@ -1,3 +1,9 @@
+// NOTE: KEEP THESE AT THE TOP!
+#define NS_PRIVATE_IMPLEMENTATION
+#define CA_PRIVATE_IMPLEMENTATION
+#define MTL_PRIVATE_IMPLEMENTATION
+//------------------------------
+
 #include <iostream>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
@@ -6,9 +12,7 @@
 #include "Window.h"
 // TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
-#define NS_PRIVATE_IMPLEMENTATION
-#define CA_PRIVATE_IMPLEMENTATION
-#define MTL_PRIVATE_IMPLEMENTATION
+
 
 int main() {
     // To this:

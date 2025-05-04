@@ -7,12 +7,13 @@
 #include <GLFW/glfw3.h>
 #include "backend/glfw_adaptor.h"
 #include <QuartzCore/CAMetalLayer.hpp>
-#include <Metal/Metal.hpp>
-
 class Window {
     public:
     Window();
     ~Window();
+
+    CA::MetalLayer *getMTLLayer() const;
+    GLFWwindow *getGLFWWindow() const;
 
 
 private:

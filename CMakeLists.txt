@@ -1,5 +1,5 @@
-cmake_minimum_required(VERSION 3.30)
-project(Model_Viewer)
+cmake_minimum_required(VERSION 3.15)
+project(Model_Viewer VERSION 1.0.0)
 
 # Set C++ standard
 set(CMAKE_CXX_STANDARD 20)
@@ -13,24 +13,20 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 add_executable(Model_Viewer
         src/main.cpp
-        src/Window.cpp
-        src/Window.h
-        src/Renderer.cpp
-        src/Renderer.h
+        src/window.cpp
+        src/renderer.cpp
+        src/backend/glfw_adaptor.mm
+        src/shaders/readShaderFile.cpp
 )
-# Add the Metal-cpp implementation files
-target_sources(Model_Viewer PRIVATE
-        ${CMAKE_SOURCE_DIR}/Dependencies/Foundation/NSPrivate.hpp
-        ${CMAKE_SOURCE_DIR}/Dependencies/QuartzCore/CAPrivate.hpp
-        ${CMAKE_SOURCE_DIR}/Dependencies/Metal/MTLPrivate.hpp
-)
+
+
+# Find GLFW
 find_package(glfw3 REQUIRED)
 
-# Single consolidated include directories call
+# Include directories
 target_include_directories(Model_Viewer PRIVATE
-        ${CMAKE_SOURCE_DIR}/Dependencies/       # When including directories, reload the project.
+        ${CMAKE_SOURCE_DIR}/dependencies/        # Includes Eigen (and other headers if needed)
         ${GLFW_INCLUDE_DIRS}
-        /usr/local/include  # Add Homebrew include path explicitly
         SYSTEM /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
 )
 # Link GLFW library
@@ -57,3 +53,5 @@ target_link_libraries(Model_Viewer PRIVATE
         #"-framework Accelerate"
         "-framework AppKit" objc
 )
+
+
