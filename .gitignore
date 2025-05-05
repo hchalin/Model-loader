@@ -23,3 +23,11 @@
  *.exe
  *.out
  *.app
+
+ # Build directories
+cmake-build-*/
+build/
+
+# IDE files
+.idea/
+*.im

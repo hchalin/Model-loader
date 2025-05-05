@@ -44,16 +44,26 @@ void Renderer::createPipelineState() {
     }
 
     // Create shader functions
+    MTL::Function *vertexFunction {nullptr};
+    MTL::Function *fragmentFunction {nullptr};
     try {
-        MTL::Function *vertexFunction = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
-        MTL::Function *fragmentFunction = library->newFunction(
+        vertexFunction = library->newFunction(NS::String::string("vertex_main", NS::UTF8StringEncoding));
+        fragmentFunction = library->newFunction(
             NS::String::string("fragment_main", NS::UTF8StringEncoding));
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 
+    // Create pipeline descriptor and set functions
+    MTL::RenderPipelineDescriptor *renderPipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
+    renderPipelineDescriptor->setVertexFunction(vertexFunction);
+    renderPipelineDescriptor->setFragmentFunction(fragmentFunction);
 
-
+    // Configure color attachment - NOTE: The color attachment represents the output target for the fragment shader.
+    MTL::RenderPipelineColorAttachmentDescriptor *colorAttachment = renderPipelineDescriptor->colorAttachments()->object(0);
+    colorAttachment->setPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm);
+    colorAttachment->setBlendingEnabled(false);
+    // This overwrites the entire color buffer, keep this in mind when rendering fog etc...
 
     //renderPipelineState = device->newRenderPipelineState();
 }
