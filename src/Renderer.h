@@ -15,11 +15,13 @@ public:
     ~Renderer();
 
     void createPipelineState();
+    void render();
 
 
 private:
     // Once
     MTL::Device *device{nullptr};
+    Window *window{nullptr};
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
 

@@ -34,34 +34,14 @@ std::string readShaderFile(const std::string &targetFileName)
 }
 
 // void loadShaderFromFile(MTL::Device *device, const std::string &filePath)
-void loadShaderFromFile(MTL::Library *&inLib, MTL::Device *device, const std::string &fileName)
+NS::String *loadShaderFromFile (MTL::Device *device, const std::string &fileName)
 {
     std::string shaderSource = readShaderFile(fileName);
 
     if (shaderSource.empty())
-        std::runtime_error("Shaders file is empty");
+        throw std::runtime_error("Shaders file is empty");
 
     NS::String *source = NS::String::string(shaderSource.c_str(), NS::UTF8StringEncoding);
-    NS::Error *error = nullptr;
-    MTL::CompileOptions *compileOptions = MTL::CompileOptions::alloc()->init();
-    MTL::Library *library = device->newLibrary(source, compileOptions, &error);
-    // MTL::Library *library = device->newLibrary(source, &error); // doesn't work??
-    compileOptions->release();
 
-    if (!library)
-    {
-        if (error)
-        {
-            std::cerr << "Failed to compile Metal library: " << error->localizedDescription()->utf8String() << std::endl;
-        }
-        else
-        {
-            std::cerr << "Failed to compile Metal library: Unknown error" << std::endl;
-        }
-        return;
-    }
-    else
-    {
-        inLib = library;
-    }
+    return source;
 }
