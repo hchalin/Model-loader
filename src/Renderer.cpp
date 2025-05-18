@@ -134,7 +134,6 @@ void Renderer::render() {
 }
 */
 void Renderer::render() {
-   // ! TODO - Abstract this
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         glfwPollEvents();
         NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
@@ -157,12 +156,18 @@ void Renderer::render() {
         MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
         colorAttachment->setTexture(drawable->texture());
         colorAttachment->setLoadAction(MTL::LoadActionClear);
-        colorAttachment->setClearColor(MTL::ClearColor(1.0, 0.2, 0.5, 1.0));
+        colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
         colorAttachment->setStoreAction(MTL::StoreActionStore);
 
         // *      Encoding
         MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
-        // ! Add vertex data in the encoding
+
+        /*
+         * Triangle
+         */
+
+
+
         encoder->endEncoding();
 
         // Present
