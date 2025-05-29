@@ -14,10 +14,12 @@ Window::Window() {
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
 
     // Create window
-    glfwWindow = glfwCreateWindow(800, 600, "Model Viewer", nullptr, nullptr);
+    int windowWidth = 800, windowHeight = 600;
+    glfwWindow = glfwCreateWindow(windowWidth, windowHeight, "Model Viewer", nullptr, nullptr);
     if (!glfwWindow) {
         throw std::runtime_error("Failed to create GLFW window");
     }
+    aspectRatio = (float)windowWidth / windowHeight;
 
     // Set the metal layer on the window
     metalLayer = CA::MetalLayer::layer()->retain();
@@ -45,4 +47,8 @@ GLFWwindow *Window::getGLFWWindow() const {
         return glfwWindow;
     }
     return nullptr;
+}
+
+float Window::getAspectRatio() const {
+    return aspectRatio;
 }

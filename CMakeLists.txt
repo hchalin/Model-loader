@@ -11,13 +11,36 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 
 
-add_executable(Model_Viewer
+#add_executable(Model_Viewer
+        #src/main.cpp
+        #src/window.cpp
+        #src/renderer.cpp
+        #src/backend/glfw_adaptor.mm
+        #src/shaders/readShaderFile.cpp
+        #src/common/BroMath/Transform.cpp
+        #src/common/BroMath/vec4.h
+        #src/common/BroMath/Transform.h
+#)
+
+
+# Define source and header files
+set(SOURCE_FILES
         src/main.cpp
         src/window.cpp
         src/renderer.cpp
         src/backend/glfw_adaptor.mm
         src/shaders/readShaderFile.cpp
+        src/common/BroMath/Transform.cpp
 )
+set(HEADER_FILES
+        src/common/BroMath/vec4.h
+        src/common/BroMath/Transform.h
+        src/camera.h
+        src/Camera.cpp
+)
+
+# Add executable
+add_executable(Model_Viewer ${SOURCE_FILES} ${HEADER_FILES})
 
 
 # Find GLFW

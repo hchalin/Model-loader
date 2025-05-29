@@ -4,13 +4,18 @@
 
 #pragma once
 #include <Metal/Metal.hpp>
+#include <eigen/Eigen/Dense>
 
 #include "Window.h"
+#include "common/BroMath/Transform.h"
+#include "common/common.h"
 #include "shaders/readShaderFile.h"
+#include "./Camera.h"
 
 
 class Renderer {
 public:
+    Renderer() = default;
     Renderer(Window window);
     ~Renderer();
 
@@ -24,9 +29,17 @@ private:
     Window *window{nullptr};
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
+    MTL::Buffer *vertexBuffer{nullptr};
+
+    Matrix4f projectionMatrix;
+    MTL::Buffer *uniformBuffer{nullptr};
+    void updateProjectionMatrix(const float aRatio);
 
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
+
+    // Camera
+    Camera camera;
 };
 
 

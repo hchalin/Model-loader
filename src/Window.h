@@ -15,12 +15,16 @@ class Window {
     CA::MetalLayer *getMTLLayer() const;
     GLFWwindow *getGLFWWindow() const;
 
+    // Getters
+    float getAspectRatio() const;
+
 
 private:
-
     CA::MetalLayer* metalLayer{nullptr};
     GLFWwindow* glfwWindow{nullptr};
     NS::Window* nsWindow{nullptr};
+
+    float aspectRatio;
 
 };
 

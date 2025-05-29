@@ -1,23 +1,24 @@
+// Update shaders.metal
 #include <metal_stdlib>
 using namespace metal;
 
-
-
-struct VertexOut {
-    float4 position [[position]]; // Position in clip space
-    float4 color;                 // Color to pass to the fragment shader
+struct VertexIn {
+    float4 position [[attribute(0)]];
+    float4 color [[attribute(1)]];
 };
 
-// TODO: decouple vertex attributes into separate buffers using vertexId
-    //constant packed_float4 *positions [[buffer(0)]],
-vertex VertexOut vertex_main(
+struct VertexOut {
+    float4 position [[position]];
+    float4 color;
+};
 
-    ) {
+vertex VertexOut vertex_main(VertexIn in [[stage_in]]) {
     VertexOut out;
-
+    out.position = in.position;
+    out.color = in.color;
     return out;
 }
 
 fragment float4 fragment_main(VertexOut in [[stage_in]]) {
-    return in.color; // Use the interpolated color
+    return in.color;
 }

@@ -7,7 +7,7 @@
 #include <iostream>
 #define GLFW_INCLUDE_NONE
 #include <GLFW/glfw3.h>
-
+#include "common/BroMath/vec4.h"
 #include "Renderer.h"
 #include "Window.h"
 // TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
@@ -15,18 +15,24 @@
 
 
 int main() {
+
     // To this:
     if (!glfwInit()) {
         std::cerr << "Failed to initialize GLFW" << std::endl;
         exit(EXIT_FAILURE);         // This could cause a segfaults with RAII
     }
 
+    Renderer renderer;
+    Window window;
+
+    // * Create the window and renderer instances
     try {
-        Window window;
-        Renderer renderer(window);
+       renderer =  Renderer(window);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
+
+
 
     return 0;
 }

@@ -1,6 +1,8 @@
 #pragma once
 
-// TODO: Create my own matrix class to hold all transformations
+#include <cmath>
+#include <iostream>
+
 
 class vec4
 {
@@ -14,6 +16,16 @@ public:
   float y() const{return v[1];};
   float z() const{return v[2];};
   float w() const{return v[3];};
+
+  float length() const {return sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);}
+
+  /*
+   * Overloads
+   */
+  friend std::ostream& operator << (std::ostream& os, const vec4& v) {
+    os << v.x() << " " << v.y() << " " << v.z() << " " << v.w();
+    return os;
+  }
 
 private:
   float v[4];

@@ -7,12 +7,13 @@
 #include <iostream>
 #include <ostream>
 
-#include "Window.h"
 
 Renderer::Renderer(Window windowSrc) {
 
     // Get device from the metalLayer in the window
     device = windowSrc.getMTLLayer()->device();
+    const float aRatio = windowSrc.getAspectRatio();
+    updateProjectionMatrix(aRatio);
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
@@ -30,7 +31,11 @@ Renderer::Renderer(Window windowSrc) {
     // Create render pipeline state
     createPipelineState();
 
-    render();
+   render();
+}
+
+void Renderer::updateProjectionMatrix(const float aRatio) {
+   std::cout << "Aspect ratio: " << aRatio << std::endl;
 }
 
 void Renderer::createPipelineState() {
@@ -85,12 +90,38 @@ void Renderer::createPipelineState() {
     colorAttachment->setBlendingEnabled(false);
     // This overwrites the entire color buffer, keep this in mind when rendering fog etc...
 
+    /*
+     * Triangle
+     */
+
+    Vertex vertices[] = {
+        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}},    // Top (red)
+        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}},  // Bottom left (green)
+        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}}    // Bottom right (blue)
+    };
+    vertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
+    if (!vertexBuffer) {
+        throw std::runtime_error("Failed to create vertex buffer");
+    }
+
+    MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
+
+    // Position
+    vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat4);
+    vertexDescriptor->attributes()->object(0)->setOffset(0);
+    vertexDescriptor->attributes()->object(0)->setBufferIndex(0);
+    // Color
+    vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat4);
+    vertexDescriptor->attributes()->object(1)->setOffset(sizeof(float4));
+    vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
+    //Layout
+    vertexDescriptor->layouts()->object(0)->setStride(sizeof(Vertex));
+
+    renderPipelineDescriptor->setVertexDescriptor(vertexDescriptor);
+
     renderPipelineState = device->newRenderPipelineState(renderPipelineDescriptor, &err);
     if (!renderPipelineState) {
         throw std::runtime_error("Failed to create MTL::RenderPipelineState");
-    }
-    else {
-        std::cout << "MTL::RenderPipelineState created!" << std::endl;
     }
 
     // Resource clean up
@@ -99,6 +130,7 @@ void Renderer::createPipelineState() {
     vertexFunction->release();
     fragmentFunction->release();
     renderPipelineDescriptor->release();
+    vertexDescriptor->release();
 
 }
 
@@ -162,11 +194,9 @@ void Renderer::render() {
         // *      Encoding
         MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
 
-        /*
-         * Triangle
-         */
-
-
+        encoder->setRenderPipelineState(renderPipelineState);
+        encoder->setVertexBuffer(vertexBuffer, 0,0);
+        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
         encoder->endEncoding();
 
