@@ -22,12 +22,11 @@ int main() {
         exit(EXIT_FAILURE);         // This could cause a segfaults with RAII
     }
 
-    Renderer renderer;
     Window window;
 
     // * Create the window and renderer instances
     try {
-       renderer =  Renderer(window);
+        Renderer renderer = Renderer(window);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

@@ -26,8 +26,9 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 # Define source and header files
 set(SOURCE_FILES
         src/main.cpp
-        src/window.cpp
-        src/renderer.cpp
+        src/Window.cpp
+        src/Renderer.cpp
+        src/Camera.cpp
         src/backend/glfw_adaptor.mm
         src/shaders/readShaderFile.cpp
         src/common/BroMath/Transform.cpp
@@ -35,8 +36,7 @@ set(SOURCE_FILES
 set(HEADER_FILES
         src/common/BroMath/vec4.h
         src/common/BroMath/Transform.h
-        src/camera.h
-        src/Camera.cpp
+        src/Camera.h
 )
 
 # Add executable

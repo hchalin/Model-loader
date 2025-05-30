@@ -15,8 +15,8 @@
 
 class Renderer {
 public:
-    Renderer() = default;
-    Renderer(Window window);
+    Renderer();
+    Renderer(Window &window);
     ~Renderer();
 
     void createPipelineState();

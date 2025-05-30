@@ -8,21 +8,20 @@
 #include <ostream>
 
 
-Renderer::Renderer(Window windowSrc) {
-
+Renderer::Renderer(Window &windowSrc):
     // Get device from the metalLayer in the window
-    device = windowSrc.getMTLLayer()->device();
+    device(windowSrc.getMTLLayer()->device()),
+    window(&windowSrc),
+    camera(Vector3f(0.0, 0.0, +3.0), Vector3f(0.0, 0.0, 0.0))
+{
     const float aRatio = windowSrc.getAspectRatio();
     updateProjectionMatrix(aRatio);
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
 
-   this->window = &windowSrc;
-
-
-    // Only one of these (right now)
-    constexpr int maxBufferAmt {64};
+    // ^ Only one of these (right now)
+    constexpr int maxBufferAmt{64};
     commandQueue = device->newCommandQueue(maxBufferAmt);
     if (!commandQueue) {
         throw std::runtime_error("Failed to create command queue");
@@ -31,7 +30,7 @@ Renderer::Renderer(Window windowSrc) {
     // Create render pipeline state
     createPipelineState();
 
-   render();
+    render();
 }
 
 void Renderer::updateProjectionMatrix(const float aRatio) {
