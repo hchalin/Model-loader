@@ -52,3 +52,27 @@ GLFWwindow *Window::getGLFWWindow() const {
 float Window::getAspectRatio() const {
     return aspectRatio;
 }
+void Window::setResizeCallback(std::function<void(int, int)> callback) {
+    resizeCallback = callback;
+
+    glfwSetWindowUserPointer(glfwWindow, this);
+    glfwSetFramebufferSizeCallback(glfwWindow, [](GLFWwindow* window, int width, int height) {
+        Window* windowObj = static_cast<Window*>(glfwGetWindowUserPointer(window));
+        if (windowObj && windowObj->resizeCallback) {
+            // Update Metal layer drawable size
+            if (windowObj->metalLayer) {
+                windowObj->metalLayer->setDrawableSize(CGSize{static_cast<double>(width),
+                                                              static_cast<double>(height)});
+            }
+
+            windowObj->resizeCallback(width, height);
+            windowObj->aspectRatio = static_cast<float>(width) / height;
+        }
+    });
+}
+
+std::pair<int, int> Window::getSize() const {
+    int width, height;
+    glfwGetFramebufferSize(glfwWindow, &width, &height);
+    return {width, height};
+}

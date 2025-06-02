@@ -22,6 +22,6 @@ class Camera {
     Vector3f camUp;
     Vector3f camRight;
 
-    Matrix4f viewMatrix;            // Note: World Space -> Camera Space
+    Matrix4f viewMatrix;     // Note: World Space -> Camera Space
 };
 

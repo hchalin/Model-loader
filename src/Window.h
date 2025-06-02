@@ -18,6 +18,8 @@ class Window {
     // Getters
     float getAspectRatio() const;
 
+    void setResizeCallback(std::function<void(int, int)> callback);
+    std::pair<int, int> getSize() const;
 
 private:
     CA::MetalLayer* metalLayer{nullptr};
@@ -25,6 +27,8 @@ private:
     NS::Window* nsWindow{nullptr};
 
     float aspectRatio;
+
+    std::function<void(int, int)> resizeCallback;
 
 };
 

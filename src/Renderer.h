@@ -32,7 +32,8 @@ private:
     MTL::Buffer *vertexBuffer{nullptr};
 
     Matrix4f projectionMatrix;
-    MTL::Buffer *uniformBuffer{nullptr};
+    MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
+
     void updateProjectionMatrix(const float aRatio);
 
     // Every frame
