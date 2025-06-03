@@ -12,7 +12,11 @@
 #include "shaders/readShaderFile.h"
 #include "./Camera.h"
 
-
+// Used for offset
+struct Uniforms {
+    Matrix4f viewMatrix;
+    Matrix4f projectionMatrix;
+};
 class Renderer {
 public:
     Renderer();
@@ -22,6 +26,10 @@ public:
     void createPipelineState();
     void render();
 
+    void updateProjectionMatrix(float aRatio);
+
+    Window &getWindow();
+    void drawFrame();
 
 private:
     // Once
@@ -31,10 +39,8 @@ private:
     MTL::RenderPipelineState *renderPipelineState{nullptr};
     MTL::Buffer *vertexBuffer{nullptr};
 
-    Matrix4f projectionMatrix;
+    Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
-
-    void updateProjectionMatrix(const float aRatio);
 
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
@@ -44,4 +50,6 @@ private:
 };
 
 
+void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 
+void framebuffer_refresh_callback(GLFWwindow *window);

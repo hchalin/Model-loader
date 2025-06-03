@@ -52,6 +52,7 @@ GLFWwindow *Window::getGLFWWindow() const {
 float Window::getAspectRatio() const {
     return aspectRatio;
 }
+/*
 void Window::setResizeCallback(std::function<void(int, int)> callback) {
     resizeCallback = callback;
 
@@ -70,6 +71,7 @@ void Window::setResizeCallback(std::function<void(int, int)> callback) {
         }
     });
 }
+*/
 
 std::pair<int, int> Window::getSize() const {
     int width, height;

@@ -6,14 +6,18 @@
 
 #include <iostream>
 #include <ostream>
+#include <thread>
 
 
 Renderer::Renderer(Window &windowSrc):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(0.0, 0.0, 3.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
+    camera(Vector3f(0.0, -1.0, 5.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
 {
+
+
+
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
@@ -33,30 +37,35 @@ Renderer::Renderer(Window &windowSrc):
     }
     updateProjectionMatrix(aRatio);
 
-    // Add in Renderer constructor after creating uniformBuffer
-    window->setResizeCallback([this](int width, int height) {
-        float newAspectRatio = static_cast<float>(width) / static_cast<float>(height);
-        updateProjectionMatrix(newAspectRatio);
-    });
 
     // ^ Camera view matrix
     Matrix4f viewMatrix = camera.getViewMatrix();
-    Matrix4f *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
     // @ *bufferPtr = viewMatrix uses the Matrix4f assignment operator to copy all the data
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
     // ! bufferPtr = &viewMatrix;   This does not work, this just updates the pointers address
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
+    // ^ Set GLFW Callbacks
+    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
+    glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
+    glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
 
-    //std::cout << "View matrix: \n" << viewMatrix << std::endl;
 
     // ^ Create render pipeline state
     createPipelineState();
 
-    render();
 }
 
-void Renderer::updateProjectionMatrix(const float aRatio) {
+void Renderer::updateProjectionMatrix(float aRatio) {
+
+    // Used for offset
+    struct Uniforms {
+        Matrix4f viewMatrix;
+        Matrix4f projectionMatrix;
+    };
+
+    std::cout << "aspect Ratio: " << aRatio << std::endl;
 
     // ^ Define the vertical fov to radias, horizontal will be based off of this.
     const float fovY = 45.0f * (M_PI / 180.0f);
@@ -78,15 +87,10 @@ void Renderer::updateProjectionMatrix(const float aRatio) {
     projectionMatrix(3,2) = -1.0f;                         // Enables perspective division
     projectionMatrix(3,3) = 0.0f;                          // Required for perspective
 
-    // Combine with view matrix and update uniform buffer
-    //Matrix4f viewProjection = projectionMatrix * camera.getViewMatrix();
-
     // Update uniform buffer with combined view-projection matrix
-    Matrix4f* bufferPtr = static_cast<Matrix4f*>(uniformBuffer->contents());
+    auto* bufferPtr = static_cast<Matrix4f*>(uniformBuffer->contents());
     *(bufferPtr + 1) = projectionMatrix;
-    uniformBuffer->didModifyRange(NS::Range(sizeof(Matrix4f), sizeof(Matrix4f)));
-
-    //std::cout << "Projection matrix:\n" << projectionMatrix << std::endl;
+    uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
 
 }
 
@@ -148,12 +152,12 @@ void Renderer::createPipelineState() {
     /*
      * Triangle
      */
-
     Vertex vertices[] = {
         {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}}, // Top (red)
         {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}}, // Bottom left (green)
         {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}} // Bottom right (blue)
     };
+    // ^ Create vertex buffer
     vertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
@@ -195,60 +199,35 @@ Renderer::~Renderer() {
     commandQueue->release();
 }
 
-/*
 void Renderer::render() {
-    // Get drawable
-    CA::MetalDrawable *drawable {nullptr};
-    try {
-       drawable = window->getMTLLayer()->nextDrawable();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-    }
-
-    if (!drawable) {
-        throw std::runtime_error("Failed to render drawable");
-    }
-
-    // Create command buffer
-    MTL::CommandBuffer *commandBuffeer = commandQueue->commandBuffer();
-    if (!commandBuffeer) {
-        throw std::runtime_error("Failed to render command buffer");
-    }
-
-
-}
-*/
-void Renderer::render() {
+    // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
+    // ! FIXME: Window freezes on resize, multi-theading is not a solution per GLFW's docs, GLFW is not thread safe.
     auto [lastWidth, lastHeight] = window->getSize();
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
+
         glfwPollEvents();
+        drawFrame();
+    }
+}
 
-        // ^ Check for window size changes every frame
-        auto [width, height] = window->getSize();
-        // ! This freezes when I click and drag a corner?
-        std::cout << "resizing" << std::endl;
-        std::cout << "width: " << width << std::endl;
-        std::cout << "height: " << height << std::endl;
-        if (width != lastWidth || height != lastHeight)
-        {
-            float newAspectRatio = static_cast<float>(width) / static_cast<float>(height);
-            updateProjectionMatrix(newAspectRatio);
-            lastWidth = width;
-            lastHeight = height;
-        }
-
-        NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
+/**
+ *     This function draws a single frame
+ *
+ */
+void Renderer::drawFrame() {
+  NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
         CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
         if (!drawable) {
             // * Clean up
             pool->release();
             glfwDestroyWindow(window->getGLFWWindow());
-            break;
+            return;
         }
 
         // * Create command buffer
         MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
+
         if (!commandBuffer) {
             throw std::runtime_error("Failed to render command buffer");
         }
@@ -261,13 +240,13 @@ void Renderer::render() {
         colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
         colorAttachment->setStoreAction(MTL::StoreActionStore);
 
-        // *      Encoding
+        // *  Encoding
         MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
-
         encoder->setRenderPipelineState(renderPipelineState);
         encoder->setVertexBuffer(vertexBuffer, 0, 0);
         encoder->setVertexBuffer(uniformBuffer, 0, 1);
         encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+
 
         encoder->endEncoding();
 
@@ -278,5 +257,31 @@ void Renderer::render() {
         // ! CLEAN UP
         renderPassDescriptor->release();
         pool->release();
-    }
+}
+Window &Renderer::getWindow() {
+      return *window;
+}
+
+// ^ Static callbacks- Have to be static per GLFW's documentation.
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    if (!renderer || height == 0) return;
+
+
+    renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
+        static_cast<double>(width),
+        static_cast<double>(height)
+    });
+
+    float aspect = static_cast<float>(width) / height;
+    renderer->updateProjectionMatrix(aspect);
+    std::cout << "BUFFER" << std::endl;
+    if (renderer) renderer->drawFrame(); // single frame
+}
+
+void framebuffer_refresh_callback(GLFWwindow* window) {
+    // ! THIS IS NOT TRIGGERING???
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    std::cout << "REFRESH" << std::endl;
+    if (renderer) renderer->drawFrame(); // single frame
 }

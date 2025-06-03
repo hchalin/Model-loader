@@ -27,6 +27,7 @@ int main() {
     // * Create the window and renderer instances
     try {
         Renderer renderer = Renderer(window);
+        renderer.render();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

@@ -4532,7 +4532,7 @@ GLFWAPI GLFWwindowcontentscalefun glfwSetWindowContentScaleCallback(GLFWwindow* 
  *
  *  @ingroup window
  */
-GLFWAPI void glfwPollEvents(void);
+GLFWAPI void *glfwPollEvents(void);
 
 /*! @brief Waits until events are queued and processes them.
  *
