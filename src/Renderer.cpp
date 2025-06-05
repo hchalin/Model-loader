@@ -13,10 +13,8 @@ Renderer::Renderer(Window &windowSrc):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(0.0, -1.0, 5.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
 {
-
-
 
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
@@ -50,7 +48,7 @@ Renderer::Renderer(Window &windowSrc):
     glfwSetWindowUserPointer(window->getGLFWWindow(), this);
     glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
-
+    glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -59,11 +57,6 @@ Renderer::Renderer(Window &windowSrc):
 
 void Renderer::updateProjectionMatrix(float aRatio) {
 
-    // Used for offset
-    struct Uniforms {
-        Matrix4f viewMatrix;
-        Matrix4f projectionMatrix;
-    };
 
     std::cout << "aspect Ratio: " << aRatio << std::endl;
 
@@ -205,7 +198,6 @@ void Renderer::render() {
     auto [lastWidth, lastHeight] = window->getSize();
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
-
         glfwPollEvents();
         drawFrame();
     }
@@ -215,7 +207,8 @@ void Renderer::render() {
  *     This function draws a single frame
  *
  */
-void Renderer::drawFrame() {
+
+ void Renderer::drawFrame() {
   NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
         CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
         if (!drawable) {
@@ -258,6 +251,8 @@ void Renderer::drawFrame() {
         renderPassDescriptor->release();
         pool->release();
 }
+
+
 Window &Renderer::getWindow() {
       return *window;
 }
@@ -275,13 +270,15 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
 
     float aspect = static_cast<float>(width) / height;
     renderer->updateProjectionMatrix(aspect);
-    std::cout << "BUFFER" << std::endl;
-    if (renderer) renderer->drawFrame(); // single frame
+    renderer->drawFrame();
 }
 
 void framebuffer_refresh_callback(GLFWwindow* window) {
     // ! THIS IS NOT TRIGGERING???
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    std::cout << "REFRESH" << std::endl;
-    if (renderer) renderer->drawFrame(); // single frame
+}
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+        std::cout << "W pressed!\n";
+    }
 }

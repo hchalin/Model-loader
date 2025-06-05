@@ -13,7 +13,7 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target
     // ! Use this to NOT look at the origin.
-    //camDirection = Vector3f(0, 0, 1);
+    camDirection = Vector3f(0, 0, 1);
     //camDirection.normalize();
 
     // ^ camRight
