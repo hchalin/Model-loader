@@ -4,9 +4,6 @@
 
 #include "Renderer.h"
 
-#include <iostream>
-#include <ostream>
-#include <thread>
 
 
 Renderer::Renderer(Window &windowSrc):
@@ -49,6 +46,7 @@ Renderer::Renderer(Window &windowSrc):
     glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
+    glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -139,8 +137,9 @@ void Renderer::createPipelineState() {
     MTL::RenderPipelineColorAttachmentDescriptor *colorAttachment = renderPipelineDescriptor->colorAttachments()->
             object(0);
     colorAttachment->setPixelFormat(MTL::PixelFormat::PixelFormatBGRA8Unorm);
+
+    // ^ This overwrites the entire color buffer, keep this in mind when rendering fog etc...
     colorAttachment->setBlendingEnabled(false);
-    // This overwrites the entire color buffer, keep this in mind when rendering fog etc...
 
     /*
      * Triangle
@@ -150,12 +149,12 @@ void Renderer::createPipelineState() {
         {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}}, // Bottom left (green)
         {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}} // Bottom right (blue)
     };
+
     // ^ Create vertex buffer
     vertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }
-
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
     // Position
@@ -195,7 +194,6 @@ Renderer::~Renderer() {
 void Renderer::render() {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
     // ! FIXME: Window freezes on resize, multi-theading is not a solution per GLFW's docs, GLFW is not thread safe.
-    auto [lastWidth, lastHeight] = window->getSize();
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         glfwPollEvents();
@@ -257,6 +255,57 @@ Window &Renderer::getWindow() {
       return *window;
 }
 
+void Renderer::cameraUp() {
+    std::cout << "Camera Up" << std::endl;
+    camera.moveUp(0.05);
+    // Before you draw a frame, update viewMatrix sent to the gpu
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+
+    drawFrame();
+}
+
+void Renderer::cameraDown() {
+    camera.moveDown(0.05);
+    // Before you draw a frame, update viewMatrix sent to the gpu
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+
+    drawFrame();
+
+}
+
+void Renderer::cameraRight() {
+    camera.moveRight(0.05);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    drawFrame();
+}
+void Renderer::cameraLeft() {
+    camera.moveLeft(0.05);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    drawFrame();
+}
+
+void Renderer::cameraZoom(float aZoom) {
+    camera.zoom(aZoom);
+    // ! TODO: abstract this repeated code for movement
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    drawFrame();
+}
+
 // ^ Static callbacks- Have to be static per GLFW's documentation.
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
@@ -278,7 +327,29 @@ void framebuffer_refresh_callback(GLFWwindow* window) {
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 }
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // ! TODO, make this handle key holds, not just presses.
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    // ^ W
     if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-        std::cout << "W pressed!\n";
+        renderer->cameraUp();
+    }
+    // ^ A
+    if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+        renderer->cameraLeft();
+    }
+    // ^ S
+    if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+        renderer->cameraDown();
+    }
+    // ^ D
+    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        renderer->cameraRight();
     }
 }
+
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    std::cout << "ScrollCallback" << std::endl;
+    std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+    renderer->cameraZoom(yoffset);
+};

@@ -6,6 +6,8 @@
 #include <Metal/Metal.hpp>
 #include <eigen/Eigen/Dense>
 
+#include <iostream>
+#include <ostream>
 
 #include "Window.h"
 #include "common/BroMath/Transform.h"
@@ -32,6 +34,14 @@ public:
     Window &getWindow();
     void drawFrame();
 
+    // Camera controls
+    void cameraUp();
+    void cameraDown();
+    void cameraRight();
+    void cameraLeft();
+    void cameraZoom(float aZoom);
+
+
 private:
     // Once
     MTL::Device *device{nullptr};
@@ -53,7 +63,8 @@ private:
 
 /*
  *  Callback functions for glfw. These have to be free static functions.
- */
+*/
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void framebuffer_refresh_callback(GLFWwindow *window);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);

@@ -46,3 +46,46 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
 Matrix4f &Camera::getViewMatrix() {
     return viewMatrix;
 }
+
+Vector3f &Camera::getPosition() {
+    return camPos;
+}
+
+void Camera::moveUp(float dt) {
+    // Move camera position along the up vector
+    camPos += camUp * dt;
+
+    // Update the view matrix's translation components
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}
+
+void Camera::moveDown(float dt) {
+    // Move camera position along the up vector
+    camPos -= camUp * dt;
+
+    // Update the view matrix's translation components
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}
+
+void Camera::moveLeft(float dt) {
+    camPos -= camRight * dt;
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}
+void Camera::moveRight(float dt) {
+    camPos += camRight * dt;
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}
+void Camera::zoom(float aZoom) {
+    camPos += camDirection * aZoom;
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}
