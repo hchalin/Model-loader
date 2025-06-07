@@ -90,7 +90,7 @@ void Camera::zoom(float aZoom) {
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
 void Camera::turn(float aTurn) {
-    // ! check this logic
+    // ! check this logic, should this apply a rotation instead?
     camPos -= camRight * aTurn;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);

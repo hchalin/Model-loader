@@ -151,10 +151,36 @@ void Renderer::createPipelineState() {
     };
 
     // ^ Create vertex buffer
-    vertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
-    if (!vertexBuffer) {
+    triangleVertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
+    if (!triangleVertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }
+
+    /*
+     *      Floor
+     */
+    Vertex floorVertices[] = {
+        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}},
+        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
+        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
+        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
+    };
+
+    int floorIndices[] = {0,1,3,1,2,3};
+
+    floorIndexBuffer = device->newBuffer(floorIndices, sizeof(floorIndices), MTL::ResourceStorageModeManaged);
+    if (!floorIndexBuffer) {
+        throw std::runtime_error("Failed to create index buffer");
+    } else {
+        std::cout << "Successfully created index buffer" << std::endl;
+    }
+
+    floorVertexBuffer = device->newBuffer(floorVertices, sizeof(floorVertices), MTL::ResourceStorageModeManaged);
+    if (!floorVertexBuffer) {
+        throw std::runtime_error("Failed to create vertex buffer");
+    }
+
+    // ^ Describe the Vertex in memory
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
     // Position
@@ -234,11 +260,19 @@ void Renderer::render() {
         // *  Encoding
         MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
         encoder->setRenderPipelineState(renderPipelineState);
-        encoder->setVertexBuffer(vertexBuffer, 0, 0);
+        encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
         encoder->setVertexBuffer(uniformBuffer, 0, 1);
         encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
-
+    // Draw floor
+    encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
+    encoder->setVertexBuffer(uniformBuffer, 0, 1);
+    encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                  6, // 6 indices
+                                  MTL::IndexTypeUInt32,
+                                  floorIndexBuffer,
+                                  0, // offset
+                                  1); // i
         encoder->endEncoding();
 
         // Present

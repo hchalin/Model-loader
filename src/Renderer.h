@@ -49,7 +49,9 @@ private:
     Window *window{nullptr};
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
-    MTL::Buffer *vertexBuffer{nullptr};
+    MTL::Buffer *triangleVertexBuffer{nullptr};
+    MTL::Buffer *floorVertexBuffer{nullptr};
+    MTL::Buffer *floorIndexBuffer{nullptr};
 
     Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
