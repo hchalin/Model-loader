@@ -89,3 +89,10 @@ void Camera::zoom(float aZoom) {
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
+void Camera::turn(float aTurn) {
+    // ! check this logic
+    camPos -= camRight * aTurn;
+    viewMatrix(0,3) = -camRight.dot(camPos);
+    viewMatrix(1,3) = -camUp.dot(camPos);
+    viewMatrix(2,3) = -camDirection.dot(camPos);
+}

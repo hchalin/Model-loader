@@ -305,7 +305,14 @@ void Renderer::cameraZoom(float aZoom) {
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
 }
-
+void Renderer::cameraTurn(float aTurn) {
+    camera.turn(aTurn);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    drawFrame();
+}
 // ^ Static callbacks- Have to be static per GLFW's documentation.
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
@@ -348,8 +355,12 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    constexpr float dampen {0.09};
+    xoffset *= dampen;
+    yoffset *= dampen;
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
     std::cout << "ScrollCallback" << std::endl;
     std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+    renderer->cameraTurn(xoffset);
     renderer->cameraZoom(yoffset);
 };

@@ -21,7 +21,7 @@ class Camera {
     void moveLeft(float dt);
     void moveRight(float dt);
     void zoom(float aZoom);
-
+    void turn(float aTurn);
 
     private:
     Vector3f camPos;
@@ -30,6 +30,7 @@ class Camera {
     Vector3f camLookAt;
     Vector3f camUp;
     Vector3f camRight;
+
 
     Matrix4f viewMatrix;     // Note: World Space -> Camera Space
 };

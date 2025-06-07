@@ -40,6 +40,7 @@ public:
     void cameraRight();
     void cameraLeft();
     void cameraZoom(float aZoom);
+    void cameraTurn(float aTurn);
 
 
 private:
