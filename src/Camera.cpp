@@ -11,9 +11,9 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
      *  Resource: https://learnopengl.com/Getting-started/Camera
      */
     // ^ Cameras direction
-    camDirection = (camPos-camTarget).normalized();    // * the position minus the target
+    camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
     // ! Use this to NOT look at the origin.
-    camDirection = Vector3f(0, 0, 1);
+    //camDirection = Vector3f(0, 0, 1);               // * Use this if you want no perspective
     //camDirection.normalize();
 
     // ^ camRight
@@ -89,10 +89,31 @@ void Camera::zoom(float aZoom) {
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
-void Camera::turn(float aTurn) {
+void Camera::move(float aTurn) {
     // ! check this logic, should this apply a rotation instead?
+    // ! Move left / Righe
     camPos -= camRight * aTurn;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
+}
+void Camera::rotate(float xTurn) {
+     // float to radian
+    float degress = xTurn * (M_PI / 180.0f); // remap from 0-180?
+    std::cout << "Degrees: " << degress << "*" << std::endl;
+    /*
+      | cos θ    0   sin θ| |x|   | x cos θ + z sin θ|   |x'|
+    |   0      1       0| |y| = |         y        | = |y'|
+    |−sin θ    0   cos θ| |z|   |−x sin θ + z cos θ|   |z'|
+     create rotation matrix
+     */
+    Matrix4f rotationMatrix;
+    rotationMatrix.setIdentity();
+    // x
+    rotationMatrix(0,0) = cos(degress);
+    rotationMatrix(0,2) = sin(degress);
+    // y
+    rotationMatrix(2,0) = -sin(degress);
+    rotationMatrix(2,2) = cos(degress);
+    // z = 1
 }

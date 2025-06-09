@@ -21,7 +21,8 @@ class Camera {
     void moveLeft(float dt);
     void moveRight(float dt);
     void zoom(float aZoom);
-    void turn(float aTurn);
+    void move(float aTurn);
+    void rotate(float xTurn);   // Only around y basis vector
 
     private:
     Vector3f camPos;

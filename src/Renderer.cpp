@@ -260,9 +260,6 @@ void Renderer::render() {
         // *  Encoding
         MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
         encoder->setRenderPipelineState(renderPipelineState);
-        encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-        encoder->setVertexBuffer(uniformBuffer, 0, 1);
-        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
     // Draw floor
     encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
@@ -273,6 +270,13 @@ void Renderer::render() {
                                   floorIndexBuffer,
                                   0, // offset
                                   1); // i
+
+        // Draw triangle
+        encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
+        encoder->setVertexBuffer(uniformBuffer, 0, 1);
+        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+
+
         encoder->endEncoding();
 
         // Present
@@ -339,15 +343,28 @@ void Renderer::cameraZoom(float aZoom) {
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
 }
-void Renderer::cameraTurn(float aTurn) {
-    camera.turn(aTurn);
+void Renderer::cameraMove(float scalar) {
+    camera.move(scalar);
     Matrix4f viewMatrix = camera.getViewMatrix();
     auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
 }
-// ^ Static callbacks- Have to be static per GLFW's documentation.
+
+void Renderer::cameraRotate(float aTurn) {
+    camera.rotate(aTurn);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    drawFrame();
+}
+
+
+
+/** @note Below are the free functions for glfw
+ */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
     if (!renderer || height == 0) return;
@@ -363,8 +380,9 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     renderer->drawFrame();
 }
 
+
 void framebuffer_refresh_callback(GLFWwindow* window) {
-    // ! THIS IS NOT TRIGGERING???
+    // ! Not currently in use
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 }
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
@@ -389,12 +407,19 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    constexpr float dampen {0.09};
+    constexpr float dampen {0.09};      // Slow down trackpad movement
+    constexpr float degreesPerScroll {5.0f};
+    float angleDeg = xoffset * degreesPerScroll;
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+        std::cout << "ScrollCallback" << std::endl;
+        renderer->cameraRotate(-xoffset);
+    }else {
     xoffset *= dampen;
     yoffset *= dampen;
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    std::cout << "ScrollCallback" << std::endl;
-    std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-    renderer->cameraTurn(xoffset);
+    // TODO: Make this one function call?
+    renderer->cameraMove(xoffset);
     renderer->cameraZoom(yoffset);
+    }
 };

@@ -40,8 +40,8 @@ public:
     void cameraRight();
     void cameraLeft();
     void cameraZoom(float aZoom);
-    void cameraTurn(float aTurn);
-
+    void cameraMove(float aScalar);
+    void cameraRotate(float aTurn);
 
 private:
     // Once
@@ -65,8 +65,8 @@ private:
 
 
 /*
- *  Callback functions for glfw. These have to be free static functions.
-*/
+  *  Callback functions for GLFW. These must be free functions or static class methods.
+ */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void framebuffer_refresh_callback(GLFWwindow *window);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
