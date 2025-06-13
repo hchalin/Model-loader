@@ -28,6 +28,7 @@ private:
 
     std::function<void(int, int)> resizeCallback;
 
+
 };
 
 

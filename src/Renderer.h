@@ -42,6 +42,8 @@ public:
     void cameraZoom(float aZoom);
     void cameraMove(float aScalar);
     void cameraRotate(float aTurn);
+    void processInput(int key, int scancode, int action, int mods);
+    //bool keyDown {false};
 
 private:
     // Once
@@ -61,6 +63,13 @@ private:
 
     // Camera
     Camera camera;
+
+    // Key may
+    bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
+
+    // Timeing
+    float deltaTime {0.0};    // ^ Time between current and last frame
+    float lastFrame {0.0};
 };
 
 

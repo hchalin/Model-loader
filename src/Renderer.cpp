@@ -222,6 +222,11 @@ void Renderer::render() {
     // ! FIXME: Window freezes on resize, multi-theading is not a solution per GLFW's docs, GLFW is not thread safe.
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
+        // ^ Timeing
+        auto currentFrame = static_cast<float>(glfwGetTime());
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
         glfwPollEvents();
         drawFrame();
     }
@@ -294,7 +299,6 @@ Window &Renderer::getWindow() {
 }
 
 void Renderer::cameraUp() {
-    std::cout << "Camera Up" << std::endl;
     camera.moveUp(0.05);
     // Before you draw a frame, update viewMatrix sent to the gpu
     Matrix4f viewMatrix = camera.getViewMatrix();
@@ -350,6 +354,7 @@ void Renderer::cameraMove(float scalar) {
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
+    std::cout  << camera << std::endl;
 }
 
 void Renderer::cameraRotate(float aTurn) {
@@ -361,6 +366,21 @@ void Renderer::cameraRotate(float aTurn) {
     drawFrame();
 }
 
+void Renderer::processInput(int key, int scancode, int action, int mods){
+    for (auto key : keyMap)
+    {
+        if (key)
+        {
+            switch (key)
+            {
+                case GLFW_KEY_W:
+                    std::cout << "W is pressed" << std::endl;
+                break;
+                default: ;
+            }
+        }
+    }
+}
 
 
 /** @note Below are the free functions for glfw
@@ -385,12 +405,37 @@ void framebuffer_refresh_callback(GLFWwindow* window) {
     // ! Not currently in use
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 }
+
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    bool *keys = renderer->keyMap;  // map that stores key states
+    if (action == GLFW_PRESS)
+    {
+        keys[key] = true;
+    } else if (action == GLFW_RELEASE)
+    {
+        keys[key] = false;
+    }
+    renderer->processInput(key, scancode, action, mods);
+}
+/*
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     // ! TODO, make this handle key holds, not just presses.
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    // ^ W
+    // ^ W Press
     if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-        renderer->cameraUp();
+        std::cout << "KEY PRESSED" << std::endl;
+        while (renderer->keyDown) {
+            renderer->cameraUp();
+            if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+                renderer->keyDown = false;
+            }
+        }
+    }
+    // ^ W Release
+    if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+        renderer->keyDown = false;
+        std::cout << "KEY Released" << std::endl;
     }
     // ^ A
     if (key == GLFW_KEY_A && action == GLFW_PRESS) {
@@ -405,6 +450,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
         renderer->cameraRight();
     }
 }
+*/
 
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     constexpr float dampen {0.09};      // Slow down trackpad movement

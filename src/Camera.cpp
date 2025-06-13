@@ -117,3 +117,12 @@ void Camera::rotate(float xTurn) {
     rotationMatrix(2,2) = cos(degress);
     // z = 1
 }
+
+std::ostream & operator<<(std::ostream &os, const Camera &camera) {
+    os << "_____________________\n";
+ 	os << "\033[4m Camera Information \033[24m\n ";
+    os << "\t\033[4mPosition(x,y,z)\033[24m \n" << camera.camPos;
+    os << "\n\t\033[4mDirection(x,y,z)\033[24m \n" << camera.camDirection;
+    os << "\n_____________________\n";
+    return os;
+}

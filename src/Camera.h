@@ -34,5 +34,7 @@ class Camera {
 
 
     Matrix4f viewMatrix;     // Note: World Space -> Camera Space
+
+    friend std::ostream & operator<<(std::ostream &os, const Camera &camera);
 };
 
