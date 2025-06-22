@@ -219,7 +219,6 @@ Renderer::~Renderer() {
 
 void Renderer::render() {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
-    // ! FIXME: Window freezes on resize, multi-theading is not a solution per GLFW's docs, GLFW is not thread safe.
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
@@ -367,18 +366,18 @@ void Renderer::cameraRotate(float aTurn) {
 }
 
 void Renderer::processInput(int key, int scancode, int action, int mods){
-    for (auto key : keyMap)
-    {
-        if (key)
-        {
-            switch (key)
-            {
-                case GLFW_KEY_W:
-                    std::cout << "W is pressed" << std::endl;
-                break;
-                default: ;
-            }
-        }
+
+    if (keyMap[GLFW_KEY_W]) {
+        cameraUp();
+    }
+    if (keyMap[GLFW_KEY_S]) {
+        cameraDown();
+    }
+    if (keyMap[GLFW_KEY_A]) {
+        cameraLeft();
+    }
+    if (keyMap[GLFW_KEY_D]) {
+        cameraRight();
     }
 }
 
@@ -408,13 +407,12 @@ void framebuffer_refresh_callback(GLFWwindow* window) {
 
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    bool *keys = renderer->keyMap;  // map that stores key states
     if (action == GLFW_PRESS)
     {
-        keys[key] = true;
+        renderer->keyMap[key] = true;
     } else if (action == GLFW_RELEASE)
     {
-        keys[key] = false;
+        renderer->keyMap[key] = false;
     }
     renderer->processInput(key, scancode, action, mods);
 }
