@@ -26,6 +26,8 @@ Renderer::Renderer(Window &windowSrc):
         throw std::runtime_error("Failed to create command queue");
     }
 
+    std::cout << "CONTROLLER BRANCH" << std::endl;
+
     // ^ Allocate memory for the uniform buffer
     uniformBuffer = device->newBuffer(sizeof(Matrix4f)* 2, MTL::ResourceStorageModeManaged);    // Room for 2 matrices
     if (!uniformBuffer) {
