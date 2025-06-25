@@ -37,6 +37,8 @@ set(HEADER_FILES
         src/common/BroMath/vec4.h
         src/common/BroMath/Transform.h
         src/Camera.h
+        src/Controller.cpp
+        src/Controller.h
 )
 
 # Add executable

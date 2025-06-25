@@ -10,7 +10,8 @@ Renderer::Renderer(Window &windowSrc):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    controller(new Controller(camera))
 {
 
     const float aRatio = windowSrc.getAspectRatio();
@@ -54,10 +55,9 @@ Renderer::Renderer(Window &windowSrc):
 }
 
 void Renderer::updateProjectionMatrix(float aRatio) {
-
-
-    std::cout << "aspect Ratio: " << aRatio << std::endl;
-
+    /**
+     * @Brief: This function is called every time the window is resized
+     */
     // ^ Define the vertical fov to radias, horizontal will be based off of this.
     const float fovY = 45.0f * (M_PI / 180.0f);
 
@@ -144,10 +144,10 @@ void Renderer::createPipelineState() {
     /*
      * Triangle
      */
-    Vertex vertices[] = {
+    Vertex vertices[] = {   // @ NOTE: These verts are defined as CL
         {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}}, // Top (red)
-        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}}, // Bottom left (green)
-        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}} // Bottom right (blue)
+        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}}, // Bottom right (blue)
+        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}} // Bottom left (green)
     };
 
     // ^ Create vertex buffer
@@ -155,6 +155,7 @@ void Renderer::createPipelineState() {
     if (!triangleVertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }
+
 
     /*
      *      Floor
@@ -215,6 +216,7 @@ Renderer::~Renderer() {
     device = nullptr;
 
     commandQueue->release();
+    delete controller;
 }
 
 void Renderer::render() {
@@ -226,6 +228,7 @@ void Renderer::render() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
+        controller->handleEvents();
         glfwPollEvents();
         drawFrame();
     }
@@ -276,6 +279,8 @@ void Renderer::render() {
                                   1); // i
 
         // Draw triangle
+        encoder->setCullMode(MTL::CullModeBack); // Cull back face
+        encoder->setFrontFacingWinding(MTL::WindingClockwise);
         encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
         encoder->setVertexBuffer(uniformBuffer, 0, 1);
         encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
@@ -297,6 +302,7 @@ Window &Renderer::getWindow() {
       return *window;
 }
 
+// ! Everything below needs to be put in the controller class
 void Renderer::cameraUp() {
     camera.moveUp(0.05);
     // Before you draw a frame, update viewMatrix sent to the gpu
@@ -328,6 +334,7 @@ void Renderer::cameraRight() {
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
 }
+
 void Renderer::cameraLeft() {
     camera.moveLeft(0.05);
     Matrix4f viewMatrix = camera.getViewMatrix();
@@ -353,7 +360,6 @@ void Renderer::cameraMove(float scalar) {
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
-    std::cout  << camera << std::endl;
 }
 
 void Renderer::cameraRotate(float aTurn) {
@@ -366,7 +372,18 @@ void Renderer::cameraRotate(float aTurn) {
 }
 
 void Renderer::processInput(int key, int scancode, int action, int mods){
+    /**
+     * @Note:
+     *  Modifiers list:
+     *  1: Shift
+     *  2: Control
+     *  3: Command
+     *
+     */
 
+    if (mods) {
+        std::cout << "Modifiers: " << mods << std::endl;
+    }
     if (keyMap[GLFW_KEY_W]) {
         cameraUp();
     }
@@ -382,7 +399,8 @@ void Renderer::processInput(int key, int scancode, int action, int mods){
 }
 
 
-/** @note Below are the free functions for glfw
+/**
+ * @note Below are the free functions for glfw
  */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
@@ -409,46 +427,15 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
     if (action == GLFW_PRESS)
     {
+        std::cout << "DOWN" << std::endl;
         renderer->keyMap[key] = true;
     } else if (action == GLFW_RELEASE)
     {
+        std::cout << "UP" << std::endl;
         renderer->keyMap[key] = false;
     }
     renderer->processInput(key, scancode, action, mods);
 }
-/*
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    // ! TODO, make this handle key holds, not just presses.
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    // ^ W Press
-    if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-        std::cout << "KEY PRESSED" << std::endl;
-        while (renderer->keyDown) {
-            renderer->cameraUp();
-            if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
-                renderer->keyDown = false;
-            }
-        }
-    }
-    // ^ W Release
-    if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
-        renderer->keyDown = false;
-        std::cout << "KEY Released" << std::endl;
-    }
-    // ^ A
-    if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-        renderer->cameraLeft();
-    }
-    // ^ S
-    if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-        renderer->cameraDown();
-    }
-    // ^ D
-    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        renderer->cameraRight();
-    }
-}
-*/
 
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     constexpr float dampen {0.09};      // Slow down trackpad movement

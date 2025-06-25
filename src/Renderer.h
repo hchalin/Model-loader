@@ -14,6 +14,7 @@
 #include "common/common.h"
 #include "shaders/readShaderFile.h"
 #include "./Camera.h"
+#include "./Controller.h"
 
 // Used for offset
 struct Uniforms {
@@ -35,6 +36,7 @@ public:
     void drawFrame();
 
     // Camera controls
+    // * Make this a controller class
     void cameraUp();
     void cameraDown();
     void cameraRight();
@@ -64,6 +66,9 @@ private:
 
     // Camera
     Camera camera;
+
+    // Controller
+    Controller *controller;
 
 
     // Timeing
