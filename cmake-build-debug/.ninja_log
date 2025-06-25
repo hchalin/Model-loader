@@ -1,16 +1,12 @@
 # ninja log v6
 22	926	1748553107171165711	CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o	ac7f257a14223a16
-2	80	1750873723736879690	build.ninja	ffd96f4482c679e7
+2	80	1750883472391388124	build.ninja	ffd96f4482c679e7
 35	1038	1748377484384310665	CMakeFiles/Model_Viewer.dir/src/window.cpp.o	4f7b3a5bf9aa1379
-38	917	1749670973712556224	CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o	fc6f36c332cfa289
-19	1220	1750616531778216038	CMakeFiles/Model_Viewer.dir/src/main.cpp.o	c534532c31dd44f1
-28	1030	1750617219560665544	CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o	38ef6b473d570db0
+47	1236	1750873815618510270	CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o	fc6f36c332cfa289
+46	1485	1750873815617493810	CMakeFiles/Model_Viewer.dir/src/main.cpp.o	c534532c31dd44f1
+47	1455	1750873815618269311	CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o	38ef6b473d570db0
 19	689	1750616531778518665	CMakeFiles/Model_Viewer.dir/src/Window.cpp.o	143fa5b201cc768c
 3	10	1746136002980547617	clean	ad90e366ad70d77b
 57	1517	1748835510707849077	CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o	f9ec64cebfb31ea5
-1031	1124	1750617220562845683	Model_Viewer	d29d77c887455577
-22	1294	1748553107171342712	CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o	4172645a42745c82
-47	1236	1750873815618510270	CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o	fc6f36c332cfa289
-47	1455	1750873815618269311	CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o	38ef6b473d570db0
-46	1485	1750873815617493810	CMakeFiles/Model_Viewer.dir/src/main.cpp.o	c534532c31dd44f1
 1485	1742	1750873817056551549	Model_Viewer	d29d77c887455577
+22	1294	1748553107171342712	CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o	4172645a42745c82
