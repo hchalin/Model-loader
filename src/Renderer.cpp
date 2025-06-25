@@ -11,7 +11,6 @@ Renderer::Renderer(Window &windowSrc):
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
     camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
-    controller(new Controller(camera))
 {
 
     const float aRatio = windowSrc.getAspectRatio();
@@ -45,11 +44,7 @@ Renderer::Renderer(Window &windowSrc):
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
-    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
-    glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
-    glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
-    glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -230,7 +225,6 @@ void Renderer::render() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        controller->handleEvents();
         glfwPollEvents();
         drawFrame();
     }
@@ -405,6 +399,9 @@ void Renderer::processInput(int key, int scancode, int action, int mods){
  * @note Below are the free functions for glfw
  */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    /*
+        Call back for window resize. Leave in renderer.
+     */
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
     if (!renderer || height == 0) return;
 
@@ -419,40 +416,3 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     renderer->drawFrame();
 }
 
-
-void framebuffer_refresh_callback(GLFWwindow* window) {
-    // ! Not currently in use
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-}
-
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (action == GLFW_PRESS)
-    {
-        std::cout << "DOWN" << std::endl;
-        renderer->keyMap[key] = true;
-    } else if (action == GLFW_RELEASE)
-    {
-        std::cout << "UP" << std::endl;
-        renderer->keyMap[key] = false;
-    }
-    renderer->processInput(key, scancode, action, mods);
-}
-
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    constexpr float dampen {0.09};      // Slow down trackpad movement
-    constexpr float degreesPerScroll {5.0f};
-    float angleDeg = xoffset * degreesPerScroll;
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-        std::cout << "ScrollCallback" << std::endl;
-        renderer->cameraRotate(-xoffset);
-    }else {
-    xoffset *= dampen;
-    yoffset *= dampen;
-    // TODO: Make this one function call?
-    renderer->cameraMove(xoffset);
-    renderer->cameraZoom(yoffset);
-    }
-};

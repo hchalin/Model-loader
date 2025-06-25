@@ -5,12 +5,13 @@
 #pragma once
 #include "Camera.h"
 #include "Window.h"
+#include "Renderer.h"
 
 
-class Controller {
+class Controller : public Renderer {
 public:
     // ! Make this a derived camera class
-    Controller(Camera &cam, Window *winow); // Controller takes a camera by ref
+    Controller(Camera &cam); // Controller takes a camera by ref
     ~Controller();
     void handleEvents();
 
@@ -33,7 +34,6 @@ private:
     void camRotateUp(); // * Scroll down
     void camRotateRight(); // * Scroll left
     void camRotateLeft(); // * Scroll right
-
 
 
 };

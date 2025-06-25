@@ -9,12 +9,11 @@
 #include "Renderer.h"
 
 
-Controller::Controller(Camera &cam, Window *window):camera(cam), window(window) {
+Controller::Controller(Camera &cam):camera(cam) {
 
     // ^ Set GLFW Callbacks
     glfwSetWindowUserPointer(window->getGLFWWindow(), this);
     glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
-    glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
     glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 }
@@ -81,4 +80,3 @@ void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     renderer->cameraZoom(yoffset);
     }
 };
-*/

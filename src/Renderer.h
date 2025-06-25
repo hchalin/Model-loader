@@ -67,14 +67,13 @@ private:
     // Camera
     Camera camera;
 
-    // Controller
-    Controller *controller;
 
 
     // Timeing
     float deltaTime {0.0};    // ^ Time between current and last frame
     float lastFrame {0.0};
 };
+
 
 
 /*
