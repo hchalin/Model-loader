@@ -231,7 +231,7 @@ void Renderer::render() {
     }
 }
 
-/**
+/*
  *     This function draws a single frame
  *
  */
