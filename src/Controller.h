@@ -5,15 +5,15 @@
 #pragma once
 #include "Camera.h"
 #include "Window.h"
-#include "Renderer.h"
 
 
-class Controller : public Renderer {
+class Controller {
 public:
     // ! Make this a derived camera class
-    Controller(Camera &cam); // Controller takes a camera by ref
+    Controller(Camera &cam, Window *window); // Controller takes a camera by ref
     ~Controller();
-    void handleEvents();
+    void handleInput(int key, int action, int mods);
+    void handleScroll(double xoffset, double yoffset);
 
 private:
     Camera &camera;
@@ -40,3 +40,5 @@ private:
 
 
 
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);

@@ -63,6 +63,13 @@ build CMakeFiles/Model_Viewer.dir/src/Window.cpp.o: CXX_COMPILER__Model_Viewer_u
   OBJECT_DIR = CMakeFiles/Model_Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Model_Viewer.dir/src
 
+build CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o: CXX_COMPILER__Model_Viewer_unscanned_Debug /Users/haydenchalin/CLionProjects/Model_Viewer/src/Controller.cpp || cmake_object_order_depends_target_Model_Viewer
+  DEP_FILE = CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o.d
+  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics
+  INCLUDES = -I/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies -I/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -I/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies -isystem /opt/homebrew/include
+  OBJECT_DIR = CMakeFiles/Model_Viewer.dir
+  OBJECT_FILE_DIR = CMakeFiles/Model_Viewer.dir/src
+
 build CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o: CXX_COMPILER__Model_Viewer_unscanned_Debug /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp || cmake_object_order_depends_target_Model_Viewer
   DEP_FILE = CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o.d
   FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics
@@ -98,13 +105,6 @@ build CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o: CXX_COMPIL
   OBJECT_DIR = CMakeFiles/Model_Viewer.dir
   OBJECT_FILE_DIR = CMakeFiles/Model_Viewer.dir/src/common/BroMath
 
-build CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o: CXX_COMPILER__Model_Viewer_unscanned_Debug /Users/haydenchalin/CLionProjects/Model_Viewer/src/Controller.cpp || cmake_object_order_depends_target_Model_Viewer
-  DEP_FILE = CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o.d
-  FLAGS = -g -std=gnu++20 -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.3 -fcolor-diagnostics
-  INCLUDES = -I/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies -I/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks -I/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies -isystem /opt/homebrew/include
-  OBJECT_DIR = CMakeFiles/Model_Viewer.dir
-  OBJECT_FILE_DIR = CMakeFiles/Model_Viewer.dir/src
-
 
 # =============================================================================
 # Link build statements for EXECUTABLE target Model_Viewer
@@ -113,7 +113,7 @@ build CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o: CXX_COMPILER__Model_View
 #############################################
 # Link the executable Model_Viewer
 
-build Model_Viewer: CXX_EXECUTABLE_LINKER__Model_Viewer_Debug CMakeFiles/Model_Viewer.dir/src/main.cpp.o CMakeFiles/Model_Viewer.dir/src/Window.cpp.o CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o | /opt/homebrew/lib/libglfw.3.4.dylib
+build Model_Viewer: CXX_EXECUTABLE_LINKER__Model_Viewer_Debug CMakeFiles/Model_Viewer.dir/src/main.cpp.o CMakeFiles/Model_Viewer.dir/src/Window.cpp.o CMakeFiles/Model_Viewer.dir/src/Controller.cpp.o CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o | /opt/homebrew/lib/libglfw.3.4.dylib
   FLAGS = -g -arch arm64 -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk -mmacosx-version-min=14.3
   LINK_LIBRARIES = -Wl,-rpath,/opt/homebrew/lib  /opt/homebrew/lib/libglfw.3.4.dylib  -lstdc++  -framework Metal  -framework MetalKit  -framework ModelIO  -framework Foundation  -framework QuartzCore  -framework AppKit  -lobjc
   OBJECT_DIR = CMakeFiles/Model_Viewer.dir

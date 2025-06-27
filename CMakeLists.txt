@@ -27,6 +27,7 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 set(SOURCE_FILES
         src/main.cpp
         src/Window.cpp
+        src/Controller.cpp
         src/Renderer.cpp
         src/Camera.cpp
         src/backend/glfw_adaptor.mm
@@ -37,7 +38,6 @@ set(HEADER_FILES
         src/common/BroMath/vec4.h
         src/common/BroMath/Transform.h
         src/Camera.h
-        src/Controller.cpp
         src/Controller.h
 )
 

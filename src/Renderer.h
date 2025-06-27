@@ -16,6 +16,7 @@
 #include "./Camera.h"
 #include "./Controller.h"
 
+
 // Used for offset
 struct Uniforms {
     Matrix4f viewMatrix;
@@ -36,14 +37,7 @@ public:
     void drawFrame();
 
     // Camera controls
-    // * Make this a controller class
-    void cameraUp();
-    void cameraDown();
-    void cameraRight();
-    void cameraLeft();
-    void cameraZoom(float aZoom);
-    void cameraMove(float aScalar);
-    void cameraRotate(float aTurn);
+    void updateCmaeraView();
     void processInput(int key, int scancode, int action, int mods);
     // Key map
     bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
@@ -64,8 +58,10 @@ private:
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
 
-    // Camera
+    // Camera w/ controller
     Camera camera;
+    Controller controller;
+
 
 
 
@@ -81,5 +77,3 @@ private:
  */
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void framebuffer_refresh_callback(GLFWwindow *window);
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);

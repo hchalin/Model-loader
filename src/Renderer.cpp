@@ -11,6 +11,7 @@ Renderer::Renderer(Window &windowSrc):
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
     camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    controller(camera, window)
 {
 
     const float aRatio = windowSrc.getAspectRatio();
@@ -213,12 +214,12 @@ Renderer::~Renderer() {
     device = nullptr;
 
     commandQueue->release();
-    delete controller;
 }
 
 void Renderer::render() {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
 
+    // @ THIS IS THE RENDER LOOP
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
         auto currentFrame = static_cast<float>(glfwGetTime());
@@ -298,106 +299,13 @@ Window &Renderer::getWindow() {
       return *window;
 }
 
-// ! Everything below needs to be put in the controller class
-void Renderer::cameraUp() {
-    camera.moveUp(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
-    drawFrame();
-}
-
-void Renderer::cameraDown() {
-    camera.moveDown(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-
-    drawFrame();
-
-}
-
-void Renderer::cameraRight() {
-    camera.moveRight(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-}
-
-void Renderer::cameraLeft() {
-    camera.moveLeft(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-}
-
-void Renderer::cameraZoom(float aZoom) {
-    camera.zoom(aZoom);
-    // ! TODO: abstract this repeated code for movement
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-}
-void Renderer::cameraMove(float scalar) {
-    camera.move(scalar);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-}
-
-void Renderer::cameraRotate(float aTurn) {
-    camera.rotate(aTurn);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-}
-
-void Renderer::processInput(int key, int scancode, int action, int mods){
-    /**
-     * @Note:
-     *  Modifiers list:
-     *  1: Shift
-     *  2: Control
-     *  3: Command
-     *
-     */
-
-    if (mods) {
-        std::cout << "Modifiers: " << mods << std::endl;
-    }
-    if (keyMap[GLFW_KEY_W]) {
-        cameraUp();
-    }
-    if (keyMap[GLFW_KEY_S]) {
-        cameraDown();
-    }
-    if (keyMap[GLFW_KEY_A]) {
-        cameraLeft();
-    }
-    if (keyMap[GLFW_KEY_D]) {
-        cameraRight();
-    }
-}
 
 
 /**
  * @note Below are the free functions for glfw
  */
+
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     /*
         Call back for window resize. Leave in renderer.
