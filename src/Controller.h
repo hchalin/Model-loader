@@ -12,15 +12,19 @@ public:
     // ! Make this a derived camera class
     Controller(Camera &cam, Window *window); // Controller takes a camera by ref
     ~Controller();
-    void handleInput(int key, int action, int mods);
+    void handleInput(int key, int scancode, int mods);
     void handleScroll(double xoffset, double yoffset);
+
 
 private:
     Camera &camera;
     Window *window;
+    // Key map
+    bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
+
 
     // Camera movement w/ shift
-    void camUp();
+    void camUp() const;
     void camdown();
     void camRight();
     void camLeft();
@@ -40,5 +44,3 @@ private:
 
 
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);

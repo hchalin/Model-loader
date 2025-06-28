@@ -46,6 +46,8 @@ Renderer::Renderer(Window &windowSrc):
 
     // ^ Set GLFW Callbacks
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
+    glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
+    glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -300,6 +302,10 @@ Window &Renderer::getWindow() {
 }
 
 
+void Renderer::updateCmaeraView() {
+    Matrix4f viewMatrix = camera.getViewMatrix();
+};
+
 
 
 /**
@@ -324,3 +330,40 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     renderer->drawFrame();
 }
 
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    //auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    auto * renderer = static_cast<Renderer *> (glfwGetWindowUserPointer(window));
+    if (auto * controller = static_cast<Controller *> (glfwGetWindowUserPointer(window))) {
+        controller->handleInput(key, scancode, mods);
+        renderer->updateCmaeraView();
+    }
+}
+
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    if (auto * controller = static_cast<Controller *> (glfwGetWindowUserPointer(window))) {
+        controller->handleScroll(xoffset, yoffset);
+        renderer->updateCmaeraView();
+    }
+
+}
+
+/*
+void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    constexpr float dampen {0.09};      // Slow down trackpad movement
+    constexpr float degreesPerScroll {5.0f};
+    float angleDeg = xoffset * degreesPerScroll;
+    //auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+        std::cout << "ScrollCallback" << std::endl;
+        //cameraRotate(-xoffset);
+    }else {
+    xoffset *= dampen;
+    yoffset *= dampen;
+    // TODO: Make this one function call?
+    //cameraMove(xoffset);
+    //cameraZoom(yoffset);
+    }
+};
+*/
