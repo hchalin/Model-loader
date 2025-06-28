@@ -303,7 +303,10 @@ Window &Renderer::getWindow() {
 
 
 void Renderer::updateCmaeraView() {
-    Matrix4f viewMatrix = camera.getViewMatrix();
+    Matrix4f &viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+    //uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 };
 
 
