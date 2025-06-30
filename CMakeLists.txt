@@ -37,8 +37,8 @@ set(HEADER_FILES
         src/common/BroMath/vec4.h
         src/common/BroMath/Transform.h
         src/Camera.h
-        src/Controller.cpp
-        src/Controller.h
+        tests/test_main.cpp
+        tests/test_camera.cpp
 )
 
 # Add executable
@@ -80,3 +80,23 @@ target_link_libraries(Model_Viewer PRIVATE
 )
 
 
+## TESTING
+# Find Google Test
+find_package(GTest REQUIRED)
+
+# Add test executable
+add_executable(Model_Viewer_Tests
+        tests/test_main.cpp
+        tests/test_camera.cpp
+)
+
+# Link Google Test libraries
+target_link_libraries(Model_Viewer_Tests PRIVATE
+        GTest::GTest
+        GTest::Main
+)
+
+# Include directories for tests
+target_include_directories(Model_Viewer_Tests PRIVATE
+        ${CMAKE_SOURCE_DIR}/src
+)
