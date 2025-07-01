@@ -12,7 +12,7 @@ Controller::Controller(Camera &cam, Window * window):camera(cam), window(window)
 
     std::cout << " CONTROLLER" << std::endl;
     // ^ Set GLFW Callbacks
-    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
+    //glfwSetWindowUserPointer(window->getGLFWWindow(), this);
 }
 
 Controller::~Controller() {

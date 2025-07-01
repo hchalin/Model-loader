@@ -45,6 +45,7 @@ Renderer::Renderer(Window &windowSrc):
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
+    glfwSetWindowUserPointer(window->getGLFWWindow(), &controller);
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
     glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
