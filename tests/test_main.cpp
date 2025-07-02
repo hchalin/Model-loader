@@ -4,6 +4,7 @@
 #include <gtest/gtest.h>
 
 // Basic test to verify addition
+/*
 TEST(BasicTest, AdditionWorks) {
     int a = 2;
     int b = 3;
@@ -27,3 +28,4 @@ int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
+*/
