@@ -13,7 +13,7 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
     // ! Use this to NOT look at the origin.
-    //camDirection = Vector3f(0, 0, 1);               // * Use this if you want no perspective
+    camDirection = Vector3f(0, 0, 1);               // * Use this if you want no perspective
     //camDirection.normalize();
 
     // ^ camRight

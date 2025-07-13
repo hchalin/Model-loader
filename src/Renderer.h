@@ -22,7 +22,9 @@ struct Uniforms {
     Matrix4f viewMatrix;
     Matrix4f projectionMatrix;
 };
+
 class Renderer {
+
 public:
     Renderer();
     Renderer(Window &window);
@@ -39,7 +41,11 @@ public:
     // Camera controls
     void updateCmaeraView();
 
+    // Get uniform buffer
+    MTL::Buffer * getUniformBuffer();
+
 private:
+
     // Once
     MTL::Device *device{nullptr};
     Window *window{nullptr};
@@ -59,19 +65,15 @@ private:
     Camera camera;
     Controller controller;
 
-
-
-
     // Timeing
     float deltaTime {0.0};    // ^ Time between current and last frame
     float lastFrame {0.0};
+
 };
 
-
-
 /*
-  *  Callback functions for GLFW. These must be free functions or static class methods.
- */
+ *  Callback functions for GLFW. These must be free functions or static class methods.
+*/
 void framebuffer_size_callback(GLFWwindow *window, int width, int height);
 void framebuffer_refresh_callback(GLFWwindow *window);
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);

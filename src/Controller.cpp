@@ -16,7 +16,6 @@ Controller::Controller(Camera &cam, Window * window):camera(cam), window(window)
 }
 
 Controller::~Controller() {
-    return;
 }
 
 void Controller::handleInput(int key, int scancode, int mods) {

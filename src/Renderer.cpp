@@ -10,7 +10,7 @@ Renderer::Renderer(Window &windowSrc):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    camera(Vector3f(0.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
     controller(camera, window)
 {
 
@@ -26,7 +26,6 @@ Renderer::Renderer(Window &windowSrc):
         throw std::runtime_error("Failed to create command queue");
     }
 
-    std::cout << "CONTROLLER BRANCH" << std::endl;
 
     // ^ Allocate memory for the uniform buffer
     uniformBuffer = device->newBuffer(sizeof(Matrix4f)* 2, MTL::ResourceStorageModeManaged);    // Room for 2 matrices
@@ -41,7 +40,6 @@ Renderer::Renderer(Window &windowSrc):
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
     // @ *bufferPtr = viewMatrix uses the Matrix4f assignment operator to copy all the data
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
-    // ! bufferPtr = &viewMatrix;   This does not work, this just updates the pointers address
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
@@ -80,10 +78,21 @@ void Renderer::updateProjectionMatrix(float aRatio) {
     projectionMatrix(3,3) = 0.0f;                          // Required for perspective
 
     // Update uniform buffer with combined view-projection matrix
+    MTL::Buffer *uniformBuffer = getUniformBuffer();
+    if (!uniformBuffer) {
+        throw std::runtime_error("No uniform buffer in updateProjectionMatrix");
+    }
     auto* bufferPtr = static_cast<Matrix4f*>(uniformBuffer->contents());
     *(bufferPtr + 1) = projectionMatrix;
     uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
 
+}
+
+MTL::Buffer * Renderer::getUniformBuffer() {
+    if (!uniformBuffer) {
+        throw std::runtime_error("No uniform buffer in getUniformBuffer");
+    }
+    return uniformBuffer;
 }
 
 void Renderer::createPipelineState() {
@@ -239,77 +248,82 @@ void Renderer::render() {
  *
  */
 
- void Renderer::drawFrame() {
-  NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
-        CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
-        if (!drawable) {
-            // * Clean up
-            pool->release();
-            glfwDestroyWindow(window->getGLFWWindow());
-            return;
-        }
+void Renderer::drawFrame() {
+    NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
+    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
+    if (!drawable) {
+        // * Clean up
+        pool->release();
+        glfwDestroyWindow(window->getGLFWWindow());
+        return;
+    }
 
-        // * Create command buffer
-        MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
+    // * Create command buffer
+    MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
 
-        if (!commandBuffer) {
-            throw std::runtime_error("Failed to render command buffer");
-        }
+    if (!commandBuffer) {
+        throw std::runtime_error("Failed to render command buffer");
+    }
 
-        // * Create render pass descriptor
-        MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
-        MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
-        colorAttachment->setTexture(drawable->texture());
-        colorAttachment->setLoadAction(MTL::LoadActionClear);
-        colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
-        colorAttachment->setStoreAction(MTL::StoreActionStore);
+    // * Create render pass descriptor
+    MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
+    MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
+    colorAttachment->setTexture(drawable->texture());
+    colorAttachment->setLoadAction(MTL::LoadActionClear);
+    colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
+    colorAttachment->setStoreAction(MTL::StoreActionStore);
 
-        // *  Encoding
-        MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
-        encoder->setRenderPipelineState(renderPipelineState);
+    // *  Encoding
+    MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
+    encoder->setRenderPipelineState(renderPipelineState);
 
     // Draw floor
     encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
     encoder->setVertexBuffer(uniformBuffer, 0, 1);
     encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-                                  6, // 6 indices
-                                  MTL::IndexTypeUInt32,
-                                  floorIndexBuffer,
-                                  0, // offset
-                                  1); // i
+                                   6, // 6 indices
+                                   MTL::IndexTypeUInt32,
+                                   floorIndexBuffer,
+                                   0, // offset
+                                   1); // i
 
-        // Draw triangle
-        encoder->setCullMode(MTL::CullModeBack); // Cull back face
-        encoder->setFrontFacingWinding(MTL::WindingClockwise);
-        encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-        encoder->setVertexBuffer(uniformBuffer, 0, 1);
-        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+    // Draw triangle
+    encoder->setCullMode(MTL::CullModeBack); // Cull back face
+    encoder->setFrontFacingWinding(MTL::WindingClockwise);
+    encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
+    encoder->setVertexBuffer(uniformBuffer, 0, 1);
+    encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
 
-        encoder->endEncoding();
+    encoder->endEncoding();
 
-        // Present
-        commandBuffer->presentDrawable(drawable);
-        commandBuffer->commit();
+    // Present
+    commandBuffer->presentDrawable(drawable);
+    commandBuffer->commit();
 
-        // ! CLEAN UP
-        renderPassDescriptor->release();
-        pool->release();
+    // ! CLEAN UP
+    renderPassDescriptor->release();
+    pool->release();
 }
 
 
 Window &Renderer::getWindow() {
-      return *window;
+    return *window;
 }
 
 
 void Renderer::updateCmaeraView() {
     Matrix4f &viewMatrix = camera.getViewMatrix();
+    if (!uniformBuffer) {
+        throw std::runtime_error("No uniform buffer in updateCameraView");
+    }
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    //uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    if (bufferPtr == nullptr) {
+        throw std::runtime_error("Failed to static cast uniformBuffer");
+    }
+    *bufferPtr = viewMatrix; // Copy updated view matrix to uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 };
-
 
 
 /**
@@ -334,22 +348,21 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     renderer->drawFrame();
 }
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
     //auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    auto * renderer = static_cast<Renderer *> (glfwGetWindowUserPointer(window));
-    if (auto * controller = static_cast<Controller *> (glfwGetWindowUserPointer(window))) {
+    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    if (auto *controller = static_cast<Controller *>(glfwGetWindowUserPointer(window))) {
         controller->handleInput(key, scancode, mods);
         renderer->updateCmaeraView();
     }
 }
 
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (auto * controller = static_cast<Controller *> (glfwGetWindowUserPointer(window))) {
+    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    if (auto *controller = static_cast<Controller *>(glfwGetWindowUserPointer(window))) {
         controller->handleScroll(xoffset, yoffset);
-        renderer->updateCmaeraView();
+        renderer->updateCmaeraView();           // ! source of seg fault
     }
-
 }
 
 /*
