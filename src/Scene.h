@@ -5,6 +5,8 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include <vector>
+#include "Model.h"
 
 #include "Renderer.h"
 #include "Window.h"
@@ -13,8 +15,11 @@ public:
     Scene();
     ~Scene();
     void start();
-    private:
 
+    void loadModels();
+
+    private:
+    std::vector<Model> models;
 };
 
 

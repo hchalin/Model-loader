@@ -24,3 +24,7 @@ void Scene::start() {
         std::cerr << e.what() << std::endl;
     }
 }
+
+void Scene::loadModels() {
+
+}
