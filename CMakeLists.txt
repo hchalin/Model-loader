@@ -10,19 +10,6 @@ set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
 
 
-
-#add_executable(Model_Viewer
-        #src/main.cpp
-        #src/window.cpp
-        #src/renderer.cpp
-        #src/backend/glfw_adaptor.mm
-        #src/shaders/readShaderFile.cpp
-        #src/common/BroMath/Transform.cpp
-        #src/common/BroMath/vec4.h
-        #src/common/BroMath/Transform.h
-#)
-
-
 # Define source and header files
 set(SOURCE_FILES
         src/main.cpp
@@ -52,6 +39,10 @@ add_executable(Model_Viewer ${SOURCE_FILES} ${HEADER_FILES})
 # Find GLFW
 find_package(glfw3 REQUIRED)
 
+# JSON
+find_package(jsoncpp CONFIG REQUIRED)
+
+
 # Include directories
 target_include_directories(Model_Viewer PRIVATE
         ${CMAKE_SOURCE_DIR}/dependencies/        # Includes Eigen (and other headers if needed)
@@ -60,6 +51,8 @@ target_include_directories(Model_Viewer PRIVATE
 )
 # Link GLFW library
 target_link_libraries(Model_Viewer PRIVATE glfw)
+#Json
+target_link_libraries(Model_Viewer PRIVATE JsonCpp::JsonCpp)
 
 target_include_directories(Model_Viewer
         PRIVATE
@@ -104,3 +97,5 @@ target_link_libraries(Model_Viewer_Tests PRIVATE
 target_include_directories(Model_Viewer_Tests PRIVATE
         ${CMAKE_SOURCE_DIR}/src
 )
+
+#JSON
