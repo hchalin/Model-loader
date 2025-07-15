@@ -39,6 +39,8 @@ set(HEADER_FILES
         src/Camera.h
         tests/test_main.cpp
         tests/test_camera.cpp
+        src/Scene.cpp
+        src/Scene.h
 )
 
 # Add executable
