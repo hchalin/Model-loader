@@ -3,8 +3,8 @@
 //
 
 #pragma once
-#include <Metal/Metal.hpp>
 #include <eigen/Eigen/Dense>
+#include <Metal/Metal.hpp>
 
 #include <iostream>
 #include <ostream>

@@ -19,7 +19,11 @@ public:
     void loadModels();
 
     private:
-    std::vector<Model> models;
+    //std::vector<Model> models;
+    Model* model;
+    Window* window;
+    Renderer* renderer;
+
 };
 
 
