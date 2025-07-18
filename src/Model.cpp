@@ -5,18 +5,34 @@
 #include "Model.h"
 
 
-Model::Model(std::string &fileNamme): glbFilename(fileNamme),
+Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileName(fileNamme),
                                        vertexBuffer(nullptr)
 {
    if (fileNamme == "") throw std::invalid_argument("File name missing");
+
+    // Determin fileName fileformat
+    fileType = determineFileType(fileNamme);
+
+    switch (fileType) {
+       case  (FileType::OBJ):
+           parseObj(fileName);
+           break;
+        default:
+            throw std::invalid_argument("File type missing");
+    }
+
 }
 
-void Model::loadModel(MTL::Device * device) {
-    std::string fileName = "../src/assets/" + glbFilename;
+void Model::loadModelGLB(MTL::Device * device) {
+    /**
+     * Loads a model via a .glb binary file
+     * https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#glb-file-format-specification
+     */
+    fileName = "../src/assets/" + fileName;
     std::cout << "Loading model from file " << fileName << std::endl;
     std::ifstream binFile(fileName, std::ios::binary);
     if (!binFile.is_open()) {
-        throw std::runtime_error("Failed to open binary file: " + glbFilename);
+        throw std::runtime_error("Failed to open binary file: " + fileName);
     }
 
     binFile.seekg(12); // Skip past the 12-byte header to the JSON header
@@ -60,16 +76,40 @@ void Model::loadModel(MTL::Device * device) {
     // Create the Metal buffer from the binary data
     if (!device) {
         throw std::runtime_error("Device not set");
-    }else {
-        std::cout << "There is a device" << std::endl;
     }
 
     vertexBuffer = device->newBuffer(buffer, vertexByteLength, MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer for model");
     }
-    else {
-        std::cout << "There is a vertex buffer" << std::endl;
+}
+
+MTL::Buffer * Model::getVertexBuffer() {
+    if (!vertexBuffer) {
+        throw std::runtime_error("Failed to get vertex buffer for model");
+    }
+    return vertexBuffer;
+}
+
+FileType Model::determineFileType(const std::string& fileName) {
+    size_t dotPos = fileName.find_last_of('.');
+    size_t gPos = fileName.find_last_of('g');
+    std::cout << "G pos: " << gPos/8 << std::endl;
+    if (dotPos == std::string::npos) {
+        throw std::invalid_argument("File name does not have an extension");
     }
 
+    std::string extension = fileName.substr(dotPos + 1);
+    switch (extension) {
+        case  "obj": return FileType::OBJ;
+        case  "glb": return FileType::GLB;
+        default: throw std::invalid_argument("File type missing");
+    }
+
+
 }
+
+void Model::parseObj(const std::string& fileName) {
+    std::cout << "Parsing obj file " << fileName << std::endl;
+}
+

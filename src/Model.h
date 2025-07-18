@@ -12,19 +12,33 @@
 #include <iostream>
 
 
+enum struct FileType {
+    OBJ,
+    GLTF,
+    GLB,
+    FBX
+};
 class Model {
 public:
     //Model() = default;
-    Model( std::string& fileNamme);
+    explicit Model( MTL::Device* device, std::string& fileNamme);
     ~Model() = default;
     // Methods
-    void loadModel(MTL::Device * device);
+    void loadModelGLB(MTL::Device * device);
+
+    MTL::Buffer * getVertexBuffer();
 
     private:
-    std::string& glbFilename;
-    MTL::Device * device;
+    std::string& fileName;
+    MTL::Device * device{};
     // Buffers
     MTL::Buffer* vertexBuffer;
+
+    FileType fileType;
+
+    static FileType determineFileType(const std::string& fileName);
+
+    void parseObj(const std::string& fileName);
 
 
 };

@@ -14,6 +14,7 @@
 #include "common/common.h"
 #include "shaders/readShaderFile.h"
 #include "./Camera.h"
+#include "Model.h"
 
 // Used for offset
 struct Uniforms {
@@ -23,7 +24,7 @@ struct Uniforms {
 class Renderer {
 public:
     Renderer();
-    Renderer(Window &window);
+    Renderer(Window &window, Model * model);
     ~Renderer();
 
     void createPipelineState();
@@ -53,6 +54,7 @@ private:
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
     MTL::Buffer *triangleVertexBuffer{nullptr};
+    MTL::Buffer* modelBuffer{nullptr};
     MTL::Buffer *floorVertexBuffer{nullptr};
     MTL::Buffer *floorIndexBuffer{nullptr};
 

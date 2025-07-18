@@ -16,13 +16,15 @@ public:
     ~Scene();
     void start();
 
-    void loadModels();
+    Model * loadModels();
 
     private:
     //std::vector<Model> models;
     Model* model;
     Window* window;
     Renderer* renderer;
+
+
 
 };
 

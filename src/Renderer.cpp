@@ -6,11 +6,12 @@
 
 
 
-Renderer::Renderer(Window &windowSrc):
+Renderer::Renderer(Window &windowSrc, Model * model):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)) // * camera(camPos, target)
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)),  // * camera(camPos, target)
+    modelBuffer(model->getVertexBuffer())
 {
 
     const float aRatio = windowSrc.getAspectRatio();
@@ -276,9 +277,18 @@ void Renderer::render() {
                                   1); // i
 
         // Draw triangle
-        encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-        encoder->setVertexBuffer(uniformBuffer, 0, 1);
-        encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+        //encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
+        //encoder->setVertexBuffer(uniformBuffer, 0, 1);
+        //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+
+        // @ Draw model
+    if (modelBuffer) {
+        //encoder->setVertexBuffer(modelBuffer, 0, 0);
+        //encoder->setVertexBuffer(uniformBuffer, 0, 1);
+        // Assuming you have vertex count and other necessary parameters
+        //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3)); // Replace 3 with vertex count
+    }
+
 
 
         encoder->endEncoding();
