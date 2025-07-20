@@ -13,6 +13,7 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
     // Determin fileName fileformat
     fileType = determineFileType(fileNamme);
 
+    // Parse data
     switch (fileType) {
        case  (FileType::OBJ):
            parseObj(fileName);
@@ -28,6 +29,8 @@ void Model::loadModelGLB(MTL::Device * device) {
      * Loads a model via a .glb binary file
      * https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#glb-file-format-specification
      */
+
+    // ! THIS IS NOT COMPLETELY IMPLEMENTED
     fileName = "../src/assets/" + fileName;
     std::cout << "Loading model from file " << fileName << std::endl;
     std::ifstream binFile(fileName, std::ios::binary);
@@ -84,12 +87,6 @@ void Model::loadModelGLB(MTL::Device * device) {
     }
 }
 
-MTL::Buffer * Model::getVertexBuffer() {
-    if (!vertexBuffer) {
-        throw std::runtime_error("Failed to get vertex buffer for model");
-    }
-    return vertexBuffer;
-}
 
 FileType Model::determineFileType(const std::string& fileName) {
     size_t dotPos = fileName.find_last_of('.');
@@ -100,16 +97,58 @@ FileType Model::determineFileType(const std::string& fileName) {
     }
 
     std::string extension = fileName.substr(dotPos + 1);
-    switch (extension) {
-        case  "obj": return FileType::OBJ;
-        case  "glb": return FileType::GLB;
-        default: throw std::invalid_argument("File type missing");
+    if (extension == "obj") {
+        return FileType::OBJ;
+    }else if (extension == "gltf") {
+        return FileType::GLTF;
+    } else if (extension == "glb") {
+        return FileType::GLB;
+    } else if (extension == "fbx") {
+        return FileType::FBX;
+    } else {
+        throw std::invalid_argument("File type missing");
     }
-
 
 }
 
 void Model::parseObj(const std::string& fileName) {
-    std::cout << "Parsing obj file " << fileName << std::endl;
+    // @ Find and open file
+    std::fstream objFile("../src/assets/" +fileName);
+    if (!objFile.is_open()) {
+        throw std::invalid_argument("Failed to open file: " + fileName);
+    }
+
+    // @ Start parsing the file
+    std::string lineStr;
+
+    std::string line;
+    while (std::getline(objFile, line)) {
+        std::cout << line << std::endl;
+
+       /*
+        // @ vertex
+        if( lineType == "v" )
+        {
+            float x = 0, y = 0, z = 0, w = 1;
+            //lineSS >> x >> y >> z >> w;
+            std::cout << "(" << x << ", " << y << ", " << z << ")" << std::endl;
+            //positions.push_back( glm::vec4( x, y, z, w ) );
+        }
+
+        // @ vertices that make up each face
+        if (lineType == "f") {
+            std::string face;
+            //lineSS >> face;
+            //std::cout << "(" << face[0] << ", " << face[2] << ", " << face[4] << ")" << std::endl;
+        }
+        */
+    }
+
 }
 
+MTL::Buffer * Model::getVertexBuffer() {
+    if (!vertexBuffer) {
+        throw std::runtime_error("Failed to get vertex buffer for model");
+    }
+    return vertexBuffer;
+}

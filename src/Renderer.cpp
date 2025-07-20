@@ -10,8 +10,8 @@ Renderer::Renderer(Window &windowSrc, Model * model):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)),  // * camera(camPos, target)
-    modelBuffer(model->getVertexBuffer())
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0))  // * camera(camPos, target)
+    //modelBuffer(model->getVertexBuffer())
 {
 
     const float aRatio = windowSrc.getAspectRatio();

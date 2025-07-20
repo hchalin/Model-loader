@@ -10,6 +10,8 @@
 
 #include "Renderer.h"
 #include "Window.h"
+#include <fstream>
+
 class Scene {
 public:
     Scene();
