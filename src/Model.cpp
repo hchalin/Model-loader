@@ -123,7 +123,11 @@ void Model::parseObj(const std::string& fileName) {
 
     std::string line;
     while (std::getline(objFile, line)) {
-        std::cout << line << std::endl;
+        std::size_t pos = line.find(' ');   // Position of the first white space in each line
+        std::string firstField = (pos == std::string::npos)   // no space found?
+                                ? line                        //   → take whole line
+                                : line.substr(0, pos);
+        std::cout << firstField << std::endl;
 
        /*
         // @ vertex
