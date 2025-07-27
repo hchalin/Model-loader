@@ -30,9 +30,10 @@ public:
 
     private:
     std::string& fileName;
-    MTL::Device * device{};
+    MTL::Device * device{nullptr};
     // Buffers
     MTL::Buffer* vertexBuffer;
+    MTL::Buffer* indexBuffer;
 
     FileType fileType;
 

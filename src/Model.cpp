@@ -4,9 +4,11 @@
 
 #include "Model.h"
 
+#include "common/common.h"
+
 
 Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileName(fileNamme),
-                                       vertexBuffer(nullptr)
+                                                           vertexBuffer(nullptr), indexBuffer(nullptr)
 {
    if (fileNamme == "") throw std::invalid_argument("File name missing");
 
@@ -20,6 +22,10 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
            break;
         default:
             throw std::invalid_argument("File type missing");
+    }
+
+    if (!device) {
+        throw std::invalid_argument("Device is null");
     }
 
 }
@@ -118,36 +124,60 @@ void Model::parseObj(const std::string& fileName) {
         throw std::invalid_argument("Failed to open file: " + fileName);
     }
 
+
+    // Vertice Array
+    std::vector<Vertex> vertices;
+
     // @ Start parsing the file
     std::string lineStr;
 
     std::string line;
     while (std::getline(objFile, line)) {
         std::size_t pos = line.find(' ');   // Position of the first white space in each line
-        std::string firstField = (pos == std::string::npos)   // no space found?
-                                ? line                        //   → take whole line
+        std::string lineType= (pos == std::string::npos)   // no space found?
+                                ? line                        //    take whole line
                                 : line.substr(0, pos);
-        std::cout << firstField << std::endl;
 
-       /*
         // @ vertex
         if( lineType == "v" )
         {
-            float x = 0, y = 0, z = 0, w = 1;
-            //lineSS >> x >> y >> z >> w;
-            std::cout << "(" << x << ", " << y << ", " << z << ")" << std::endl;
-            //positions.push_back( glm::vec4( x, y, z, w ) );
+            // x
+            std::stringstream lineSS(line.substr(pos + 1)); // Use a stringstream to parse the line
+            float vert1, vert2, vert3;
+            lineSS >> vert1 >> vert2 >> vert3; // Extract vertex coordinates from the stringstream
+            Vertex vertice = {
+                {vert1, vert2, vert3, 1.0},
+                {1.0, 0.0, 0.0, 1.0}
+            };
+            vertices.push_back(vertice);
         }
 
-        // @ vertices that make up each face
         if (lineType == "f") {
             std::string face;
-            //lineSS >> face;
-            //std::cout << "(" << face[0] << ", " << face[2] << ", " << face[4] << ")" << std::endl;
-        }
-        */
-    }
+            std::stringstream lineSS(line.substr(pos + 1));
 
+            lineSS >> face;
+            std::cout << "(" << face[0] << ", " << face[0] << ", " << face[0] << ")" << std::endl;
+        }
+    }
+    /*
+    std::cout <<  "Vertices: " << vertices.size() << std::endl;
+    for (auto& v : vertices) {
+        std::cout  << v.position << std::endl;
+    }
+    */
+
+    // @ Set the vertex buffer
+    if (!device) {
+        throw std::runtime_error("Device not set in model");
+    }
+    // * Pass the vector address to the buffer
+    vertexBuffer = device->newBuffer(&vertices, sizeof(Vertex) * vertices.size(), MTL::ResourceStorageModeManaged);
+    if (!vertexBuffer) {
+        throw std::runtime_error("Failed to create vertex buffer for model");
+    } else {
+        std::cout << "Vertex buffer for model created!" << std::endl;
+    }
 }
 
 MTL::Buffer * Model::getVertexBuffer() {
