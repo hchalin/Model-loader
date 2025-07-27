@@ -152,20 +152,53 @@ void Model::parseObj(const std::string& fileName) {
             vertices.push_back(vertice);
         }
 
-        if (lineType == "f") {
-            std::string face;
-            std::stringstream lineSS(line.substr(pos + 1));
 
-            lineSS >> face;
-            std::cout << "(" << face[0] << ", " << face[0] << ", " << face[0] << ")" << std::endl;
+        // Parse face
+        if (lineType == "f") {
+            std::stringstream faceStream(line.substr(pos + 1));
+            std::string vertexStr;
+            std::vector<FaceInfo> faceInfoArray;
+
+            while (std::getline(faceStream, vertexStr, ' ')) {
+                if (vertexStr.empty()) {
+                    continue; // Skip empty or malformed lines
+                }
+
+                std::stringstream vertexStream(vertexStr);
+                std::string indexStr;
+                FaceInfo faceInfo;
+                int posIdx = 0;
+
+                while (std::getline(vertexStream, indexStr, '/')) {
+                    try {
+                        int index = std::stoi(indexStr);
+                        switch (posIdx) {
+                            case 0:
+                                faceInfo.vertexIndex = index;
+                            break;
+                            case 1:
+                                faceInfo.texcoordIndex = index;
+                            break;
+                            case 2:
+                                faceInfo.vertexNormalIndex = index;
+                            break;
+                            default:
+                                break;
+                        }
+                    } catch (const std::invalid_argument& e) {
+                        // Handle missing indices
+                    }
+                    ++posIdx;
+                }
+                faceInfoArray.push_back(faceInfo);
+            }
+
+            // Print the parsed face information
+            for (const auto& faceInfo : faceInfoArray) {
+                std::cout << "Vertex Index: " << faceInfo.vertexIndex << std::endl;
+            }
         }
     }
-    /*
-    std::cout <<  "Vertices: " << vertices.size() << std::endl;
-    for (auto& v : vertices) {
-        std::cout  << v.position << std::endl;
-    }
-    */
 
     // @ Set the vertex buffer
     if (!device) {

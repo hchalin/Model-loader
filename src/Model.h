@@ -18,6 +18,15 @@ enum struct FileType {
     GLB,
     FBX
 };
+
+// @ Used to store the face index information
+// ^ f v/vt/vn
+struct FaceInfo {
+    int vertexIndex;
+    int texcoordIndex;          // Not used yet
+    int vertexNormalIndex;      // Not used yet
+};
+
 class Model {
 public:
     //Model() = default;
