@@ -28,6 +28,8 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
         throw std::invalid_argument("Device is null");
     }
 
+    loadModel();
+
 }
 
 void Model::loadModelGLB(MTL::Device * device) {
@@ -117,7 +119,12 @@ FileType Model::determineFileType(const std::string& fileName) {
 
 }
 
+void Model::loadModel() {
+    testModelIO();
+}
+
 void Model::parseObj(const std::string& fileName) {
+    //! No longer using this function with the use of MetalKit's ModelIO bridging headers
     // @ Find and open file
     std::fstream objFile("../src/assets/" +fileName);
     if (!objFile.is_open()) {
@@ -127,7 +134,9 @@ void Model::parseObj(const std::string& fileName) {
 
     // Vertice Array
     std::vector<Vertex> vertices;
+    //vertices.reserve(30000);
 
+    //long long size {0};
     // @ Start parsing the file
     std::string lineStr;
 
@@ -149,6 +158,7 @@ void Model::parseObj(const std::string& fileName) {
                 {vert1, vert2, vert3, 1.0},
                 {1.0, 0.0, 0.0, 1.0}
             };
+
             vertices.push_back(vertice);
         }
 
@@ -195,7 +205,7 @@ void Model::parseObj(const std::string& fileName) {
 
             // Print the parsed face information
             for (const auto& faceInfo : faceInfoArray) {
-                std::cout << "Vertex Index: " << faceInfo.vertexIndex << std::endl;
+                //std::cout << "Vertex Index: " << faceInfo.vertexIndex << std::endl;
             }
         }
     }
@@ -205,6 +215,9 @@ void Model::parseObj(const std::string& fileName) {
         throw std::runtime_error("Device not set in model");
     }
     // * Pass the vector address to the buffer
+    if (vertices.empty()) {
+        throw std::invalid_argument("No vertices specified");
+    }
     vertexBuffer = device->newBuffer(&vertices, sizeof(Vertex) * vertices.size(), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer for model");

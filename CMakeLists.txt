@@ -17,6 +17,7 @@ set(SOURCE_FILES
         src/Renderer.cpp
         src/Camera.cpp
         src/backend/glfw_adaptor.mm
+        src/backend/ModelBridge.mm
         src/shaders/readShaderFile.cpp
         src/common/BroMath/Transform.cpp
 )

@@ -4,10 +4,10 @@
 
 #ifndef MODEL_H
 #define MODEL_H
-
 //#include <Metal/MTLBuffer.hpp>
 #include <Metal/Metal.hpp>
 #include <fstream>
+#include "./backend/ModelBridge.hpp"
 #include <json/json.h>
 #include <iostream>
 
@@ -49,6 +49,10 @@ public:
     static FileType determineFileType(const std::string& fileName);
 
     void parseObj(const std::string& fileName);
+    void loadModel();
+
+
+
 
 
 };
