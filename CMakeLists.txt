@@ -17,7 +17,6 @@ set(SOURCE_FILES
         src/Renderer.cpp
         src/Camera.cpp
         src/backend/glfw_adaptor.mm
-        src/backend/ModelBridge.mm
         src/shaders/readShaderFile.cpp
         src/common/BroMath/Transform.cpp
 )
@@ -31,6 +30,7 @@ set(HEADER_FILES
         src/Scene.h
         src/Model.cpp
         src/Model.h
+        src/backend/tiny_obj_loader.h
 )
 
 # Add executable
@@ -48,6 +48,7 @@ find_package(jsoncpp CONFIG REQUIRED)
 target_include_directories(Model_Viewer PRIVATE
         ${CMAKE_SOURCE_DIR}/dependencies/        # Includes Eigen (and other headers if needed)
         ${GLFW_INCLUDE_DIRS}
+        ${CMAKE_SOURCE_DIR}/src/backend
         SYSTEM /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
 )
 # Link GLFW library

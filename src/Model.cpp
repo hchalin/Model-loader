@@ -1,10 +1,13 @@
 //
 // Created by Hayden Chalin on 7/14/25.
 //
+#define TINYOBJLOADER_IMPLEMENTATION
+#include <tiny_obj_loader.h>
 
+#include <filesystem>
 #include "Model.h"
-
 #include "common/common.h"
+
 
 
 Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileName(fileNamme),
@@ -18,7 +21,7 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
     // Parse data
     switch (fileType) {
        case  (FileType::OBJ):
-           parseObj(fileName);
+           //parseObj(fileName);
            break;
         default:
             throw std::invalid_argument("File type missing");
@@ -32,68 +35,7 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
 
 }
 
-void Model::loadModelGLB(MTL::Device * device) {
-    /**
-     * Loads a model via a .glb binary file
-     * https://registry.khronos.org/glTF/specs/2.0/glTF-2.0.html#glb-file-format-specification
-     */
 
-    // ! THIS IS NOT COMPLETELY IMPLEMENTED
-    fileName = "../src/assets/" + fileName;
-    std::cout << "Loading model from file " << fileName << std::endl;
-    std::ifstream binFile(fileName, std::ios::binary);
-    if (!binFile.is_open()) {
-        throw std::runtime_error("Failed to open binary file: " + fileName);
-    }
-
-    binFile.seekg(12); // Skip past the 12-byte header to the JSON header
-    uint32_t jsonLength;
-    binFile.read(reinterpret_cast<char*>(&jsonLength), sizeof(uint32_t)); // Read JSON length
-
-    std::string jsonStr;
-    jsonStr.resize(jsonLength);
-    binFile.seekg(20); // Skip the rest of the JSON header to the start of the string
-    binFile.read(jsonStr.data(), jsonLength); // Read JSON string
-
-    Json::Value _json;
-    Json::Reader reader;
-    if (!reader.parse(jsonStr, _json)) {
-        std::cerr << "Problem parsing assetData: " << jsonStr << std::endl;
-        return;
-    }
-
-    uint32_t binLength;
-    binFile.read(reinterpret_cast<char*>(&binLength), sizeof(binLength)); // Read binary length
-    binFile.seekg(sizeof(uint32_t), std::ios_base::cur); // Skip chunk type
-
-    std::vector<char> bin(binLength);
-    binFile.read(bin.data(), binLength);
-
-    // Process the binary data and JSON as needed
-    Json::Value& primitive = _json["meshes"][0]["primitives"][0];
-    Json::Value& positionAccessor = _json["accessors"][primitive["attributes"]["POSITION"].asInt()];
-    Json::Value& bufferView = _json["bufferViews"][positionAccessor["bufferView"].asInt()];
-
-    float* buffer = reinterpret_cast<float*>(bin.data() + bufferView["byteOffset"].asInt());
-    for (int i = 0; i < positionAccessor["count"].asInt(); ++i) {
-        std::cout << "(" << buffer[i * 3] << ", " << buffer[i * 3 + 1] << ", " << buffer[i * 3 + 2] << ")" << std::endl;
-    }
-
-    std::cout << "vertices: " << positionAccessor["count"].asInt() << std::endl;
-    // Extract position data pointer and size
-    int vertexCount = positionAccessor["count"].asInt();
-    int vertexByteLength = vertexCount * 3 * sizeof(float); // 3 floats per vertex (x, y, z)
-
-    // Create the Metal buffer from the binary data
-    if (!device) {
-        throw std::runtime_error("Device not set");
-    }
-
-    vertexBuffer = device->newBuffer(buffer, vertexByteLength, MTL::ResourceStorageModeManaged);
-    if (!vertexBuffer) {
-        throw std::runtime_error("Failed to create vertex buffer for model");
-    }
-}
 
 
 FileType Model::determineFileType(const std::string& fileName) {
@@ -120,110 +62,38 @@ FileType Model::determineFileType(const std::string& fileName) {
 }
 
 void Model::loadModel() {
-    testModelIO();
-}
-
-void Model::parseObj(const std::string& fileName) {
-    //! No longer using this function with the use of MetalKit's ModelIO bridging headers
-    // @ Find and open file
-    std::fstream objFile("../src/assets/" +fileName);
-    if (!objFile.is_open()) {
-        throw std::invalid_argument("Failed to open file: " + fileName);
-    }
-
-
-    // Vertice Array
+    // @ This function will use tiny obj
     std::vector<Vertex> vertices;
-    //vertices.reserve(30000);
+    tinyobj::attrib_t attrib;
+    std::vector<tinyobj::shape_t> shapes;
+    std::vector<tinyobj::material_t> materials;
+    std::string err, warn;
 
-    //long long size {0};
-    // @ Start parsing the file
-    std::string lineStr;
+    std::string assetPath = std::filesystem::current_path().string() + "/../src/assets/" + fileName;
 
-    std::string line;
-    while (std::getline(objFile, line)) {
-        std::size_t pos = line.find(' ');   // Position of the first white space in each line
-        std::string lineType= (pos == std::string::npos)   // no space found?
-                                ? line                        //    take whole line
-                                : line.substr(0, pos);
+    if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, assetPath.c_str())) {
+        throw std::runtime_error(warn + err);
+    }
 
-        // @ vertex
-        if( lineType == "v" )
-        {
-            // x
-            std::stringstream lineSS(line.substr(pos + 1)); // Use a stringstream to parse the line
-            float vert1, vert2, vert3;
-            lineSS >> vert1 >> vert2 >> vert3; // Extract vertex coordinates from the stringstream
-            Vertex vertice = {
-                {vert1, vert2, vert3, 1.0},
-                {1.0, 0.0, 0.0, 1.0}
-            };
-
-            vertices.push_back(vertice);
-        }
-
-
-        // Parse face
-        if (lineType == "f") {
-            std::stringstream faceStream(line.substr(pos + 1));
-            std::string vertexStr;
-            std::vector<FaceInfo> faceInfoArray;
-
-            while (std::getline(faceStream, vertexStr, ' ')) {
-                if (vertexStr.empty()) {
-                    continue; // Skip empty or malformed lines
-                }
-
-                std::stringstream vertexStream(vertexStr);
-                std::string indexStr;
-                FaceInfo faceInfo;
-                int posIdx = 0;
-
-                while (std::getline(vertexStream, indexStr, '/')) {
-                    try {
-                        int index = std::stoi(indexStr);
-                        switch (posIdx) {
-                            case 0:
-                                faceInfo.vertexIndex = index;
-                            break;
-                            case 1:
-                                faceInfo.texcoordIndex = index;
-                            break;
-                            case 2:
-                                faceInfo.vertexNormalIndex = index;
-                            break;
-                            default:
-                                break;
-                        }
-                    } catch (const std::invalid_argument& e) {
-                        // Handle missing indices
-                    }
-                    ++posIdx;
-                }
-                faceInfoArray.push_back(faceInfo);
+    for (const auto& shape : shapes) {
+        for (const auto& index : shape.mesh.indices) {
+            Vertex vertex;
+            if (index.vertex_index >= 0) {
+                vertex.position = {
+                attrib.vertices[3 * index.vertex_index + 0],
+                attrib.vertices[3 * index.vertex_index + 1],
+                attrib.vertices[3 * index.vertex_index + 2],
+                1.0
+                };
             }
-
-            // Print the parsed face information
-            for (const auto& faceInfo : faceInfoArray) {
-                //std::cout << "Vertex Index: " << faceInfo.vertexIndex << std::endl;
-            }
+            vertices.push_back(vertex);
         }
     }
 
-    // @ Set the vertex buffer
-    if (!device) {
-        throw std::runtime_error("Device not set in model");
+    for (const auto vertex : vertices) {
+        std::cout << vertex.position.x() << " " << vertex.position.y() << " " << vertex.position.z() << std::endl;
     }
-    // * Pass the vector address to the buffer
-    if (vertices.empty()) {
-        throw std::invalid_argument("No vertices specified");
-    }
-    vertexBuffer = device->newBuffer(&vertices, sizeof(Vertex) * vertices.size(), MTL::ResourceStorageModeManaged);
-    if (!vertexBuffer) {
-        throw std::runtime_error("Failed to create vertex buffer for model");
-    } else {
-        std::cout << "Vertex buffer for model created!" << std::endl;
-    }
+
 }
 
 MTL::Buffer * Model::getVertexBuffer() {

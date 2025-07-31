@@ -7,7 +7,6 @@
 //#include <Metal/MTLBuffer.hpp>
 #include <Metal/Metal.hpp>
 #include <fstream>
-#include "./backend/ModelBridge.hpp"
 #include <json/json.h>
 #include <iostream>
 
@@ -29,11 +28,8 @@ struct FaceInfo {
 
 class Model {
 public:
-    //Model() = default;
     explicit Model( MTL::Device* device, std::string& fileNamme);
     ~Model() = default;
-    // Methods
-    void loadModelGLB(MTL::Device * device);
 
     MTL::Buffer * getVertexBuffer();
 
@@ -48,7 +44,6 @@ public:
 
     static FileType determineFileType(const std::string& fileName);
 
-    void parseObj(const std::string& fileName);
     void loadModel();
 
 

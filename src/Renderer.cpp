@@ -146,9 +146,9 @@ void Renderer::createPipelineState() {
      * Triangle
      */
     Vertex vertices[] = {
-        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}}, // Top (red)
-        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}}, // Bottom left (green)
-        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}} // Bottom right (blue)
+        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0},Eigen::Vector3f::Zero(),Eigen::Vector2f::Zero()}, // Top (red)
+        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()}, // Bottom left (green)
+        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0},Eigen::Vector3f::Zero(),Eigen::Vector2f::Zero() } // Bottom right (blue)
     };
 
     // ^ Create vertex buffer
@@ -161,10 +161,10 @@ void Renderer::createPipelineState() {
      *      Floor
      */
     Vertex floorVertices[] = {
-        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}},
-        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
-        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
-        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
+        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
     };
 
     int floorIndices[] = {0,1,3,1,2,3};
