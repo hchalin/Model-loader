@@ -14,7 +14,6 @@ Scene::~Scene() {
 }
 
 void Scene::start() {
-    std::cout << "Scene start" << std::endl;
     try {
         window = new Window();
          renderer = new Renderer(*window, loadModels());
@@ -22,8 +21,6 @@ void Scene::start() {
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
-
-
 }
 
 Model * Scene::loadModels() {

@@ -74,6 +74,7 @@ void Model::loadModel() {
     if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, assetPath.c_str())) {
         throw std::runtime_error(warn + err);
     }
+    std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
 
     for (const auto& shape : shapes) {
         for (const auto& index : shape.mesh.indices) {
@@ -85,13 +86,22 @@ void Model::loadModel() {
                 attrib.vertices[3 * index.vertex_index + 2],
                 1.0
                 };
+
             }
+            std::cout << "Index: " << index.vertex_index << std::endl;
+            std::cout << "Vertex: " << vertex.position.x() << ", " << vertex.position.y() << ", " << vertex.position.z() << std::endl;
             vertices.push_back(vertex);
         }
     }
 
+    for (const auto&shape : shapes) {
+        for (const auto& index : shape.mesh.indices) {
+
+        }
+    }
+
     for (const auto vertex : vertices) {
-        std::cout << vertex.position.x() << " " << vertex.position.y() << " " << vertex.position.z() << std::endl;
+        //std::cout << vertex.position.x() << " " << vertex.position.y() << " " << vertex.position.z() << std::endl;
     }
 
 }

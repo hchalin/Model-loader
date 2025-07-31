@@ -259,7 +259,7 @@ void Renderer::render() {
         MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
         colorAttachment->setTexture(drawable->texture());
         colorAttachment->setLoadAction(MTL::LoadActionClear);
-        colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
+        colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
         colorAttachment->setStoreAction(MTL::StoreActionStore);
 
         // *  Encoding
