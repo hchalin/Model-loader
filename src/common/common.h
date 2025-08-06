@@ -23,19 +23,20 @@ struct Vertex {
     Eigen::Vector4f position;  // x, y, z, w
     Eigen::Vector4f color;
     Eigen::Vector3f normal;    // x, y, z
-    Eigen::Vector2f uv;  // u, v
+    Eigen::Vector2f texCoord;  // u, v
 
     Vertex()
         : position(Eigen::Vector4f::Zero()),
           color(Eigen::Vector4f::Zero()),
           normal(Eigen::Vector3f::Zero()),
-          uv(Eigen::Vector2f::Zero()) {}
+          texCoord(Eigen::Vector2f::Zero()) {}
 
     Vertex(const Eigen::Vector4f& pos,
         const Eigen::Vector4f& color,
            const Eigen::Vector3f& nrm,
-           const Eigen::Vector2f& uv)
-        : position(pos), color(color), normal(nrm), uv(uv) {}
+           const Eigen::Vector2f& texCoord)
+        : position(pos), color(color), normal(nrm), texCoord(texCoord) {}
+
 };
 
 

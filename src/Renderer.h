@@ -67,6 +67,9 @@ private:
     // Camera
     Camera camera;
 
+    // Model
+    Model* model;
+
 
     // Timeing
     float deltaTime {0.0};    // ^ Time between current and last frame

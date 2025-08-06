@@ -16,14 +16,14 @@ Scene::~Scene() {
 void Scene::start() {
     try {
         window = new Window();
-         renderer = new Renderer(*window, loadModels());
+         renderer = new Renderer(*window, loadModel());
          renderer->render();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 }
 
-Model * Scene::loadModels() {
+Model * Scene::loadModel() {
     MTL::Device * device = window->getMTLLayer()->device();
     std::string fileName = "Cube.obj";
     if (!device) {

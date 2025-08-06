@@ -18,7 +18,7 @@ public:
     ~Scene();
     void start();
 
-    Model * loadModels();
+    Model * loadModel();
 
     private:
     //std::vector<Model> models;

@@ -8,6 +8,7 @@
 #include <Metal/Metal.hpp>
 #include <fstream>
 #include <json/json.h>
+#include "common/common.h"
 #include <iostream>
 
 
@@ -32,19 +33,25 @@ public:
     ~Model() = default;
 
     MTL::Buffer * getVertexBuffer();
+    MTL::Buffer * getIndexBuffer();
+    const int getIndexCount();
 
     private:
     std::string& fileName;
     MTL::Device * device{nullptr};
+
+    int indexCount;
+
     // Buffers
     MTL::Buffer* vertexBuffer;
     MTL::Buffer* indexBuffer;
+    void loadModel();
+    void createBuffers(const std::vector<Vertex> &verticies, const std::vector<uint32_t> &indices);
 
     FileType fileType;
 
     static FileType determineFileType(const std::string& fileName);
 
-    void loadModel();
 
 
 
