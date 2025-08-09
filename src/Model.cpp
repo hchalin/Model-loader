@@ -156,8 +156,8 @@ const int Model::getIndexCount() {
     return indexCount;
 }
 
-void Model::createBuffers(const std::vector<Vertex> &verticies, const std::vector<uint32_t> &indices) {
-    if (verticies.size() == 0) {
+void Model::createBuffers(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices) {
+    if (vertices.size() == 0) {
         throw std::invalid_argument("No vertices provided");
     }
 
@@ -165,7 +165,7 @@ void Model::createBuffers(const std::vector<Vertex> &verticies, const std::vecto
         throw std::invalid_argument("No indices provided");
     }
 
-    vertexBuffer = device->newBuffer(verticies.data(), verticies.size() * sizeof(Vertex), MTL::ResourceStorageModeManaged);
+    vertexBuffer = device->newBuffer(vertices.data(), vertices.size() * sizeof(Vertex), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }
