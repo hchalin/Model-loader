@@ -24,6 +24,7 @@ void Scene::start() {
 }
 
 Model * Scene::loadModel() {
+    // Define which obj file you want to load here
     MTL::Device * device = window->getMTLLayer()->device();
     std::string fileName = "Cube.obj";
     if (!device) {

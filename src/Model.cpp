@@ -63,6 +63,9 @@ FileType Model::determineFileType(const std::string& fileName) {
 void Model::loadModel() {
     // @ This function will use tiny obj
     // @ This code has been written with the help of AI REVIEW IT
+
+    // ! this is not efficient, it is not using indexed vertices
+
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
     tinyobj::attrib_t attrib;
@@ -81,8 +84,8 @@ void Model::loadModel() {
         std::cout << "Warning: " << warn << std::endl;
     }
 
-    std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
-    std::cout << "# of shapes    : " << shapes.size() << std::endl;
+    //std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
+    //std::cout << "# of shapes    : " << shapes.size() << std::endl;
 
     // Process all shapes and their faces
     for (const auto& shape : shapes) {
@@ -140,7 +143,7 @@ void Model::loadModel() {
 
     std::cout << "Processed " << vertices.size() << " vertices" << std::endl;
     std::cout << "Processed " << indices.size() << " indices" << std::endl;
-    indexCount = vertices.size();
+    indexCount = indices.size();
 
     // Create Metal buffers
     createBuffers(vertices, indices);
@@ -157,18 +160,20 @@ void Model::createBuffers(const std::vector<Vertex> &verticies, const std::vecto
     if (verticies.size() == 0) {
         throw std::invalid_argument("No vertices provided");
     }
+
     if (indices.size() == 0) {
         throw std::invalid_argument("No indices provided");
     }
+
     vertexBuffer = device->newBuffer(verticies.data(), verticies.size() * sizeof(Vertex), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }
+
     indexBuffer  = device->newBuffer(indices.data(), indices.size() * sizeof(uint32_t), MTL::ResourceStorageModeManaged);
     if (!indexBuffer) {
         throw std::runtime_error("Failed to create index buffer");
     }
-
 }
 
 MTL::Buffer * Model::getVertexBuffer() {

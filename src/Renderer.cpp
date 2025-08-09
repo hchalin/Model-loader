@@ -52,13 +52,10 @@ Renderer::Renderer(Window &windowSrc, Model * model):
     // ^ Create render pipeline state
     createPipelineState();
 
+
 }
 
 void Renderer::updateProjectionMatrix(float aRatio) {
-
-
-    std::cout << "aspect Ratio: " << aRatio << std::endl;
-
     // ^ Define the vertical fov to radias, horizontal will be based off of this.
     const float fovY = 45.0f * (M_PI / 180.0f);
 
