@@ -39,7 +39,35 @@ struct Vertex {
 
 };
 
-
+/**
+ * \brief Converts an angle from degrees to radians.
+ *
+ * \param angle The angle in degrees.
+ * \return The angle in radians.
+ */
 inline double degreesToRadians(double angle){
      return angle * M_PI / 180;
 }
+
+
+
+/**
+ * \brief Combines multiple hash values into a single hash value.
+ *
+ * This function is used for hashing the vertices into an index array.
+ *
+ * \tparam T The type of the first value to hash.
+ * \tparam Rest The types of the remaining values to hash.
+ * \param seed The initial hash value, which will be updated.
+ * \param v The first value to hash.
+ * \param rest The remaining values to hash.
+ */
+#include <functional>
+
+
+    // from: https://stackoverflow.com/a/57595105
+    template <typename T, typename... Rest>
+    void hashCombine(std::size_t& seed, const T& v, const Rest&... rest) {
+        seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+        (hashCombine(seed, rest), ...);
+    };
