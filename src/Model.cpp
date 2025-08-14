@@ -87,6 +87,9 @@ void Model::loadModel() {
     //std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
     //std::cout << "# of shapes    : " << shapes.size() << std::endl;
 
+    std::unordered_map<Eigen::Vector3f, uint32_t, EigenVec3fHash, EigenVec3fEqual> vertexMap;
+    //std::unordered_map<Eigen::Vector3f, uint32_t> vertexMap;
+
     // Process all shapes and their faces
     for (const auto& shape : shapes) {
         size_t index_offset = 0;

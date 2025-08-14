@@ -18,6 +18,7 @@ struct Color
     float r, g, b, a;
 };
 
+
 // Vertex structure
 struct Vertex {
     Eigen::Vector4f position;  // x, y, z, w
@@ -37,19 +38,27 @@ struct Vertex {
            const Eigen::Vector2f& texCoord)
         : position(pos), color(color), normal(nrm), texCoord(texCoord) {}
 
+    bool operator==(const Vertex& other) const {
+        return position == other.position && color == other.color && normal == other.normal && texCoord == other.texCoord;
+    }
+
+};
+struct EigenVec3fEqual {
+    bool operator()(const Eigen::Vector3f& a, const Eigen::Vector3f& b) const noexcept {
+        return a.x() == b.x() && a.y() == b.y() && a.z() == b.z();
+    }
 };
 
-/**
- * \brief Converts an angle from degrees to radians.
- *
- * \param angle The angle in degrees.
- * \return The angle in radians.
- */
-inline double degreesToRadians(double angle){
-     return angle * M_PI / 180;
-}
-
-
+// @ HASH COMBINE
+struct EigenVec3fHash {
+    std::size_t operator()(const Eigen::Vector3f &v) const noexcept {
+        // Combine hashes for each component
+        std::size_t h1 = std::hash<float>{}(v.x());
+        std::size_t h2 = std::hash<float>{}(v.y());
+        std::size_t h3 = std::hash<float>{}(v.z());
+        return h1 ^ (h2 << 1) ^ (h3 << 2);
+    }
+};
 
 /**
  * \brief Combines multiple hash values into a single hash value.
@@ -64,10 +73,22 @@ inline double degreesToRadians(double angle){
  */
 #include <functional>
 
-
     // from: https://stackoverflow.com/a/57595105
     template <typename T, typename... Rest>
     void hashCombine(std::size_t& seed, const T& v, const Rest&... rest) {
         seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
         (hashCombine(seed, rest), ...);
     };
+
+/**
+ * \brief Converts an angle from degrees to radians.
+ *
+ * \param angle The angle in degrees.
+ * \return The angle in radians.
+ */
+inline double degreesToRadians(double angle){
+     return angle * M_PI / 180;
+}
+
+
+
