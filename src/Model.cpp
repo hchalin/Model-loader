@@ -87,6 +87,9 @@ void Model::loadModel() {
     //std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
     //std::cout << "# of shapes    : " << shapes.size() << std::endl;
 
+    std::unordered_map<Vertex, uint32_t> uniqueVertices{};
+    //std::unordered_map<Eigen::Vector3f, uint32_t> vertexMap;
+
     // Process all shapes and their faces
     for (const auto& shape : shapes) {
         size_t index_offset = 0;
@@ -98,8 +101,8 @@ void Model::loadModel() {
             // Process each vertex in the face (usually 3 for triangles)
             for (size_t v = 0; v < fv; v++) {
                 tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
-                
-                Vertex vertex;
+
+                Vertex vertex{};
                 
                 // Position (required)
                 if (idx.vertex_index >= 0) {
@@ -132,9 +135,13 @@ void Model::loadModel() {
                 } else {
                     vertex.texCoord = {0.0f, 0.0f};
                 }
-                
-                vertices.push_back(vertex);
-                indices.push_back(static_cast<uint32_t>(vertices.size() - 1));
+
+                //vertices.push_back(vertex);
+                if (uniqueVertices.count(vertex) == 0) {
+                    uniqueVertices[vertex] = static_cast<uint32_t>(vertices.size());
+                    vertices.push_back(vertex);         // If the vertex is new, add
+                }
+                    indices.push_back(uniqueVertices[vertex]);
             }
             
             index_offset += fv;
@@ -156,8 +163,8 @@ const int Model::getIndexCount() {
     return indexCount;
 }
 
-void Model::createBuffers(const std::vector<Vertex> &verticies, const std::vector<uint32_t> &indices) {
-    if (verticies.size() == 0) {
+void Model::createBuffers(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices) {
+    if (vertices.size() == 0) {
         throw std::invalid_argument("No vertices provided");
     }
 
@@ -165,7 +172,7 @@ void Model::createBuffers(const std::vector<Vertex> &verticies, const std::vecto
         throw std::invalid_argument("No indices provided");
     }
 
-    vertexBuffer = device->newBuffer(verticies.data(), verticies.size() * sizeof(Vertex), MTL::ResourceStorageModeManaged);
+    vertexBuffer = device->newBuffer(vertices.data(), vertices.size() * sizeof(Vertex), MTL::ResourceStorageModeManaged);
     if (!vertexBuffer) {
         throw std::runtime_error("Failed to create vertex buffer");
     }

@@ -44,6 +44,7 @@ public:
     void cameraMove(float aScalar);
     void cameraRotate(float aTurn);
     void processInput(int key, int scancode, int action, int mods);
+
     // Key map
     bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
 

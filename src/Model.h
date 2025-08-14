@@ -47,6 +47,7 @@ public:
     MTL::Buffer* indexBuffer;
 
     std::unordered_map<Vertex, int> uniqueVertices;
+
     void loadModel();
     void createBuffers(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices);
 
