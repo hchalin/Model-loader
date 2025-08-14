@@ -1,0 +1,4 @@
+/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles/Model_Viewer.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles/Model_Viewer_Tests.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles/edit_cache.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles/rebuild_cache.dir
