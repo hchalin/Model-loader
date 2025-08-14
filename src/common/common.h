@@ -37,28 +37,17 @@ struct Vertex {
            const Eigen::Vector3f& nrm,
            const Eigen::Vector2f& texCoord)
         : position(pos), color(color), normal(nrm), texCoord(texCoord) {}
-
+    /**
+        * \brief Equality operator to compare two vertices.
+        * \param other The vertex to compare with.
+        * \return True if all components are equal, false otherwise.
+        */
     bool operator==(const Vertex& other) const {
         return position == other.position && color == other.color && normal == other.normal && texCoord == other.texCoord;
     }
 
 };
-struct EigenVec3fEqual {
-    bool operator()(const Eigen::Vector3f& a, const Eigen::Vector3f& b) const noexcept {
-        return a.x() == b.x() && a.y() == b.y() && a.z() == b.z();
-    }
-};
 
-// @ HASH COMBINE
-struct EigenVec3fHash {
-    std::size_t operator()(const Eigen::Vector3f &v) const noexcept {
-        // Combine hashes for each component
-        std::size_t h1 = std::hash<float>{}(v.x());
-        std::size_t h2 = std::hash<float>{}(v.y());
-        std::size_t h3 = std::hash<float>{}(v.z());
-        return h1 ^ (h2 << 1) ^ (h3 << 2);
-    }
-};
 
 /**
  * \brief Combines multiple hash values into a single hash value.
@@ -73,12 +62,13 @@ struct EigenVec3fHash {
  */
 #include <functional>
 
-    // from: https://stackoverflow.com/a/57595105
-    template <typename T, typename... Rest>
-    void hashCombine(std::size_t& seed, const T& v, const Rest&... rest) {
-        seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
-        (hashCombine(seed, rest), ...);
-    };
+// from: https://stackoverflow.com/a/57595105
+template<typename T, typename... Rest>
+void hashCombine(std::size_t &seed, const T &v, const Rest &... rest) {
+    // Call the hash function with the Vertex
+    seed ^= std::hash<T>{}(v) + 0x9e3779b9 + (seed << 6) + (seed >> 2);
+    (hashCombine(seed, rest), ...);
+};
 
 /**
  * \brief Converts an angle from degrees to radians.
@@ -92,3 +82,43 @@ inline double degreesToRadians(double angle){
 
 
 
+// @ HASH COMBINE
+namespace std {
+    /**
+   * \brief Custom specialization of std::hash for Vertex.
+   */
+    template<>     // This defines the specialization
+    struct hash<Vertex> {
+
+    std::size_t operator()(const Vertex &vertex) const noexcept {
+        std::size_t seed = 0;
+        // Combine hashes for position, color, normal, and texCoord
+        hashCombine(seed, vertex.position.x(), vertex.position.y(), vertex.position.z(), vertex.position.w());
+        hashCombine(seed, vertex.color.x(), vertex.color.y(), vertex.color.z(), vertex.color.w());
+        hashCombine(seed, vertex.normal.x(), vertex.normal.y(), vertex.normal.z());
+        hashCombine(seed, vertex.texCoord.x(), vertex.texCoord.y());
+
+        return seed;
+    }
+    };
+}
+
+namespace std {
+    /**
+    * \brief Custom specialization of std::hash for Eigen::Vector3f.
+    */
+    template <>         // This defines the specialization
+    struct hash<Eigen::Vector3f> {
+
+        /**
+         * \brief Computes a hash value for an Eigen::Vector3f object.
+         * \param vec The Eigen::Vector3f object to hash.
+         * \return The computed hash value.
+         */
+        std::size_t operator()(const Eigen::Vector3f& vec) const noexcept {
+            std::size_t seed = 0;
+            hashCombine(seed, vec.x(), vec.y(), vec.z());
+            return seed;
+        }
+    };
+}
