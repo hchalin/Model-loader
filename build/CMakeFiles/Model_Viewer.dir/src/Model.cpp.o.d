@@ -1198,6 +1198,32 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVersion.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKitPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSApplication.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSRunningApplication.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObject.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSWindow.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSView.hpp \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGBase.h \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenu.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenuItem.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/QuartzCore.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalDrawable.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/../Metal/MTLDrawable.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/../Metal/MTLTexture.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CADefines.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/../Foundation/NSDefines.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalLayer.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/../Metal/MTLPixelFormat.hpp \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataProvider.h \
   /opt/homebrew/include/json/json.h /opt/homebrew/include/json/config.h \
   /opt/homebrew/include/json/allocator.h \
   /opt/homebrew/include/json/version.h \

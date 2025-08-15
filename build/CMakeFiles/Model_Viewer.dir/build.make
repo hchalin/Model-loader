@@ -125,10 +125,24 @@ CMakeFiles/Model_Viewer.dir/src/Camera.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Model_Viewer.dir/src/Camera.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp -o CMakeFiles/Model_Viewer.dir/src/Camera.cpp.s
 
+CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
+CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp
+CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Model_Viewer.dir/src/Model.cpp.o"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/Model.cpp.o -MF CMakeFiles/Model_Viewer.dir/src/Model.cpp.o.d -o CMakeFiles/Model_Viewer.dir/src/Model.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp
+
+CMakeFiles/Model_Viewer.dir/src/Model.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Model_Viewer.dir/src/Model.cpp.i"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp > CMakeFiles/Model_Viewer.dir/src/Model.cpp.i
+
+CMakeFiles/Model_Viewer.dir/src/Model.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Model_Viewer.dir/src/Model.cpp.s"
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp -o CMakeFiles/Model_Viewer.dir/src/Model.cpp.s
+
 CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm
 CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o -MF CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o.d -o CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm
 
 CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.i: cmake_force
@@ -142,7 +156,7 @@ CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.s: cmake_force
 CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp
 CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o -MF CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o.d -o CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp
 
 CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.i: cmake_force
@@ -156,7 +170,7 @@ CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.s: cmake_force
 CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp
 CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o -MF CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o.d -o CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp
 
 CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.i: cmake_force
@@ -170,7 +184,7 @@ CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.s: cmake_force
 CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp
 CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_8) "Building CXX object CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o -MF CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o.d -o CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp
 
 CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.i: cmake_force
@@ -184,7 +198,7 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.s: cmake_force
 CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp
 CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_9) "Building CXX object CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o -MF CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o.d -o CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp
 
 CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.i: cmake_force
@@ -198,7 +212,7 @@ CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.s: cmake_force
 CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
 CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp
 CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_10) "Building CXX object CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o -MF CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o.d -o CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp
 
 CMakeFiles/Model_Viewer.dir/src/Scene.cpp.i: cmake_force
@@ -209,33 +223,19 @@ CMakeFiles/Model_Viewer.dir/src/Scene.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Model_Viewer.dir/src/Scene.cpp.s"
 	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp -o CMakeFiles/Model_Viewer.dir/src/Scene.cpp.s
 
-CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: CMakeFiles/Model_Viewer.dir/flags.make
-CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp
-CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: CMakeFiles/Model_Viewer.dir/compiler_depend.ts
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green --progress-dir=/Users/haydenchalin/CLionProjects/Model_Viewer/build/CMakeFiles --progress-num=$(CMAKE_PROGRESS_11) "Building CXX object CMakeFiles/Model_Viewer.dir/src/Model.cpp.o"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -MD -MT CMakeFiles/Model_Viewer.dir/src/Model.cpp.o -MF CMakeFiles/Model_Viewer.dir/src/Model.cpp.o.d -o CMakeFiles/Model_Viewer.dir/src/Model.cpp.o -c /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp
-
-CMakeFiles/Model_Viewer.dir/src/Model.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Preprocessing CXX source to CMakeFiles/Model_Viewer.dir/src/Model.cpp.i"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp > CMakeFiles/Model_Viewer.dir/src/Model.cpp.i
-
-CMakeFiles/Model_Viewer.dir/src/Model.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color "--switch=$(COLOR)" --green "Compiling CXX source to assembly CMakeFiles/Model_Viewer.dir/src/Model.cpp.s"
-	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp -o CMakeFiles/Model_Viewer.dir/src/Model.cpp.s
-
 # Object files for target Model_Viewer
 Model_Viewer_OBJECTS = \
 "CMakeFiles/Model_Viewer.dir/src/main.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/src/Window.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o" \
+"CMakeFiles/Model_Viewer.dir/src/Model.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o" \
 "CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o" \
 "CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o" \
-"CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o" \
-"CMakeFiles/Model_Viewer.dir/src/Model.cpp.o"
+"CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o"
 
 # External object files for target Model_Viewer
 Model_Viewer_EXTERNAL_OBJECTS =
@@ -244,13 +244,13 @@ Model_Viewer: CMakeFiles/Model_Viewer.dir/src/main.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Window.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Camera.cpp.o
+Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Model.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/backend/glfw_adaptor.mm.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/shaders/readShaderFile.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/common/BroMath/Transform.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/tests/test_camera.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o
-Model_Viewer: CMakeFiles/Model_Viewer.dir/src/Model.cpp.o
 Model_Viewer: CMakeFiles/Model_Viewer.dir/build.make
 Model_Viewer: /opt/homebrew/lib/libglfw.3.4.dylib
 Model_Viewer: /opt/homebrew/lib/libjsoncpp.26.dylib

@@ -1759,6 +1759,9 @@ CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o: \
   /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.h \
   /Users/haydenchalin/CLionProjects/Model_Viewer/src/./Camera.h \
   /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.h \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/fstream \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/filesystem \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__filesystem/copy_options.h \

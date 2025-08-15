@@ -6,6 +6,8 @@
 #define MODEL_H
 //#include <Metal/MTLBuffer.hpp>
 #include <Metal/Metal.hpp>
+//#include <MetalKit/MetalKit.h> // For MTKTextureLoader
+
 #include <fstream>
 #include <json/json.h>
 #include "common/common.h"
@@ -29,37 +31,38 @@ struct FaceInfo {
 
 class Model {
 public:
-    explicit Model( MTL::Device* device, std::string& fileNamme);
+    explicit Model(MTL::Device *device, std::string &fileNamme);
+
     ~Model() = default;
 
-    MTL::Buffer * getVertexBuffer();
-    MTL::Buffer * getIndexBuffer();
+    MTL::Buffer *getVertexBuffer();
+
+    MTL::Buffer *getIndexBuffer();
+
     const int getIndexCount();
 
-    private:
-    std::string& fileName;
-    MTL::Device * device{nullptr};
+private:
+    std::string &fileName;
+    MTL::Device *device{nullptr};
 
     int indexCount;
 
+    // Texture
+    MTL::Texture *vertexTexture{nullptr};
+
     // Buffers
-    MTL::Buffer* vertexBuffer;
-    MTL::Buffer* indexBuffer;
+    MTL::Buffer *vertexBuffer;
+    MTL::Buffer *indexBuffer;
 
     std::unordered_map<Vertex, int> uniqueVertices;
 
     void loadModel();
+
     void createBuffers(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices);
 
     FileType fileType;
 
-    static FileType determineFileType(const std::string& fileName);
-
-
-
-
-
-
+    static FileType determineFileType(const std::string &fileName);
 };
 
 

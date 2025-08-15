@@ -1147,6 +1147,10 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: /Users/haydenchalin/CLionProjects/M
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFXMLNode.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFXMLParser.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGBase.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataProvider.h \
+  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceBase.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceRef.h \
   /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceTypes.h \
@@ -2222,7 +2226,17 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: /Users/haydenchalin/CLionProjects/M
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdbool.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stddef.h \
   /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdint.h \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKitPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSApplication.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenu.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenuItem.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSRunningApplication.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSWindow.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/Foundation.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObject.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSPrivate.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSArray.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSAutoreleasePool.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSBundle.hpp \
@@ -2304,6 +2318,18 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o: /Users/haydenchalin/CLionProjects/M
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLTexture.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CADefines.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalDrawable.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalLayer.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAPrivate.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/QuartzCore.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/Core \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/ArithmeticSequence.h \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/Array.h \
@@ -4011,6 +4037,9 @@ CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o: /Users/haydenchalin/CLionProject
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp \
@@ -5805,6 +5834,9 @@ CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o: /Users/haydenchalin/CLionProjects/M
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp \
@@ -12238,6 +12270,9 @@ CMakeFiles/Model_Viewer.dir/src/main.cpp.o: /Users/haydenchalin/CLionProjects/Mo
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp \
+  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp \
   /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp \
@@ -15371,17 +15406,7 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/QuartzCore.hpp:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CADefines.hpp:
-
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/GLFW/glfw3native.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSView.hpp:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSRunningApplication.hpp:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKitPrivate.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_os_inline.h:
 
@@ -15410,10 +15435,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/oidsattr.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/oidsalg.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKit.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/oids.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/mds_schema.h:
 
@@ -15611,33 +15632,29 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/UTCoreTypes.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/Processes.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSViewController.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSInfoDeprecated.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSOpen.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/SecDigestTransform.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSInfo.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDirectDisplay.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/FSEvents.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSConstants.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/OSServices.framework/Headers/WSMethodInvocation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/DictionaryServices.framework/Headers/DictionaryServices.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/has_unique_object_representation.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/ToolUtils.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/fp.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Threads.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__bit/rotate.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserActivity.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/UnicodeUtilities.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/TextUtils.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/MathFunctionsImpl.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Timer.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/TextEncodingPlugin.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/StringCompare.h:
 
@@ -15678,12 +15695,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/mach/arm/rpc.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/DateTimeUtils.h:
-
-/opt/homebrew/include/gtest/internal/gtest-internal.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSGridView.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Components.h:
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/CwiseUnaryView.h:
 
@@ -15761,13 +15772,9 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDirectDisplayMetal.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/minmax.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/FSEvents.framework/Headers/FSEvents.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/pstl_replace.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataProvider.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDirectDisplay.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ColorSync.framework/Headers/ColorSyncTransform.h:
 
@@ -15804,6 +15811,10 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/Matrix.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/UniversalAccess.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSInfoDeprecated.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/Processes.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/HIServices.framework/Headers/InternetConfig.h:
 
@@ -15881,6 +15892,36 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/tiny_obj_loader.h:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__functional/bind_back.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAPrivate.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__iterator/prev.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_sigaltstack.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalLayer.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/arm/endian.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalDrawable.hpp:
+
+/opt/homebrew/include/gtest/internal/gtest-internal.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSGridView.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Components.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTDefines.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__memory_resource/polymorphic_allocator.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__exception/exception.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp:
+
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp:
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVersion.hpp:
@@ -15949,10 +15990,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLBlitCommandEncoder.hpp:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/CMSEncoder.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLAccelerationStructureTypes.hpp:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSController.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/make_heap.h:
@@ -15973,13 +16010,27 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSSet.hpp:
 
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObjCRuntime.hpp:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSError.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSSpeechRecognizer.h:
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObject.hpp:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObjCRuntime.hpp:
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/CMSEncoder.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSError.hpp:
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLAccelerationStructureTypes.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/dependent_type.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenuItem.hpp:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKitPrivate.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/oids.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKit.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/ptrauth.h:
 
@@ -16154,8 +16205,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_is_permutation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/mach/sync_policy.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/ToolUtils.h:
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLIndirectCommandEncoder.hpp:
 
@@ -16392,6 +16441,16 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/Block.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceRef.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/minmax.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/pstl_replace.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataProvider.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CADefines.hpp:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h:
 
@@ -16981,6 +17040,8 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_uintptr_t.h:
 
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/QuartzCore.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_uid_t.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_u_short.h:
@@ -16996,12 +17057,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__utility/to_underlying.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_size_t.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalLayer.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__iterator/prev.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/_types/_sigaltstack.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/QuartzCore.framework/Headers/CALayer.h:
 
@@ -17229,17 +17284,25 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/stdexcept:
 
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__condition_variable/condition_variable.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSWindow.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStackView.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/ratio:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/TextEncodingPlugin.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/system_error:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__iterator/reverse_access.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/ostream:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/mman.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__functional/identity.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenu.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/locale.h:
 
@@ -17429,6 +17492,8 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/remove_extent.h:
 
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSRunningApplication.hpp:
+
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/add_lvalue_reference.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/remove_all_extents.h:
@@ -17459,10 +17524,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/noexcept_move_assign_container.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenuItem.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/dependent_type.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/negation.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/nat.h:
@@ -17471,9 +17532,9 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/make_unsigned.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__thread/id.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/UnicodeConverter.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__thread/id.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/mach/vm_purgable.h:
 
@@ -17711,17 +17772,9 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/is_aggregate.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAPrivate.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__functional/bind_back.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/is_abstract.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/invoke.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/DenseCoeffsBase.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/UTCUtils.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/integral_constant.h:
 
@@ -17831,8 +17884,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__split_buffer:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSConstants.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Foundation.framework/Headers/NSIndexSet.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/pstl_for_each.h:
@@ -17925,10 +17976,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__mutex/lock_guard.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreText.framework/Headers/CTDefines.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__memory_resource/polymorphic_allocator.h:
-
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/SVD/InternalHeaderCheck.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSRulerMarker.h:
@@ -17956,12 +18003,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__memory/ranges_construct_at.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__memory/compressed_pair.h:
-
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenu.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/mman.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__functional/identity.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__memory/builtin_new_allocator.h:
 
@@ -18179,10 +18220,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__functional/reference_wrapper.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSViewController.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/LaunchServices.framework/Headers/LSOpen.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/os/workgroup.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/ApplicationServices.framework/Frameworks/ATS.framework/Headers/SFNTTypes.h:
@@ -18192,6 +18229,10 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/sys/syslimits.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__compare/partial_order.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/fp.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/has_unique_object_representation.h:
 
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/GLFW/glfw3.h:
 
@@ -18225,11 +18266,13 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__system_error/errc.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Threads.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSStatusBar.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/Availability.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/UTCUtils.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/DenseCoeffsBase.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/replace_copy.h:
 
@@ -18306,8 +18349,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_pop_heap.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__string/constexpr_c_functions.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__exception/exception.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSColorPicker.h:
 
@@ -18522,6 +18563,10 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_find_if.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/is_void.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/UnicodeUtilities.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__bit/rotate.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/pstl_backend.h:
 
@@ -18879,10 +18924,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__locale_dir/locale_base_api/bsd_locale_defaults.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSWindow.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__condition_variable/condition_variable.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__random/uniform_int_distribution.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/iter_swap.h:
@@ -19042,6 +19083,8 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_copy.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_is_heap_until.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__type_traits/is_trivially_default_constructible.h:
 
@@ -19215,10 +19258,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_unique_copy.h:
 
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/AppKit.framework/Headers/NSUserActivity.h:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/TextUtils.h:
-
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_remove.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/unordered_map:
@@ -19327,6 +19366,8 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/max_element.h:
 
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSView.hpp:
+
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/plugins/CommonCwiseBinaryOps.inc:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Security.framework/Headers/SecEncryptTransform.h:
@@ -19379,10 +19420,6 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFFileDescriptor.h:
 
-/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalDrawable.hpp:
-
-/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/arm/endian.h:
-
 /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/arch/NEON/MathFunctions.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/cstdint:
@@ -19390,6 +19427,10 @@ CMakeFiles/Model_Viewer.dir/tests/test_main.cpp.o: /Users/haydenchalin/CLionProj
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__algorithm/ranges_partial_sort.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__atomic/atomic.h:
+
+/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreServices.framework/Frameworks/CarbonCore.framework/Headers/Timer.h:
+
+/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/MathFunctionsImpl.h:
 
 /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/usr/include/c++/v1/__concepts/regular.h:
 

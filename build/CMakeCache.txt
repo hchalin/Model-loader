@@ -240,6 +240,9 @@ GTest_DIR:PATH=/opt/homebrew/lib/cmake/GTest
 //Path to a library.
 METAL:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/Metal.framework
 
+//Path to a library.
+METALKIT:FILEPATH=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/MetalKit.framework
+
 //Value Computed by CMake
 Model_Viewer_BINARY_DIR:STATIC=/Users/haydenchalin/CLionProjects/Model_Viewer/build
 

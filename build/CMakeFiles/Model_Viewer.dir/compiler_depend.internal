@@ -1149,6 +1149,10 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFXMLNode.h
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CFXMLParser.h
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreFoundation.framework/Headers/CoreFoundation.h
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGBase.h
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGColorSpace.h
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGDataProvider.h
+ /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/CoreGraphics.framework/Headers/CGGeometry.h
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceBase.h
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceRef.h
  /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk/System/Library/Frameworks/IOSurface.framework/Headers/IOSurfaceTypes.h
@@ -2224,7 +2228,17 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdbool.h
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stddef.h
  /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/lib/clang/15.0.0/include/stdint.h
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKit.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/AppKitPrivate.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSApplication.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenu.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSMenuItem.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSRunningApplication.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSView.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/AppKit/NSWindow.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/Foundation.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSObject.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSPrivate.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSArray.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSAutoreleasePool.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSBundle.hpp
@@ -2306,6 +2320,18 @@ CMakeFiles/Model_Viewer.dir/src/Model.cpp.o
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLTexture.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CADefines.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalDrawable.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAMetalLayer.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/CAPrivate.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/QuartzCore/QuartzCore.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/Core
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/ArithmeticSequence.h
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen/Eigen/src/Core/Array.h
@@ -4014,6 +4040,9 @@ CMakeFiles/Model_Viewer.dir/src/Renderer.cpp.o
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp
@@ -5809,6 +5838,9 @@ CMakeFiles/Model_Viewer.dir/src/Scene.cpp.o
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp
@@ -12246,6 +12278,9 @@ CMakeFiles/Model_Viewer.dir/src/main.cpp.o
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVertexDescriptor.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLVisibleFunctionTable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/Metal.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MTKView.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKit.hpp
+ /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/MetalKit/MetalKitPrivate.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Foundation/NSDefines.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLDrawable.hpp
  /Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/Metal/MTLPixelFormat.hpp
