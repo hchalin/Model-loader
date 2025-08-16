@@ -22,6 +22,7 @@ public:
 
     private:
     //std::vector<Model> models;
+    MTL::Device * device;
     Model* model;
     Window* window;
     Renderer* renderer;
