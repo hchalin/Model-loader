@@ -20,11 +20,13 @@ public:
 
     Model * loadModel();
 
-    private:
+private:
     //std::vector<Model> models;
-    Model* model;
-    Window* window;
-    Renderer* renderer;
+    Model *model;
+    Window *window;
+    Renderer *renderer;
+
+    MTL::Device *device;        // The scene will hold the device
 
 
 

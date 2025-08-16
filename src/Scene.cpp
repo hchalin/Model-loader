@@ -16,8 +16,11 @@ Scene::~Scene() {
 void Scene::start() {
     try {
         window = new Window();
-         renderer = new Renderer(*window, loadModel());
+        model = loadModel();
+        if (model) {
+         renderer = new Renderer(*window, model);
          renderer->render();
+        }
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
