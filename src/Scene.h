@@ -25,6 +25,7 @@ public:
     Model* model;
     Window* window;
     Renderer* renderer;
+    MTL::Device* device;
 
 
 
