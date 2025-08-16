@@ -123,8 +123,6 @@ void Model::loadModel() {
 
                 }
 
-                // Color
-
                 // Normal (if available)
                 if (idx.normal_index >= 0) {
                     vertex.normal = {
