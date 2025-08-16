@@ -169,8 +169,6 @@ void Renderer::createPipelineState() {
     floorIndexBuffer = device->newBuffer(floorIndices, sizeof(floorIndices), MTL::ResourceStorageModeManaged);
     if (!floorIndexBuffer) {
         throw std::runtime_error("Failed to create index buffer");
-    } else {
-        std::cout << "Successfully created index buffer" << std::endl;
     }
 
     floorVertexBuffer = device->newBuffer(floorVertices, sizeof(floorVertices), MTL::ResourceStorageModeManaged);
@@ -366,7 +364,7 @@ void Renderer::cameraMove(float scalar) {
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
     drawFrame();
-    std::cout  << camera << std::endl;
+    //std::cout  << camera << std::endl;
 }
 
 void Renderer::cameraRotate(float aTurn) {
@@ -469,8 +467,8 @@ void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     float angleDeg = xoffset * degreesPerScroll;
     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-        std::cout << "ScrollCallback" << std::endl;
+        //std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+        //std::cout << "ScrollCallback" << std::endl;
         renderer->cameraRotate(-xoffset);
     }else {
     xoffset *= dampen;

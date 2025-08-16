@@ -103,7 +103,7 @@ void Model::loadModel() {
                 tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
 
                 Vertex vertex{};
-                
+
                 // Position (required)
                 if (idx.vertex_index >= 0) {
                     vertex.position = {
@@ -112,8 +112,17 @@ void Model::loadModel() {
                         attrib.vertices[3 * idx.vertex_index + 2],
                         1.0f
                     };
+
+                    // @ Color support
+                    vertex.color = {
+                        attrib.colors[3 * idx.vertex_index + 0],
+                        attrib.colors[3 * idx.vertex_index + 1],
+                        attrib.colors[3 * idx.vertex_index + 2],
+                        1.0f
+                    };
+
                 }
-                
+
                 // Normal (if available)
                 if (idx.normal_index >= 0) {
                     vertex.normal = {
