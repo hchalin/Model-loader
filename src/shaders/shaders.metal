@@ -23,7 +23,7 @@ vertex VertexOut vertex_main(
         constant float4x4 &matrix [[buffer(11)]]
         ) {
     VertexOut out;
-    out.position =  uniforms.projectionMatrix * uniforms.viewMatrix * in.position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * matrix * in.position;
     out.color = in.color;
     return out;
 }

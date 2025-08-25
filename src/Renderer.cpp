@@ -5,16 +5,13 @@
 #include "Renderer.h"
 
 
-
-Renderer::Renderer(Window &windowSrc, Model * model):
+Renderer::Renderer(Window &windowSrc, Model *model):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)),  // * camera(camPos, target)
-    model(model)
-{
-
-      const float aRatio = windowSrc.getAspectRatio();
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    model(model) {
+    const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
@@ -27,7 +24,7 @@ Renderer::Renderer(Window &windowSrc, Model * model):
     }
 
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Matrix4f)* 2, MTL::ResourceStorageModeManaged);    // Room for 2 matrices
+    uniformBuffer = device->newBuffer(sizeof(Matrix4f) * 2, MTL::ResourceStorageModeManaged); // Room for 2 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
@@ -51,14 +48,11 @@ Renderer::Renderer(Window &windowSrc, Model * model):
 
     // ^ Rotate model
     BroMath::Transform &matrix = model->getTransform();
-    matrix.setRotation(-pi, 0, 0, 1);
-    matrix.setScale(.5, .5, 0);
+    matrix.setRotation(-pi, -pi, -pi, -pi);
+    matrix.setScale(.2, .2, .2);
 
     // ^ Create render pipeline state
     createPipelineState();
-
-
-
 }
 
 void Renderer::updateProjectionMatrix(float aRatio) {
@@ -75,18 +69,17 @@ void Renderer::updateProjectionMatrix(float aRatio) {
     float tanHalfFovy = std::tan(fovY / 2.0f);
 
     // Set up perspective matrix (column-major order in Eigen)
-    projectionMatrix(0,0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
-    projectionMatrix(1,1) = 1.0f / tanHalfFovy;            // Scale Y
-    projectionMatrix(2,2) = -(far + near) / (far - near);  // Scale and translate Z
-    projectionMatrix(2,3) = -(2.0f * far * near) / (far - near); // Perspective divide term
-    projectionMatrix(3,2) = -1.0f;                         // Enables perspective division
-    projectionMatrix(3,3) = 0.0f;                          // Required for perspective
+    projectionMatrix(0, 0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
+    projectionMatrix(1, 1) = 1.0f / tanHalfFovy; // Scale Y
+    projectionMatrix(2, 2) = -(far + near) / (far - near); // Scale and translate Z
+    projectionMatrix(2, 3) = -(2.0f * far * near) / (far - near); // Perspective divide term
+    projectionMatrix(3, 2) = -1.0f; // Enables perspective division
+    projectionMatrix(3, 3) = 0.0f; // Required for perspective
 
     // Update uniform buffer with combined view-projection matrix
-    auto* bufferPtr = static_cast<Matrix4f*>(uniformBuffer->contents());
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *(bufferPtr + 1) = projectionMatrix;
     uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
-
 }
 
 void Renderer::createPipelineState() {
@@ -149,9 +142,12 @@ void Renderer::createPipelineState() {
      * Triangle
      */
     Vertex vertices[] = {
-        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0},Eigen::Vector3f::Zero(),Eigen::Vector2f::Zero()}, // Top (red)
-        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()}, // Bottom left (green)
-        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0},Eigen::Vector3f::Zero(),Eigen::Vector2f::Zero() } // Bottom right (blue)
+        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()}, // Top (red)
+        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        // Bottom left (green)
+        {
+            {0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()
+        } // Bottom right (blue)
     };
 
     // ^ Create vertex buffer
@@ -170,7 +166,7 @@ void Renderer::createPipelineState() {
         {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
     };
 
-    int floorIndices[] = {0,1,3,1,2,3};
+    int floorIndices[] = {0, 1, 3, 1, 2, 3};
 
     floorIndexBuffer = device->newBuffer(floorIndices, sizeof(floorIndices), MTL::ResourceStorageModeManaged);
     if (!floorIndexBuffer) {
@@ -211,6 +207,7 @@ void Renderer::createPipelineState() {
     renderPipelineDescriptor->release();
     vertexDescriptor->release();
 }
+
 Renderer::~Renderer() {
     if (commandQueue) {
         commandQueue->release();
@@ -257,38 +254,40 @@ void Renderer::render() {
  *
  */
 
- void Renderer::drawFrame() {
-  NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
-        CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
-        if (!drawable) {
-            // * Clean up
-            pool->release();
-            glfwDestroyWindow(window->getGLFWWindow());
-            return;
-        }
+void Renderer::drawFrame() {
+    NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
+    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
+    if (!drawable) {
+        // * Clean up
+        pool->release();
+        glfwDestroyWindow(window->getGLFWWindow());
+        return;
+    }
 
-        // * Create command buffer
-        MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
+    // * Create command buffer
+    MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
 
-        if (!commandBuffer) {
-            throw std::runtime_error("Failed to render command buffer");
-        }
+    if (!commandBuffer) {
+        throw std::runtime_error("Failed to render command buffer");
+    }
 
-        // * Create render pass descriptor
-        MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
-        MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
-        colorAttachment->setTexture(drawable->texture());
-        colorAttachment->setLoadAction(MTL::LoadActionClear);
-        colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
-        colorAttachment->setStoreAction(MTL::StoreActionStore);
+    // * Create render pass descriptor
+    MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
+    MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
+    colorAttachment->setTexture(drawable->texture());
+    colorAttachment->setLoadAction(MTL::LoadActionClear);
+    colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
+    colorAttachment->setStoreAction(MTL::StoreActionStore);
 
-  // *  Encoding
-  MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
-  encoder->setRenderPipelineState(renderPipelineState);
+    // *  Encoding
+    MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
+    encoder->setRenderPipelineState(renderPipelineState);
 
-  // Draw floor
+    // Draw floor
   encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
-  encoder->setVertexBuffer(uniformBuffer, 0, 1);
+    encoder->setVertexBuffer(uniformBuffer, 0, 1);
+    Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
+    encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
   encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
                                  6, // 6 indices
                                  MTL::IndexTypeUInt32,
@@ -304,15 +303,20 @@ void Renderer::render() {
   // @ Draw model
   if (model) {
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
+
+      // Send the transformation matrix
+      const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+      std::cout << transformMatrix << std::endl;
+      encoder->setVertexBytes(transformMatrix.data(), sizeof(Eigen::Matrix4f), 11);
+
+      // ^ This is the draw call
       encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
                                      model->getIndexCount(),
                                      MTL::IndexTypeUInt32,
                                      model->getIndexBuffer(),
                                      0,
                                      1);
-      const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-      std::cout << transformMatrix << std::endl;
-      encoder->setVertexBytes(transformMatrix.data(), sizeof(Eigen::Matrix4f), 11);
+
     }
 
 
