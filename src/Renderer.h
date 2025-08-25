@@ -73,8 +73,9 @@ private:
 
 
     // Timeing
-    float deltaTime {0.0};    // ^ Time between current and last frame
-    float lastFrame {0.0};
+    double deltaTime {0.0};    // ^ Time between current and last frame
+    double lastTime {0.0};
+    double totalTime {0.0};
 };
 
 

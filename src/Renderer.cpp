@@ -16,6 +16,9 @@ Renderer::Renderer(Window &windowSrc, Model *model):
         throw std::runtime_error("Failed to create MTL::Device");
     }
 
+    // ^ Timing
+    lastTime = glfwGetTime();           // Set the initial time
+
     // ^ Command Queue
     constexpr int maxBufferAmt{64};
     commandQueue = device->newCommandQueue(maxBufferAmt);
@@ -48,8 +51,8 @@ Renderer::Renderer(Window &windowSrc, Model *model):
 
     // ^ Rotate model
     BroMath::Transform &matrix = model->getTransform();
-    matrix.setRotation(-pi, -pi, -pi, -pi);
-    matrix.setScale(.2, .2, .2);
+    // matrix.setRotation(-M_PI, -M_PI, -M_PI, -M_PI);
+    // matrix.setScale(.2, .2, .2);
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -240,9 +243,9 @@ void Renderer::render() {
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
-        auto currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        auto currentFrame = static_cast<double>(glfwGetTime());
+        deltaTime = currentFrame - lastTime;
+        lastTime = currentFrame;
 
         glfwPollEvents();
         drawFrame();
@@ -263,6 +266,8 @@ void Renderer::drawFrame() {
         glfwDestroyWindow(window->getGLFWWindow());
         return;
     }
+
+    std::cout << "DeltaTime: " << deltaTime << "\n";
 
     // * Create command buffer
     MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
@@ -288,12 +293,13 @@ void Renderer::drawFrame() {
     encoder->setVertexBuffer(uniformBuffer, 0, 1);
     Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
     encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
-  encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+  /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
                                  6, // 6 indices
                                  MTL::IndexTypeUInt32,
                                  floorIndexBuffer,
                                  0, // offset
                                  1); // i
+                                 */
 
   // Draw triangle
   //encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
@@ -305,8 +311,10 @@ void Renderer::drawFrame() {
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
 
       // Send the transformation matrix
+      // rotate around Y by deltaTime * spinSpeed
+      float spinSpeed = 0.3f;
+      model->getTransform().setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
       const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-      std::cout << transformMatrix << std::endl;
       encoder->setVertexBytes(transformMatrix.data(), sizeof(Eigen::Matrix4f), 11);
 
       // ^ This is the draw call
@@ -344,7 +352,6 @@ void Renderer::cameraUp() {
     *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
-    drawFrame();
 }
 
 void Renderer::cameraDown() {
@@ -355,7 +362,6 @@ void Renderer::cameraDown() {
     *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
-    drawFrame();
 
 }
 
@@ -365,7 +371,6 @@ void Renderer::cameraRight() {
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
 }
 void Renderer::cameraLeft() {
     camera.moveLeft(0.05);
@@ -373,7 +378,6 @@ void Renderer::cameraLeft() {
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
 }
 
 void Renderer::cameraZoom(float aZoom) {
@@ -383,7 +387,6 @@ void Renderer::cameraZoom(float aZoom) {
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
 }
 void Renderer::cameraMove(float scalar) {
     camera.move(scalar);
@@ -391,8 +394,6 @@ void Renderer::cameraMove(float scalar) {
     auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
-    //std::cout  << camera << std::endl;
 }
 
 void Renderer::cameraRotate(float aTurn) {
@@ -401,7 +402,6 @@ void Renderer::cameraRotate(float aTurn) {
     auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
     *bufferPtr = viewMatrix;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    drawFrame();
 }
 
 void Renderer::processInput(int key, int scancode, int action, int mods){

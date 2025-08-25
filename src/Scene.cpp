@@ -47,7 +47,7 @@ void Scene::start() {
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
     device = window->getMTLLayer()->device();
-    std::string fileName = "cube.obj";
+    std::string fileName = "lowpoly-house.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");
     }
