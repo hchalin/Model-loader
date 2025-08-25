@@ -8,7 +8,10 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_BUILD_TYPE Debug)
 set(CMAKE_CXX_FLAGS_DEBUG "-g")
 
-
+#if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+#    add_compile_options(-fsanitize=address,undefined -fno-omit-frame-pointer)
+#    add_link_options(-fsanitize=address,undefined)
+#endif()
 
 # Define source and header files
 set(SOURCE_FILES
@@ -46,7 +49,7 @@ find_package(jsoncpp CONFIG REQUIRED)
 
 # Include directories
 target_include_directories(Model_Viewer PRIVATE
-        ${CMAKE_SOURCE_DIR}/dependencies/        # Includes Eigen (and other headers if needed)
+        ${CMAKE_SOURCE_DIR}/dependencies/eigen        # Includes Eigen (and other headers if needed)
         ${GLFW_INCLUDE_DIRS}
         ${CMAKE_SOURCE_DIR}/src/backend
         SYSTEM /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks
@@ -102,4 +105,4 @@ target_include_directories(Model_Viewer_Tests PRIVATE
         ${CMAKE_SOURCE_DIR}/src
 )
 
-#JSON
+#JSON`

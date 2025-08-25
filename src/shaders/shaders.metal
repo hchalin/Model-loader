@@ -19,10 +19,11 @@ struct Uniforms {
 
 vertex VertexOut vertex_main(
         VertexIn in [[stage_in]],
-        constant Uniforms &uniforms [[buffer(1)]]
+        constant Uniforms &uniforms [[buffer(1)]],
+        constant float4x4 &matrix [[buffer(11)]]
         ) {
     VertexOut out;
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * in.position;
+    out.position =  uniforms.projectionMatrix * uniforms.viewMatrix * in.position;
     out.color = in.color;
     return out;
 }

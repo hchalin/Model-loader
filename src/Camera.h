@@ -5,8 +5,10 @@
 #pragma once
 #include <eigen/Eigen/Dense>
 #include <iostream>
+#include <simd/simd.h>
 
 using namespace Eigen;
+
 
 class Camera {
     public:

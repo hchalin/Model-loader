@@ -14,7 +14,7 @@ Renderer::Renderer(Window &windowSrc, Model * model):
     model(model)
 {
 
-    const float aRatio = windowSrc.getAspectRatio();
+      const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
@@ -49,8 +49,14 @@ Renderer::Renderer(Window &windowSrc, Model * model):
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
     glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
+    // ^ Rotate model
+    BroMath::Transform &matrix = model->getTransform();
+    matrix.setRotation(-pi, 0, 0, 1);
+    matrix.setScale(.5, .5, 0);
+
     // ^ Create render pipeline state
     createPipelineState();
+
 
 
 }
@@ -205,12 +211,31 @@ void Renderer::createPipelineState() {
     renderPipelineDescriptor->release();
     vertexDescriptor->release();
 }
-
 Renderer::~Renderer() {
-    // Do not handle deleting device here
-    device = nullptr;
-
-    commandQueue->release();
+    if (commandQueue) {
+        commandQueue->release();
+        commandQueue = nullptr;
+    }
+    if (uniformBuffer) {
+        uniformBuffer->release();
+        uniformBuffer = nullptr;
+    }
+    if (triangleVertexBuffer) {
+        triangleVertexBuffer->release();
+        triangleVertexBuffer = nullptr;
+    }
+    if (floorVertexBuffer) {
+        floorVertexBuffer->release();
+        floorVertexBuffer = nullptr;
+    }
+    if (floorIndexBuffer) {
+        floorIndexBuffer->release();
+        floorIndexBuffer = nullptr;
+    }
+    if (renderPipelineState) {
+        renderPipelineState->release();
+        renderPipelineState = nullptr;
+    }
 }
 
 void Renderer::render() {
@@ -257,39 +282,38 @@ void Renderer::render() {
         colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
         colorAttachment->setStoreAction(MTL::StoreActionStore);
 
-        // *  Encoding
-        MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
-        encoder->setRenderPipelineState(renderPipelineState);
+  // *  Encoding
+  MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
+  encoder->setRenderPipelineState(renderPipelineState);
 
-    // Draw floor
-    encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
-    encoder->setVertexBuffer(uniformBuffer, 0, 1);
-    encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-                                  6, // 6 indices
-                                  MTL::IndexTypeUInt32,
-                                  floorIndexBuffer,
-                                  0, // offset
-                                  1); // i
+  // Draw floor
+  encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
+  encoder->setVertexBuffer(uniformBuffer, 0, 1);
+  encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                 6, // 6 indices
+                                 MTL::IndexTypeUInt32,
+                                 floorIndexBuffer,
+                                 0, // offset
+                                 1); // i
 
-        // Draw triangle
-        //encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-        //encoder->setVertexBuffer(uniformBuffer, 0, 1);
-        //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+  // Draw triangle
+  //encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
+  //encoder->setVertexBuffer(uniformBuffer, 0, 1);
+  //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
-        // @ Draw model
-    if (model) {
-        encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
-        encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-            model->getIndexCount(),
-            MTL::IndexTypeUInt32,
-            model->getIndexBuffer(),
-            0,
-            1);
-        //encoder->setVertexBuffer(uniformBuffer, 0, 1);
-        // Assuming you have vertex count and other necessary parameters
-        //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3)); // Replace 3 with vertex count
+  // @ Draw model
+  if (model) {
+      encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
+      encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                     model->getIndexCount(),
+                                     MTL::IndexTypeUInt32,
+                                     model->getIndexBuffer(),
+                                     0,
+                                     1);
+      const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+      std::cout << transformMatrix << std::endl;
+      encoder->setVertexBytes(transformMatrix.data(), sizeof(Eigen::Matrix4f), 11);
     }
-
 
 
         encoder->endEncoding();

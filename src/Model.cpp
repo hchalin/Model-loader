@@ -7,6 +7,7 @@
 #include <filesystem>
 #include "Model.h"
 
+#include <__ranges/transform_view.h>
 
 
 Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileName(fileNamme),
@@ -30,10 +31,31 @@ Model::Model(MTL::Device* device, std::string &fileNamme): device(device),fileNa
         throw std::invalid_argument("Device is null");
     }
 
+
     loadModel();
 
 }
 
+Model::~Model() {
+    if (vertexBuffer) {
+        vertexBuffer->release();
+        vertexBuffer = nullptr;
+    }
+    if (indexBuffer) {
+        indexBuffer->release();
+        indexBuffer = nullptr;
+    }
+
+    if (vertexTexture) {
+        vertexTexture->release();
+        vertexTexture = nullptr;
+    }
+}
+
+
+BroMath::Transform &Model::getTransform() {
+    return transform;
+}
 
 
 
@@ -164,6 +186,7 @@ void Model::loadModel() {
     // Create Metal buffers
     createBuffers(vertices, indices);
 }
+
 
 const int Model::getIndexCount() {
     if (indexCount == 0) {

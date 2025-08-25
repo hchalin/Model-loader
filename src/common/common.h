@@ -32,17 +32,20 @@ struct Vertex {
           normal(Eigen::Vector3f::Zero()),
           texCoord(Eigen::Vector2f::Zero()) {}
 
-    Vertex(const Eigen::Vector4f& pos,
-        const Eigen::Vector4f& color,
-           const Eigen::Vector3f& nrm,
-           const Eigen::Vector2f& texCoord)
-        : position(pos), color(color), normal(nrm), texCoord(texCoord) {}
+    Vertex(const Eigen::Vector4f &pos,
+           const Eigen::Vector4f &color,
+           const Eigen::Vector3f &nrm,
+           const Eigen::Vector2f &texCoord)
+        : position(pos), color(color), normal(nrm), texCoord(texCoord) {
+    }
+
     /**
         * \brief Equality operator to compare two vertices.
         * \param other The vertex to compare with.
         * \return True if all components are equal, false otherwise.
         */
     bool operator==(const Vertex& other) const {
+        // ^ This is used for the models unordered_map of uniqueVertices
         return position == other.position && color == other.color && normal == other.normal && texCoord == other.texCoord;
     }
 

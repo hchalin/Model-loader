@@ -4,7 +4,9 @@
 
 #pragma once
 
+
 #include <eigen/Eigen/Dense>
+namespace BroMath {
 
 /**
  * @class Transform
@@ -45,5 +47,4 @@ private:
     Matrix4f transformMatrix;
 };
 
-
-
+}

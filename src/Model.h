@@ -9,9 +9,9 @@
 //#include <MetalKit/MetalKit.h> // For MTKTextureLoader
 
 #include <fstream>
-#include <json/json.h>
 #include "common/common.h"
 #include <iostream>
+#include "common/BroMath/Transform.h"
 
 
 enum struct FileType {
@@ -21,47 +21,37 @@ enum struct FileType {
     FBX
 };
 
-// @ Used to store the face index information
-// ^ f v/vt/vn
-struct FaceInfo {
-    int vertexIndex;
-    int texcoordIndex;          // Not used yet
-    int vertexNormalIndex;      // Not used yet
-};
+
 
 class Model {
 public:
     explicit Model(MTL::Device *device, std::string &fileNamme);
 
-    ~Model() = default;
+    ~Model();
 
+    //@ Useful getters
     MTL::Buffer *getVertexBuffer();
-
     MTL::Buffer *getIndexBuffer();
-
     const int getIndexCount();
+    BroMath::Transform &getTransform();
+
 
 private:
-    std::string &fileName;
-    MTL::Device *device{nullptr};
-
-    int indexCount;
-
-    // Texture
-    MTL::Texture *vertexTexture{nullptr};
-
+    // @ Members
+    int indexCount;                             // # of indices
+    std::string &fileName;                       // File name
+    MTL::Device *device{nullptr};               // Device
+    BroMath::Transform transform;                      // ! Namespace error right now
+    MTL::Texture *vertexTexture{nullptr};       // ptr to texture
     // Buffers
     MTL::Buffer *vertexBuffer;
     MTL::Buffer *indexBuffer;
-
     std::unordered_map<Vertex, int> uniqueVertices;
+    FileType fileType;                           // File type
 
+    //@ Methods
     void loadModel();
-
     void createBuffers(const std::vector<Vertex> &vertices, const std::vector<uint32_t> &indices);
-
-    FileType fileType;
-
     static FileType determineFileType(const std::string &fileName);
 };
 
