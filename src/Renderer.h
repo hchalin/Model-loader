@@ -16,10 +16,11 @@
 #include "./Camera.h"
 #include "Model.h"
 
-// Used for offset
+// ^ Used for offset, make sure this matches the Uniforms struct in shaders.metal at all times
 struct Uniforms {
     Matrix4f viewMatrix;
     Matrix4f projectionMatrix;
+    Matrix4f modelMatrix;
 };
 class Renderer {
 public:
