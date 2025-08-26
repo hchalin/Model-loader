@@ -73,7 +73,7 @@ find_library(FOUNDATION Foundation)
 find_library(QUARTZCORE QuartzCore)
 find_library(METALKIT MetalKit)
 find_library(APPKIT AppKit)
-#find_library(ACCELERATE Accelerate)
+find_library(ACCELERATE Accelerate)
 
 target_link_libraries(Model_Viewer PRIVATE
         stdc++
@@ -82,7 +82,7 @@ target_link_libraries(Model_Viewer PRIVATE
         "-framework ModelIO"
         "-framework Foundation"
         "-framework QuartzCore"
-        #"-framework Accelerate"
+        "-framework Accelerate"
         "-framework AppKit" objc
 )
 message(STATUS "MetalKit library: ${METALKIT}")

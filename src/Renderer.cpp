@@ -27,7 +27,7 @@ Renderer::Renderer(Window &windowSrc, Model *model):
     }
 
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Matrix4f) * 2, MTL::ResourceStorageModeManaged); // Room for 2 matrices
+    uniformBuffer = device->newBuffer(sizeof(Matrix4f) * 3, MTL::ResourceStorageModeManaged); // Room for33 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
@@ -37,9 +37,7 @@ Renderer::Renderer(Window &windowSrc, Model *model):
     // ^ Camera view matrix
     Matrix4f viewMatrix = camera.getViewMatrix();
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    // @ *bufferPtr = viewMatrix uses the Matrix4f assignment operator to copy all the data
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
-    // ! bufferPtr = &viewMatrix;   This does not work, this just updates the pointers address
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
@@ -49,10 +47,11 @@ Renderer::Renderer(Window &windowSrc, Model *model):
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
     glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
-    // ^ Rotate model
-    BroMath::Transform &matrix = model->getTransform();
-    // matrix.setRotation(-M_PI, -M_PI, -M_PI, -M_PI);
-    // matrix.setScale(.2, .2, .2);
+    // ^ model matrix, sent into the GPU's uniform buffer
+    BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
+    matrix.setTranslation(0,-1.0, 0);
+    *(bufferPtr + 2) = matrix.getMatrix();                  // ^ This returns a type: Eigen::Matrix4f
+    uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -81,13 +80,15 @@ void Renderer::updateProjectionMatrix(float aRatio) {
 
     // Update uniform buffer with combined view-projection matrix
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *(bufferPtr + 1) = projectionMatrix;
+    *(bufferPtr + 1) = projectionMatrix;           // @ Put the projection matrix in the 2nd position of the uniform buffer
+    // NOTE, for managed memory(CPU and GPU each have thier own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
     uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
 }
 
 void Renderer::createPipelineState() {
-    MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
-
+    /*
+     * Shaders
+     */
     const std::string shaderFileName = "shaders.metal";
     NS::Error *err{nullptr};
     MTL::Library *library{nullptr};
@@ -105,6 +106,10 @@ void Renderer::createPipelineState() {
     if (!library) {
         compileOptions->release();
         throw std::runtime_error("Failed to create MTL::Library");
+    } else {
+        // @ If the library creation is successful, release the shader source
+        if (shaderSource)
+            shaderSource->release();
     }
     // ^ Create shader functions
     MTL::Function *vertexFunction{nullptr};
@@ -122,7 +127,7 @@ void Renderer::createPipelineState() {
     fragmentFunction = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
     if (!fragmentFunction) {
         std::cerr << "Failed to create fragment function" << std::endl;
-        vertexFunction->release();
+        vertexFunction->release();                                          // Release the vertex function
         library->release();
         throw std::runtime_error("Failed to create fragment function");
     }
@@ -141,23 +146,6 @@ void Renderer::createPipelineState() {
     // ^ This overwrites the entire color buffer, keep this in mind when rendering fog etc...
     colorAttachment->setBlendingEnabled(false);
 
-    /*
-     * Triangle
-     */
-    Vertex vertices[] = {
-        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()}, // Top (red)
-        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
-        // Bottom left (green)
-        {
-            {0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()
-        } // Bottom right (blue)
-    };
-
-    // ^ Create vertex buffer
-    triangleVertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
-    if (!triangleVertexBuffer) {
-        throw std::runtime_error("Failed to create vertex buffer");
-    }
 
     /*
      *      Floor
@@ -236,6 +224,11 @@ Renderer::~Renderer() {
         renderPipelineState->release();
         renderPipelineState = nullptr;
     }
+
+    if (uniformBuffer) {
+        uniformBuffer->release();
+        uniformBuffer = nullptr;
+    }
 }
 
 void Renderer::render() {
@@ -258,7 +251,9 @@ void Renderer::render() {
  */
 
 void Renderer::drawFrame() {
+    // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
+    // ^  Get the next drawable
     CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
     if (!drawable) {
         // * Clean up
@@ -267,7 +262,6 @@ void Renderer::drawFrame() {
         return;
     }
 
-    std::cout << "DeltaTime: " << deltaTime << "\n";
 
     // * Create command buffer
     MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
@@ -287,12 +281,14 @@ void Renderer::drawFrame() {
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
+    encoder->setVertexBuffer(uniformBuffer, 0, 1);          // Set the uniform buffer
 
     // Draw floor
-  encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
-    encoder->setVertexBuffer(uniformBuffer, 0, 1);
+    encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
     Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
     encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
+
+    // @ Uncomment to draw a red floor
   /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
                                  6, // 6 indices
                                  MTL::IndexTypeUInt32,
@@ -301,10 +297,6 @@ void Renderer::drawFrame() {
                                  1); // i
                                  */
 
-  // Draw triangle
-  //encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-  //encoder->setVertexBuffer(uniformBuffer, 0, 1);
-  //encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
 
   // @ Draw model
   if (model) {
@@ -315,7 +307,10 @@ void Renderer::drawFrame() {
       float spinSpeed = 0.3f;
       model->getTransform().setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
       const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-      encoder->setVertexBytes(transformMatrix.data(), sizeof(Eigen::Matrix4f), 11);
+      auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+      *(bufferPtr + 2) = transformMatrix;
+      // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
+      uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
 
       // ^ This is the draw call
       encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
@@ -324,7 +319,6 @@ void Renderer::drawFrame() {
                                      model->getIndexBuffer(),
                                      0,
                                      1);
-
     }
 
 
