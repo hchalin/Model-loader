@@ -15,15 +15,15 @@ struct VertexOut {
 struct Uniforms {
     float4x4 viewMatrix;
     float4x4 projectionMatrix;
+    float4x4 modelMatrix;
 };
 
 vertex VertexOut vertex_main(
         VertexIn in [[stage_in]],
-        constant Uniforms &uniforms [[buffer(1)]],
-        constant float4x4 &matrix [[buffer(11)]]
+        constant Uniforms &uniforms [[buffer(1)]]
         ) {
     VertexOut out;
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * matrix * in.position;
+    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * in.position;
     out.color = in.color;
     return out;
 }
