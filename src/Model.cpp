@@ -61,8 +61,6 @@ BroMath::Transform &Model::getTransform() {
 
 FileType Model::determineFileType(const std::string& fileName) {
     size_t dotPos = fileName.find_last_of('.');
-    size_t gPos = fileName.find_last_of('g');
-    std::cout << "G pos: " << gPos/8 << std::endl;
     if (dotPos == std::string::npos) {
         throw std::invalid_argument("File name does not have an extension");
     }
@@ -92,10 +90,16 @@ void Model::loadModel() {
     std::vector<tinyobj::material_t> materials;
     std::string err, warn;
 
-    std::string assetPath = std::filesystem::current_path().string() + "/../src/assets/" + fileName;
-    std::cout << "Loading model from: " << assetPath << std::endl;
+    // std::string assetPath = std::filesystem::current_path().string() + "/../src/assets/" + fileName;
+    std::filesystem::path objPath  = std::filesystem::current_path() / ".." / "src" / "assets" / fileName;
+    std::filesystem::path baseDir = objPath.parent_path();
 
-    if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, assetPath.c_str())) {
+    std::cout << "Loading model from: " << objPath << std::endl;
+
+    bool ok = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, objPath.string().c_str(), baseDir.string().c_str(),
+                                /*triangulate*/ true);
+
+    if (!ok) {
         throw std::runtime_error("Failed to load OBJ file: " + warn + err);
     }
     
@@ -103,11 +107,7 @@ void Model::loadModel() {
         std::cout << "Warning: " << warn << std::endl;
     }
 
-    //std::cout << "# of vertices  : " << (attrib.vertices.size() / 3) << std::endl;
-    //std::cout << "# of shapes    : " << shapes.size() << std::endl;
-
     std::unordered_map<Vertex, uint32_t> uniqueVertices{};
-    //std::unordered_map<Eigen::Vector3f, uint32_t> vertexMap;
 
     // Process all shapes and their faces
     for (const auto& shape : shapes) {
