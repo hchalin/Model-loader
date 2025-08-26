@@ -84,9 +84,6 @@ FileType Model::determineFileType(const std::string& fileName) {
 
 void Model::loadModel() {
     // @ This function will use tiny obj
-    // @ This code has been written with the help of AI REVIEW IT
-
-    // ! this is not efficient, it is not using indexed vertices
 
     std::vector<Vertex> vertices;
     std::vector<uint32_t> indices;
