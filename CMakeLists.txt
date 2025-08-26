@@ -20,6 +20,8 @@ set(SOURCE_FILES
         src/Renderer.cpp
         src/Camera.cpp
         src/Model.cpp
+        src/MyAppDelegate.mm
+        src/MyMTKViewDelegate.mm
         src/backend/glfw_adaptor.mm
         src/shaders/readShaderFile.cpp
         src/common/BroMath/Transform.cpp
@@ -34,6 +36,8 @@ set(HEADER_FILES
         src/Scene.h
         src/Model.h
         src/backend/tiny_obj_loader.h
+        src/MyAppDelegate.h
+        src/MyMTKViewDelegate.h
 )
 
 # Add executable
@@ -104,5 +108,3 @@ target_link_libraries(Model_Viewer_Tests PRIVATE
 target_include_directories(Model_Viewer_Tests PRIVATE
         ${CMAKE_SOURCE_DIR}/src
 )
-
-#JSON`
