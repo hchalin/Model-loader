@@ -12,6 +12,7 @@ struct Vertex {
     Eigen::Vector4f color;
     Eigen::Vector3f normal;    // x, y, z
     Eigen::Vector2f texCoord;  // u, v
+    uint32_t materialIndex{0};
 
     Vertex()
         : position(Eigen::Vector4f::Zero()),
@@ -31,9 +32,17 @@ struct Vertex {
         * \param other The vertex to compare with.
         * \return True if all components are equal, false otherwise.
         */
+
+        // NOTE: if you update the Vertex structure (add members), you must add
+        // NOTE(cont.) the properties here and to the hashCombine below
     bool operator==(const Vertex& other) const {
         // ^ This is used for the models unordered_map of uniqueVertices
-        return position == other.position && color == other.color && normal == other.normal && texCoord == other.texCoord;
+        return
+                position == other.position &&
+                color == other.color &&
+                normal == other.normal &&
+                texCoord == other.texCoord &&
+                materialIndex == other.materialIndex;
     }
 
 };
@@ -87,7 +96,7 @@ namespace std {
         hashCombine(seed, vertex.color.x(), vertex.color.y(), vertex.color.z(), vertex.color.w());
         hashCombine(seed, vertex.normal.x(), vertex.normal.y(), vertex.normal.z());
         hashCombine(seed, vertex.texCoord.x(), vertex.texCoord.y());
-
+        hashCombine(seed, vertex.materialIndex);
         return seed;
     }
     };

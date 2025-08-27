@@ -47,7 +47,8 @@ void Scene::start() {
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
     device = window->getMTLLayer()->device();
-    std::string fileName = "coloredCube.obj";
+    std::string fileName = "scene_test.obj";
+    // std::string fileName = "scene_test.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");
     }
