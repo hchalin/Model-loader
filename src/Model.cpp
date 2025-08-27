@@ -2,7 +2,6 @@
 // Created by Hayden Chalin on 7/14/25.
 //
 #define TINYOBJLOADER_IMPLEMENTATION
-#include <tiny_obj_loader.h>
 
 #include <filesystem>
 #include "Model.h"
@@ -49,6 +48,10 @@ Model::~Model() {
     if (vertexTexture) {
         vertexTexture->release();
         vertexTexture = nullptr;
+    }
+    if (materialBuffer) {
+        materialBuffer->release();
+        materialBuffer = nullptr;
     }
 }
 
@@ -99,6 +102,7 @@ void Model::loadModel() {
     bool ok = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, objPath.string().c_str(), baseDir.string().c_str(),
                                 /*triangulate*/ true);
 
+
     if (!ok) {
         throw std::runtime_error("Failed to load OBJ file: " + warn + err);
     }
@@ -106,6 +110,9 @@ void Model::loadModel() {
     if (!warn.empty()) {
         std::cout << "Warning: " << warn << std::endl;
     }
+
+    // Process materials
+    processMaterials(materials);
 
     std::unordered_map<Vertex, uint32_t> uniqueVertices{};
 
@@ -116,7 +123,10 @@ void Model::loadModel() {
         // Process each face in the shape
         for (size_t f = 0; f < shape.mesh.num_face_vertices.size(); f++) {
             size_t fv = shape.mesh.num_face_vertices[f];
-            
+
+            // Get material index for this face
+            int materialId = shape.mesh.material_ids[f];
+
             // Process each vertex in the face (usually 3 for triangles)
             for (size_t v = 0; v < fv; v++) {
                 tinyobj::index_t idx = shape.mesh.indices[index_offset + v];
@@ -132,7 +142,7 @@ void Model::loadModel() {
                         1.0f
                     };
 
-                    // @ Color support
+                    // @ Color support - Not being used
                     vertex.color = {
                         attrib.colors[3 * idx.vertex_index + 0],
                         attrib.colors[3 * idx.vertex_index + 1],
@@ -141,6 +151,9 @@ void Model::loadModel() {
                     };
 
                 }
+
+                // Add material to vertex
+                vertex.materialIndex = (materialId >= 0) ? materialId : 0;
 
                 // Normal (if available)
                 if (idx.normal_index >= 0) {
@@ -182,8 +195,60 @@ void Model::loadModel() {
 
     // Create Metal buffers
     createBuffers(vertices, indices);
+    createMaterialBuffer();
 }
 
+
+void Model::processMaterials(std::vector<tinyobj::material_t> &objMaterials) {
+    // clear the materias vector and reserve correct size
+    materials.clear();
+    materials.reserve(objMaterials.size());
+
+    for (const auto& mat: objMaterials) {
+        Material material{};
+        material.ambient = {mat.ambient[0], mat.ambient[1], mat.ambient[2]};
+        material.diffuse = {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
+        std::cout <<  "r: " <<  material.diffuse[0] << std::endl;
+        std::cout << "g: " << material.diffuse[1] << std::endl;
+        std::cout << "b: " << material.diffuse[2] << std::endl;
+        material.specular = {mat.specular[0], mat.specular[1], mat.specular[2]};
+        material.shininess = mat.shininess;
+        material.diffuseTexture = mat.diffuse_texname;
+        material.normalTexture = mat.normal_texname;
+
+        materials.push_back(material);;
+    }
+
+    if (materials.empty())
+        materials.push_back(Material{});
+    std::cout << "Loaded " << materials.size() << " materials" << std::endl;
+
+}
+void Model::createMaterialBuffer() {
+    std::vector<GPUMaterial> gpu;
+    gpu.reserve(materials.size());
+    for (auto& m : materials) {
+        GPUMaterial g{};
+        g.ambient[0] = m.ambient.x(); g.ambient[1] = m.ambient.y(); g.ambient[2] = m.ambient.z();
+        g.diffuse[0] = m.diffuse.x(); g.diffuse[1] = m.diffuse.y(); g.diffuse[2] = m.diffuse.z();
+        g.specular[0] = m.specular.x(); g.specular[1] = m.specular.y(); g.specular[2] = m.specular.z();
+        g.shininess = m.shininess;
+        gpu.push_back(g);
+    }
+    if (gpu.empty()) return;
+    if (materialBuffer) { materialBuffer->release(); materialBuffer = nullptr; }
+    materialBuffer = device->newBuffer(gpu.data(),
+                                       gpu.size() * sizeof(GPUMaterial),
+                                       MTL::ResourceStorageModeManaged);
+    materialBuffer->didModifyRange(NS::Range(0, gpu.size() * sizeof(GPUMaterial)));
+    // Debug dump first material bytes
+    auto* f = reinterpret_cast<const float*>(materialBuffer->contents());
+    std::cout << "GPU diffuse read (expected 0.156,0.107,0.8): "
+              << f[4] << "," << f[5] << "," << f[6] << std::endl;
+}
+MTL::Buffer *Model::getMaterialBuffer() const {
+    return materialBuffer;
+}
 
 const int Model::getIndexCount() {
     if (indexCount == 0) {

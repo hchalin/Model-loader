@@ -172,6 +172,7 @@ void Renderer::createPipelineState() {
     // ^ Describe the Vertex in memory
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
+    // @ Attrubutes below
     // Position
     vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(0)->setOffset(0);
@@ -180,6 +181,12 @@ void Renderer::createPipelineState() {
     vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(1)->setOffset(sizeof(float4));
     vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
+    // Material
+    vertexDescriptor->attributes()->object(4)->setFormat(MTL::VertexFormatUInt);
+    vertexDescriptor->attributes()->object(4)->setOffset(offsetof(Vertex, materialIndex));
+    vertexDescriptor->attributes()->object(4)->setBufferIndex(0);
+
+
     //Layout
     vertexDescriptor->layouts()->object(0)->setStride(sizeof(Vertex));
 
@@ -281,12 +288,12 @@ void Renderer::drawFrame() {
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
-    encoder->setVertexBuffer(uniformBuffer, 0, 1);          // Set the uniform buffer
+    encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set the uniform buffer
 
     // Draw floor
     encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
     Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
-    encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
+    //encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
 
     // @ Uncomment to draw a red floor
   /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
@@ -300,7 +307,10 @@ void Renderer::drawFrame() {
 
   // @ Draw model
   if (model) {
+      // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
+      encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
+      encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
 
       // Send the transformation matrix
       // rotate around Y by deltaTime * spinSpeed
