@@ -192,6 +192,8 @@ void Renderer::createPipelineState() {
 
     renderPipelineDescriptor->setVertexDescriptor(vertexDescriptor);
 
+
+
     renderPipelineState = device->newRenderPipelineState(renderPipelineDescriptor, &err);
     if (!renderPipelineState) {
         throw std::runtime_error("Failed to create MTL::RenderPipelineState");
@@ -289,6 +291,10 @@ void Renderer::drawFrame() {
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
     encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set the uniform buffer
+
+    // cull mode
+    encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
+    // create a depth stencil state
 
     // Draw floor
     encoder->setVertexBuffer(floorVertexBuffer, 0, 0);

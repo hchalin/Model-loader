@@ -26,6 +26,7 @@ enum struct FileType {
 /*
  * Material
 */
+// TODO get rid of the duplicated Materials
 struct Material {
     Eigen::Vector3f ambient{0.2f, 0.2f, 0.2f};
     Eigen::Vector3f diffuse{0.8f, 0.8f, 0.8f};
