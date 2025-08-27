@@ -27,6 +27,7 @@ Window::Window() {
     metalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);     // Standard 8-bit format.
     metalLayer->setFramebufferOnly(true);                       // Textures only as render targets
 
+
     nsWindow = get_ns_window(glfwWindow, metalLayer)->retain(); // Next Step window
 
 }

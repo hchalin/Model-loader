@@ -49,7 +49,7 @@ Renderer::Renderer(Window &windowSrc, Model *model):
 
     // ^ model matrix, sent into the GPU's uniform buffer
     BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
-    matrix.setTranslation(0,-1.0, 0);
+    matrix.setTranslation(0,0.0, 0);
     *(bufferPtr + 2) = matrix.getMatrix();                  // ^ This returns a type: Eigen::Matrix4f
     uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
 
@@ -173,15 +173,23 @@ void Renderer::createPipelineState() {
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
     // @ Attrubutes below
-    // Position
+    // Position - [[ attribute(0) ]]
     vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(0)->setOffset(0);
     vertexDescriptor->attributes()->object(0)->setBufferIndex(0);
-    // Color
+    // Color - [[ attribute(1) ]]
     vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(1)->setOffset(sizeof(float4));
     vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
-    // Material
+    // Normal - [[ attribute(2) ]]
+    vertexDescriptor->attributes()->object(2)->setFormat(MTL::VertexFormatFloat3);
+    vertexDescriptor->attributes()->object(2)->setOffset(offsetof(Vertex, normal));
+    vertexDescriptor->attributes()->object(2)->setBufferIndex(0);
+    // Texture Coord - [[ attribute(3) ]]
+    vertexDescriptor->attributes()->object(3)->setFormat(MTL::VertexFormatFloat2);
+    vertexDescriptor->attributes()->object(3)->setOffset(offsetof(Vertex, texCoord));
+    vertexDescriptor->attributes()->object(3)->setBufferIndex(0);
+    // Material - [[ attribute(4) ]]
     vertexDescriptor->attributes()->object(4)->setFormat(MTL::VertexFormatUInt);
     vertexDescriptor->attributes()->object(4)->setOffset(offsetof(Vertex, materialIndex));
     vertexDescriptor->attributes()->object(4)->setBufferIndex(0);
@@ -263,7 +271,7 @@ void Renderer::drawFrame() {
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
     // ^  Get the next drawable
-    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
+    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();        // Get the next drawable
     if (!drawable) {
         // * Clean up
         pool->release();
@@ -343,15 +351,16 @@ void Renderer::drawFrame() {
     }
 
 
-        encoder->endEncoding();
+    encoder->endEncoding();
 
-        // Present
-        commandBuffer->presentDrawable(drawable);
-        commandBuffer->commit();
+    // Present
+    //commandBuffer->presentDrawable(drawable);
+    commandBuffer->presentDrawableAfterMinimumDuration(drawable, 1.0 / 60.0);           // Did not fix jitteriness
+    commandBuffer->commit();
 
-        // ! CLEAN UP
-        renderPassDescriptor->release();
-        pool->release();
+    // ! CLEAN UP
+    renderPassDescriptor->release();
+    pool->release();
 }
 
 

@@ -5,8 +5,8 @@ using namespace metal;
 struct VertexIn {
     float4 position [[attribute(0)]];
     float4 color [[attribute(1)]];
-    //float3 normal [[attribute(2)]];
-    //float2 texCoord [[attribute(3)]];
+    float3 normal [[attribute(2)]];
+    float2 texCoord [[attribute(3)]];
     uint materialIndex [[attribute(4)]];
 };
 
