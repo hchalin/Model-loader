@@ -324,11 +324,13 @@ void Renderer::drawFrame() {
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
       encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
-      encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
+      // encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
+      encoder->setFragmentBuffer(nullptr, 0, 0);     // Send the materials for the fragment fn in buffer 0
 
       // Send the transformation matrix
       // rotate around Y by deltaTime * spinSpeed
       float spinSpeed = 0.3f;
+      std::cout << "dT: " << deltaTime << std::endl;
       model->getTransform().setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
       const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
       auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());

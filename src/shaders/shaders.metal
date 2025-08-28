@@ -29,8 +29,6 @@ struct Material {
     float shininess;
 };
 
-// Shader code below
-
 vertex VertexOut vertex_main(
         VertexIn in [[stage_in]],
         constant Material *material [[buffer(1)]],
