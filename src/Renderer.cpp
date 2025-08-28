@@ -10,7 +10,8 @@ Renderer::Renderer(Window &windowSrc, Model *model):
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
     camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
-    model(model) {
+    model(model),
+    totalTime(0.0){
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
@@ -256,6 +257,7 @@ void Renderer::render() {
         auto currentFrame = static_cast<double>(glfwGetTime());
         deltaTime = currentFrame - lastTime;
         lastTime = currentFrame;
+        totalTime += deltaTime;
 
         glfwPollEvents();
         drawFrame();
@@ -321,17 +323,17 @@ void Renderer::drawFrame() {
 
   // @ Draw model
   if (model) {
+      std::cout << "dT" << deltaTime << std::endl;
+      model->getTransform().reset();
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
       encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
-      // encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
-      encoder->setFragmentBuffer(nullptr, 0, 0);     // Send the materials for the fragment fn in buffer 0
+      encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
 
       // Send the transformation matrix
       // rotate around Y by deltaTime * spinSpeed
       float spinSpeed = 0.3f;
-      std::cout << "dT: " << deltaTime << std::endl;
-      model->getTransform().setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+      model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
       const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
       auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
       *(bufferPtr + 2) = transformMatrix;
@@ -356,8 +358,7 @@ void Renderer::drawFrame() {
     encoder->endEncoding();
 
     // Present
-    //commandBuffer->presentDrawable(drawable);
-    commandBuffer->presentDrawableAfterMinimumDuration(drawable, 1.0 / 60.0);           // Did not fix jitteriness
+    commandBuffer->presentDrawable(drawable);
     commandBuffer->commit();
 
     // ! CLEAN UP

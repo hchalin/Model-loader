@@ -19,6 +19,7 @@ Window::Window() {
     if (!glfwWindow) {
         throw std::runtime_error("Failed to create GLFW window");
     }
+    glfwSwapInterval(1);
     aspectRatio = (float)windowWidth / windowHeight;
 
     // Set the metal layer on the window
