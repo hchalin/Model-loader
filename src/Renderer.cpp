@@ -330,19 +330,24 @@ void Renderer::drawFrame() {
       encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
       encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
 
-      // Send the transformation matrix
-      // rotate around Y by deltaTime * spinSpeed
-      float spinSpeed = 0.3f;
-      model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-      const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-      auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-      *(bufferPtr + 2) = transformMatrix;
-      // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-      uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
-      // Note, this another way to calculate the required offset for the buffer update
-      //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
-      // Note, below is a FULL buffer flush
-      //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+      /*
+       *      Rotation
+       */
+
+      {
+          float spinSpeed = 0.3f;
+          model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+          const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+          auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+          *(bufferPtr + 2) = transformMatrix;
+          // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
+          uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+          // ^ Update the 3rd slot for the uniform buffer
+          // Note, this another way to calculate the required offset for the buffer update
+          //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
+          // Note, below is a FULL buffer flush
+          //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+      }
 
 
       // ^ This is the draw call

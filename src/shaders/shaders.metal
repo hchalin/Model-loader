@@ -35,6 +35,7 @@ vertex VertexOut vertex_main(
         constant Uniforms &uniforms [[buffer(11)]]
         ) {
     VertexOut out;
+
     out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * in.position;
     out.color = in.color;
     out.materialIndex = in.materialIndex;
