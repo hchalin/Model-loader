@@ -5,19 +5,20 @@
 #include "Renderer.h"
 
 
-
-Renderer::Renderer(Window &windowSrc):
+Renderer::Renderer(Window &windowSrc, Model *model):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(0.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
-    controller(camera, window)
-{
-
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    model(model),
+    totalTime(0.0){
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
+
+    // ^ Timing
+    lastTime = glfwGetTime();           // Set the initial time
 
     // ^ Command Queue
     constexpr int maxBufferAmt{64};
@@ -26,9 +27,8 @@ Renderer::Renderer(Window &windowSrc):
         throw std::runtime_error("Failed to create command queue");
     }
 
-
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Matrix4f)* 2, MTL::ResourceStorageModeManaged);    // Room for 2 matrices
+    uniformBuffer = device->newBuffer(sizeof(Matrix4f) * 3, MTL::ResourceStorageModeManaged); // Room for33 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
@@ -38,25 +38,27 @@ Renderer::Renderer(Window &windowSrc):
     // ^ Camera view matrix
     Matrix4f viewMatrix = camera.getViewMatrix();
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    // @ *bufferPtr = viewMatrix uses the Matrix4f assignment operator to copy all the data
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
-    glfwSetWindowUserPointer(window->getGLFWWindow(), &controller);
+    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
+    glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
     glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
     glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
+    // ^ model matrix, sent into the GPU's uniform buffer
+    BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
+    matrix.setTranslation(0,0.0, 0);
+    *(bufferPtr + 2) = matrix.getMatrix();                  // ^ This returns a type: Eigen::Matrix4f
+    uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+
     // ^ Create render pipeline state
     createPipelineState();
-
 }
 
 void Renderer::updateProjectionMatrix(float aRatio) {
-    /**
-     * @Brief: This function is called every time the window is resized
-     */
     // ^ Define the vertical fov to radias, horizontal will be based off of this.
     const float fovY = 45.0f * (M_PI / 180.0f);
 
@@ -70,34 +72,24 @@ void Renderer::updateProjectionMatrix(float aRatio) {
     float tanHalfFovy = std::tan(fovY / 2.0f);
 
     // Set up perspective matrix (column-major order in Eigen)
-    projectionMatrix(0,0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
-    projectionMatrix(1,1) = 1.0f / tanHalfFovy;            // Scale Y
-    projectionMatrix(2,2) = -(far + near) / (far - near);  // Scale and translate Z
-    projectionMatrix(2,3) = -(2.0f * far * near) / (far - near); // Perspective divide term
-    projectionMatrix(3,2) = -1.0f;                         // Enables perspective division
-    projectionMatrix(3,3) = 0.0f;                          // Required for perspective
+    projectionMatrix(0, 0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
+    projectionMatrix(1, 1) = 1.0f / tanHalfFovy; // Scale Y
+    projectionMatrix(2, 2) = -(far + near) / (far - near); // Scale and translate Z
+    projectionMatrix(2, 3) = -(2.0f * far * near) / (far - near); // Perspective divide term
+    projectionMatrix(3, 2) = -1.0f; // Enables perspective division
+    projectionMatrix(3, 3) = 0.0f; // Required for perspective
 
     // Update uniform buffer with combined view-projection matrix
-    MTL::Buffer *uniformBuffer = getUniformBuffer();
-    if (!uniformBuffer) {
-        throw std::runtime_error("No uniform buffer in updateProjectionMatrix");
-    }
-    auto* bufferPtr = static_cast<Matrix4f*>(uniformBuffer->contents());
-    *(bufferPtr + 1) = projectionMatrix;
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *(bufferPtr + 1) = projectionMatrix;           // @ Put the projection matrix in the 2nd position of the uniform buffer
+    // NOTE, for managed memory(CPU and GPU each have thier own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
     uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
-
-}
-
-MTL::Buffer * Renderer::getUniformBuffer() {
-    if (!uniformBuffer) {
-        throw std::runtime_error("No uniform buffer in getUniformBuffer");
-    }
-    return uniformBuffer;
 }
 
 void Renderer::createPipelineState() {
-    MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
-
+    /*
+     * Shaders
+     */
     const std::string shaderFileName = "shaders.metal";
     NS::Error *err{nullptr};
     MTL::Library *library{nullptr};
@@ -115,6 +107,10 @@ void Renderer::createPipelineState() {
     if (!library) {
         compileOptions->release();
         throw std::runtime_error("Failed to create MTL::Library");
+    } else {
+        // @ If the library creation is successful, release the shader source
+        if (shaderSource)
+            shaderSource->release();
     }
     // ^ Create shader functions
     MTL::Function *vertexFunction{nullptr};
@@ -132,7 +128,7 @@ void Renderer::createPipelineState() {
     fragmentFunction = library->newFunction(NS::String::string("fragment_main", NS::UTF8StringEncoding));
     if (!fragmentFunction) {
         std::cerr << "Failed to create fragment function" << std::endl;
-        vertexFunction->release();
+        vertexFunction->release();                                          // Release the vertex function
         library->release();
         throw std::runtime_error("Failed to create fragment function");
     }
@@ -151,39 +147,22 @@ void Renderer::createPipelineState() {
     // ^ This overwrites the entire color buffer, keep this in mind when rendering fog etc...
     colorAttachment->setBlendingEnabled(false);
 
-    /*
-     * Triangle
-     */
-    Vertex vertices[] = {   // @ NOTE: These verts are defined as CL
-        {{0.0, 0.5, 0.0, 1.0}, {1.0, 0.0, 0.0, 1.0}}, // Top (red)
-        {{0.5, -0.5, 0.0, 1.0}, {0.0, 0.0, 1.0, 1.0}}, // Bottom right (blue)
-        {{-0.5, -0.5, 0.0, 1.0}, {0.0, 1.0, 0.0, 1.0}} // Bottom left (green)
-    };
-
-    // ^ Create vertex buffer
-    triangleVertexBuffer = device->newBuffer(vertices, sizeof(vertices), MTL::ResourceStorageModeManaged);
-    if (!triangleVertexBuffer) {
-        throw std::runtime_error("Failed to create vertex buffer");
-    }
-
 
     /*
      *      Floor
      */
     Vertex floorVertices[] = {
-        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}},
-        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
-        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
-        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}},
+        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
+        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
     };
 
-    int floorIndices[] = {0,1,3,1,2,3};
+    int floorIndices[] = {0, 1, 3, 1, 2, 3};
 
     floorIndexBuffer = device->newBuffer(floorIndices, sizeof(floorIndices), MTL::ResourceStorageModeManaged);
     if (!floorIndexBuffer) {
         throw std::runtime_error("Failed to create index buffer");
-    } else {
-        std::cout << "Successfully created index buffer" << std::endl;
     }
 
     floorVertexBuffer = device->newBuffer(floorVertices, sizeof(floorVertices), MTL::ResourceStorageModeManaged);
@@ -194,18 +173,35 @@ void Renderer::createPipelineState() {
     // ^ Describe the Vertex in memory
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
-    // Position
+    // @ Attrubutes below
+    // Position - [[ attribute(0) ]]
     vertexDescriptor->attributes()->object(0)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(0)->setOffset(0);
     vertexDescriptor->attributes()->object(0)->setBufferIndex(0);
-    // Color
+    // Color - [[ attribute(1) ]]
     vertexDescriptor->attributes()->object(1)->setFormat(MTL::VertexFormatFloat4);
     vertexDescriptor->attributes()->object(1)->setOffset(sizeof(float4));
     vertexDescriptor->attributes()->object(1)->setBufferIndex(0);
+    // Normal - [[ attribute(2) ]]
+    vertexDescriptor->attributes()->object(2)->setFormat(MTL::VertexFormatFloat3);
+    vertexDescriptor->attributes()->object(2)->setOffset(offsetof(Vertex, normal));
+    vertexDescriptor->attributes()->object(2)->setBufferIndex(0);
+    // Texture Coord - [[ attribute(3) ]]
+    vertexDescriptor->attributes()->object(3)->setFormat(MTL::VertexFormatFloat2);
+    vertexDescriptor->attributes()->object(3)->setOffset(offsetof(Vertex, texCoord));
+    vertexDescriptor->attributes()->object(3)->setBufferIndex(0);
+    // Material - [[ attribute(4) ]]
+    vertexDescriptor->attributes()->object(4)->setFormat(MTL::VertexFormatUInt);
+    vertexDescriptor->attributes()->object(4)->setOffset(offsetof(Vertex, materialIndex));
+    vertexDescriptor->attributes()->object(4)->setBufferIndex(0);
+
+
     //Layout
     vertexDescriptor->layouts()->object(0)->setStride(sizeof(Vertex));
 
     renderPipelineDescriptor->setVertexDescriptor(vertexDescriptor);
+
+
 
     renderPipelineState = device->newRenderPipelineState(renderPipelineDescriptor, &err);
     if (!renderPipelineState) {
@@ -222,41 +218,69 @@ void Renderer::createPipelineState() {
 }
 
 Renderer::~Renderer() {
-    // Do not handle deleting device here
-    device = nullptr;
+    if (commandQueue) {
+        commandQueue->release();
+        commandQueue = nullptr;
+    }
+    if (uniformBuffer) {
+        uniformBuffer->release();
+        uniformBuffer = nullptr;
+    }
+    if (triangleVertexBuffer) {
+        triangleVertexBuffer->release();
+        triangleVertexBuffer = nullptr;
+    }
+    if (floorVertexBuffer) {
+        floorVertexBuffer->release();
+        floorVertexBuffer = nullptr;
+    }
+    if (floorIndexBuffer) {
+        floorIndexBuffer->release();
+        floorIndexBuffer = nullptr;
+    }
+    if (renderPipelineState) {
+        renderPipelineState->release();
+        renderPipelineState = nullptr;
+    }
 
-    commandQueue->release();
+    if (uniformBuffer) {
+        uniformBuffer->release();
+        uniformBuffer = nullptr;
+    }
 }
 
 void Renderer::render() {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
 
-    // @ THIS IS THE RENDER LOOP
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
-        auto currentFrame = static_cast<float>(glfwGetTime());
-        deltaTime = currentFrame - lastFrame;
-        lastFrame = currentFrame;
+        auto currentFrame = static_cast<double>(glfwGetTime());
+        deltaTime = currentFrame - lastTime;
+        lastTime = currentFrame;
+        totalTime += deltaTime;
 
         glfwPollEvents();
         drawFrame();
     }
 }
 
-/**
+/*
  *     This function draws a single frame
  *
  */
 
 void Renderer::drawFrame() {
+    // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
-    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();
+    // ^  Get the next drawable
+    CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();        // Get the next drawable
     if (!drawable) {
         // * Clean up
         pool->release();
         glfwDestroyWindow(window->getGLFWWindow());
         return;
     }
+
 
     // * Create command buffer
     MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
@@ -270,29 +294,70 @@ void Renderer::drawFrame() {
     MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
     colorAttachment->setTexture(drawable->texture());
     colorAttachment->setLoadAction(MTL::LoadActionClear);
-    colorAttachment->setClearColor(MTL::ClearColor(1.0, 1.0, 1.0, 1.0));
+    colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
     colorAttachment->setStoreAction(MTL::StoreActionStore);
 
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
+    encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set the uniform buffer
+
+    // cull mode
+    encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
+    // create a depth stencil state
 
     // Draw floor
     encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
-    encoder->setVertexBuffer(uniformBuffer, 0, 1);
-    encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-                                   6, // 6 indices
-                                   MTL::IndexTypeUInt32,
-                                   floorIndexBuffer,
-                                   0, // offset
-                                   1); // i
+    Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
+    //encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
 
-    // Draw triangle
-    encoder->setCullMode(MTL::CullModeBack); // Cull back face
-    encoder->setFrontFacingWinding(MTL::WindingClockwise);
-    encoder->setVertexBuffer(triangleVertexBuffer, 0, 0);
-    encoder->setVertexBuffer(uniformBuffer, 0, 1);
-    encoder->drawPrimitives(MTL::PrimitiveTypeTriangle, NS::UInteger(0), NS::UInteger(3));
+    // @ Uncomment to draw a red floor
+  /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                 6, // 6 indices
+                                 MTL::IndexTypeUInt32,
+                                 floorIndexBuffer,
+                                 0, // offset
+                                 1); // i
+                                 */
+
+
+  // @ Draw model
+  if (model) {
+      std::cout << "dT" << deltaTime << std::endl;
+      model->getTransform().reset();
+      // Bind buffers
+      encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
+      encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
+      encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
+
+      /*
+       *      Rotation
+       */
+
+      {
+          float spinSpeed = 0.3f;
+          model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+          const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+          auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+          *(bufferPtr + 2) = transformMatrix;
+          // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
+          uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+          // ^ Update the 3rd slot for the uniform buffer
+          // Note, this another way to calculate the required offset for the buffer update
+          //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
+          // Note, below is a FULL buffer flush
+          //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+      }
+
+
+      // ^ This is the draw call
+      encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                     model->getIndexCount(),
+                                     MTL::IndexTypeUInt32,
+                                     model->getIndexBuffer(),
+                                     0,
+                                     1);
+    }
 
 
     encoder->endEncoding();
@@ -308,32 +373,89 @@ void Renderer::drawFrame() {
 
 
 Window &Renderer::getWindow() {
-    return *window;
+      return *window;
+}
+
+void Renderer::cameraUp() {
+    camera.moveUp(0.05);
+    // Before you draw a frame, update viewMatrix sent to the gpu
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+
+}
+
+void Renderer::cameraDown() {
+    camera.moveDown(0.05);
+    // Before you draw a frame, update viewMatrix sent to the gpu
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+
+
+}
+
+void Renderer::cameraRight() {
+    camera.moveRight(0.05);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+}
+void Renderer::cameraLeft() {
+    camera.moveLeft(0.05);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+}
+
+void Renderer::cameraZoom(float aZoom) {
+    camera.zoom(aZoom);
+    // ! TODO: abstract this repeated code for movement
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+}
+void Renderer::cameraMove(float scalar) {
+    camera.move(scalar);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+}
+
+void Renderer::cameraRotate(float aTurn) {
+    camera.rotate(aTurn);
+    Matrix4f viewMatrix = camera.getViewMatrix();
+    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+    *bufferPtr = viewMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+}
+
+void Renderer::processInput(int key, int scancode, int action, int mods){
+
+    if (keyMap[GLFW_KEY_W]) {
+        cameraUp();
+    }
+    if (keyMap[GLFW_KEY_S]) {
+        cameraDown();
+    }
+    if (keyMap[GLFW_KEY_A]) {
+        cameraLeft();
+    }
+    if (keyMap[GLFW_KEY_D]) {
+        cameraRight();
+    }
 }
 
 
-void Renderer::updateCmaeraView() {
-    Matrix4f &viewMatrix = camera.getViewMatrix();
-    if (!uniformBuffer) {
-        throw std::runtime_error("No uniform buffer in updateCameraView");
-    }
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    if (bufferPtr == nullptr) {
-        throw std::runtime_error("Failed to static cast uniformBuffer");
-    }
-    *bufferPtr = viewMatrix; // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-};
-
-
-/**
- * @note Below are the free functions for glfw
+/** @note Below are the free functions for glfw
  */
-
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    /*
-        Call back for window resize. Leave in renderer.
-     */
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
     if (!renderer || height == 0) return;
 
@@ -348,39 +470,71 @@ void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     renderer->drawFrame();
 }
 
-void keyCallback(GLFWwindow *window, int key, int scancode, int action, int mods) {
-    //auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-    if (auto *controller = static_cast<Controller *>(glfwGetWindowUserPointer(window))) {
-        controller->handleInput(key, scancode, mods);
-        renderer->updateCmaeraView();
-    }
+
+void framebuffer_refresh_callback(GLFWwindow* window) {
+    // ! Not currently in use
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
 }
 
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-    if (auto *controller = static_cast<Controller *>(glfwGetWindowUserPointer(window))) {
-        controller->handleScroll(xoffset, yoffset);
-        renderer->updateCmaeraView();           // ! source of seg fault
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    if (action == GLFW_PRESS)
+    {
+        renderer->keyMap[key] = true;
+    } else if (action == GLFW_RELEASE)
+    {
+        renderer->keyMap[key] = false;
     }
+    renderer->processInput(key, scancode, action, mods);
 }
-
 /*
+void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+    // ! TODO, make this handle key holds, not just presses.
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    // ^ W Press
+    if (key == GLFW_KEY_W && action == GLFW_PRESS) {
+        std::cout << "KEY PRESSED" << std::endl;
+        while (renderer->keyDown) {
+            renderer->cameraUp();
+            if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+                renderer->keyDown = false;
+            }
+        }
+    }
+    // ^ W Release
+    if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
+        renderer->keyDown = false;
+        std::cout << "KEY Released" << std::endl;
+    }
+    // ^ A
+    if (key == GLFW_KEY_A && action == GLFW_PRESS) {
+        renderer->cameraLeft();
+    }
+    // ^ S
+    if (key == GLFW_KEY_S && action == GLFW_PRESS) {
+        renderer->cameraDown();
+    }
+    // ^ D
+    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
+        renderer->cameraRight();
+    }
+}
+*/
+
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     constexpr float dampen {0.09};      // Slow down trackpad movement
     constexpr float degreesPerScroll {5.0f};
     float angleDeg = xoffset * degreesPerScroll;
-    //auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
     if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-        std::cout << "ScrollCallback" << std::endl;
-        //cameraRotate(-xoffset);
+        //std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+        //std::cout << "ScrollCallback" << std::endl;
+        renderer->cameraRotate(-xoffset);
     }else {
     xoffset *= dampen;
     yoffset *= dampen;
     // TODO: Make this one function call?
-    //cameraMove(xoffset);
-    //cameraZoom(yoffset);
+    renderer->cameraMove(xoffset);
+    renderer->cameraZoom(yoffset);
     }
 };
-*/

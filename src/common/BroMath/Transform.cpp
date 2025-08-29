@@ -14,7 +14,7 @@
  * It provides methods to apply translation, rotation, and scaling transformations, as well as
  * to reset the transformation matrix to the identity matrix.
  */
-Transform::Transform() {
+BroMath::Transform::Transform() {
     std::cout << "Transform::Transform()" << std::endl;
     transformMatrix = Eigen::Matrix4f::Identity();
 }
@@ -25,7 +25,7 @@ Transform::Transform() {
  * @param y The translation along the Y-axis.
  * @param z The translation along the Z-axis.
  */
-void Transform::setTranslation(float x, float y, float z) {
+void BroMath::Transform::setTranslation(float x, float y, float z) {
 
     Eigen::Matrix4f translationMatrix = Eigen::Matrix4f::Identity();
     translationMatrix(0, 3) = x;
@@ -43,7 +43,7 @@ void Transform::setTranslation(float x, float y, float z) {
  * @param y The Y component of the rotation axis.
  * @param z The Z component of the rotation axis.
  */
-void Transform::setRotation(float angleRadians, float x, float y, float z) {
+void BroMath::Transform::setRotation(float angleRadians, float x, float y, float z) {
     Eigen::Vector3f axis(x, y, z);          // Define axis of rotation as a vec3.
     Eigen::AngleAxisf rotation(angleRadians, axis.normalized());
     Eigen::Matrix3f rotMatrix = rotation.toRotationMatrix();
@@ -60,7 +60,7 @@ void Transform::setRotation(float angleRadians, float x, float y, float z) {
  * @param y The scaling factor along the Y-axis.
  * @param z The scaling factor along the Z-axis.
  */
-void Transform::setScale(float x, float y, float z) {
+void BroMath::Transform::setScale(float x, float y, float z) {
     Eigen::Matrix4f scaleMatrix = Eigen::Matrix4f::Identity();
     scaleMatrix(0, 0) = x;
     scaleMatrix(1, 1) = y;
@@ -72,7 +72,7 @@ void Transform::setScale(float x, float y, float z) {
 /**
  * @brief Resets the transformation matrix to the identity matrix.
  */
-void Transform::reset() {
+void BroMath::Transform::reset() {
     transformMatrix = Eigen::Matrix4f::Identity();
 }
 /**
@@ -80,7 +80,7 @@ void Transform::reset() {
  *
  * @return A constant reference to the 4x4 transformation matrix.
  */
-const Eigen::Matrix4f& Transform::getMatrix() const {
+const Eigen::Matrix4f& BroMath::Transform::getMatrix() const {
     return transformMatrix;
 }
 
@@ -95,7 +95,7 @@ const Eigen::Matrix4f& Transform::getMatrix() const {
  * @param transform The Transform object to output.
  * @return A reference to the output stream.
  */
-std::ostream& operator<<(std::ostream& os, const Transform& transform) {
+std::ostream& operator<<(std::ostream& os, const BroMath::Transform& transform) {
     os << transform.getMatrix();
     return os;
 }

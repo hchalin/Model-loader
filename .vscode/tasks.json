@@ -1,0 +1,68 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "CMake Configure",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"-B",
+				"build",
+				"-S",
+				".",
+				"-DCMAKE_BUILD_TYPE=Debug"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "CMake Build",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build"
+			],
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"dependsOn": "CMake Configure",
+			"problemMatcher": [
+				"$gcc"
+			]
+		},
+		{
+			"label": "CMake Build and Run",
+			"type": "shell",
+			"command": "./Model_Viewer",
+			"options": {
+				"cwd": "${workspaceFolder}/build"
+			},
+			"group": "build",
+			"dependsOn": "CMake Build",
+			"problemMatcher": []
+		},
+		{
+			"label": "CMake Clean",
+			"type": "shell",
+			"command": "cmake",
+			"args": [
+				"--build",
+				"build",
+				"--target",
+				"clean"
+			],
+			"group": "build",
+			"problemMatcher": []
+		},
+		{
+			"label": "Run Tests",
+			"type": "shell",
+			"command": "./build/Model_Viewer_Tests",
+			"group": "test",
+			"dependsOn": "CMake Build",
+			"problemMatcher": []
+		}
+	]
+}

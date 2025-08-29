@@ -19,15 +19,17 @@ Window::Window() {
     if (!glfwWindow) {
         throw std::runtime_error("Failed to create GLFW window");
     }
+    glfwSwapInterval(1);
     aspectRatio = (float)windowWidth / windowHeight;
 
     // Set the metal layer on the window
     metalLayer = CA::MetalLayer::layer()->retain();
-    metalLayer->setDevice(MTL::CreateSystemDefaultDevice());
+    metalLayer->setDevice(MTL::CreateSystemDefaultDevice());    // Create metal device and set it as the metal layer for glfw
     metalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);     // Standard 8-bit format.
     metalLayer->setFramebufferOnly(true);                       // Textures only as render targets
 
-    nsWindow = get_ns_window(glfwWindow, metalLayer)->retain();
+
+    nsWindow = get_ns_window(glfwWindow, metalLayer)->retain(); // Next Step window
 
 }
 

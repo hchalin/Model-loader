@@ -1,0 +1,8 @@
+#Project notes:
+
+Controller branch:
+    There is a problem with updating the uniform buffer when moving the camera around.
+    I have created a get uniform buffer to update the contents of it. Right now, my
+    intuition is telling me there is a problem with using the 'didModifyRange()' fn.
+    It may not be actually updating the contents of the uniform buffer?  In some instances
+    the uniform buffer is a nullptr, even after being set (tested) in the constructor.
