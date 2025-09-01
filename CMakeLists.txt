@@ -26,6 +26,7 @@ set(SOURCE_FILES
         tests/test_main.cpp
         tests/test_camera.cpp
         src/Scene.cpp
+        src/Controller.cpp
 )
 set(HEADER_FILES
         src/common/BroMath/vec4.h
@@ -33,6 +34,7 @@ set(HEADER_FILES
         src/Camera.h
         src/Scene.h
         src/Model.h
+        src/Controller.h
         src/backend/tiny_obj_loader.h
 )
 

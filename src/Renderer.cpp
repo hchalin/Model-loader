@@ -5,13 +5,16 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(Window &windowSrc, Model *model):
+Renderer::Renderer(Window &windowSrc, Model *model, Camera *camera):
     // Get device from the metalLayer in the window
     device(windowSrc.getMTLLayer()->device()),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
     model(model),
-    totalTime(0.0){
+    camera(camera)
+    {
+
+    //controller = new Controller(camera, window);
+
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
@@ -36,17 +39,17 @@ Renderer::Renderer(Window &windowSrc, Model *model):
 
 
     // ^ Camera view matrix
-    Matrix4f viewMatrix = camera.getViewMatrix();
+    Matrix4f viewMatrix = camera->getViewMatrix();
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     // ^ Set GLFW Callbacks
-    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
-    glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
-    glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
-    glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
-    glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
+    // glfwSetWindowUserPointer(window->getGLFWWindow(), this);
+    // glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
+    // glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
+    // glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
+    // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ model matrix, sent into the GPU's uniform buffer
     BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
@@ -276,9 +279,7 @@ void Renderer::drawFrame() {
     CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();        // Get the next drawable
     if (!drawable) {
         // * Clean up
-        pool->release();
-        glfwDestroyWindow(window->getGLFWWindow());
-        return;
+        drawFrame();        // Skip fn call
     }
 
 
@@ -312,18 +313,17 @@ void Renderer::drawFrame() {
     //encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
 
     // @ Uncomment to draw a red floor
-  /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-                                 6, // 6 indices
-                                 MTL::IndexTypeUInt32,
-                                 floorIndexBuffer,
-                                 0, // offset
-                                 1); // i
-                                 */
+   // encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
+                                 // 6, // 6 indices
+                                 // MTL::IndexTypeUInt32,
+                                 // floorIndexBuffer,
+                                 // 0, // offset
+                                 // 1); // i
+
 
 
   // @ Draw model
   if (model) {
-      std::cout << "dT" << deltaTime << std::endl;
       model->getTransform().reset();
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
@@ -335,18 +335,18 @@ void Renderer::drawFrame() {
        */
 
       {
-          float spinSpeed = 0.3f;
-          model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-          const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-          auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-          *(bufferPtr + 2) = transformMatrix;
+          // float spinSpeed = 0.3f;
+          // model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+          // const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+          // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+          // *(bufferPtr + 2) = transformMatrix;
           // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-          uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+          // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
           // ^ Update the 3rd slot for the uniform buffer
           // Note, this another way to calculate the required offset for the buffer update
           //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
           // Note, below is a FULL buffer flush
-          //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+          // uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
       }
 
 
@@ -375,118 +375,118 @@ void Renderer::drawFrame() {
 Window &Renderer::getWindow() {
       return *window;
 }
-
-void Renderer::cameraUp() {
-    camera.moveUp(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-
-}
-
-void Renderer::cameraDown() {
-    camera.moveDown(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-
-
-}
-
-void Renderer::cameraRight() {
-    camera.moveRight(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-void Renderer::cameraLeft() {
-    camera.moveLeft(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::cameraZoom(float aZoom) {
-    camera.zoom(aZoom);
-    // ! TODO: abstract this repeated code for movement
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-void Renderer::cameraMove(float scalar) {
-    camera.move(scalar);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::cameraRotate(float aTurn) {
-    camera.rotate(aTurn);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::processInput(int key, int scancode, int action, int mods){
-
-    if (keyMap[GLFW_KEY_W]) {
-        cameraUp();
-    }
-    if (keyMap[GLFW_KEY_S]) {
-        cameraDown();
-    }
-    if (keyMap[GLFW_KEY_A]) {
-        cameraLeft();
-    }
-    if (keyMap[GLFW_KEY_D]) {
-        cameraRight();
-    }
-}
-
+//
+// void Renderer::cameraUp() {
+//     camera.moveUp(0.05);
+//     // Before you draw a frame, update viewMatrix sent to the gpu
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+//
+// }
+//
+// void Renderer::cameraDown() {
+//     camera.moveDown(0.05);
+//     // Before you draw a frame, update viewMatrix sent to the gpu
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+//
+//
+// }
+//
+// void Renderer::cameraRight() {
+//     camera.moveRight(0.05);
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+// }
+// void Renderer::cameraLeft() {
+//     camera.moveLeft(0.05);
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+// }
+//
+// void Renderer::cameraZoom(float aZoom) {
+//     camera.zoom(aZoom);
+//     // ! TODO: abstract this repeated code for movement
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+// }
+// void Renderer::cameraMove(float scalar) {
+//     camera.move(scalar);
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+// }
+//
+// void Renderer::cameraRotate(float aTurn) {
+//     camera.rotate(aTurn);
+//     Matrix4f viewMatrix = camera.getViewMatrix();
+//     auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+//     *bufferPtr = viewMatrix;
+//     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+// }
+//
+// void Renderer::processInput(int key, int scancode, int action, int mods){
+//
+//     if (keyMap[GLFW_KEY_W]) {
+//         cameraUp();
+//     }
+//     if (keyMap[GLFW_KEY_S]) {
+//         cameraDown();
+//     }
+//     if (keyMap[GLFW_KEY_A]) {
+//         cameraLeft();
+//     }
+//     if (keyMap[GLFW_KEY_D]) {
+//         cameraRight();
+//     }
+// }
+//
 
 /** @note Below are the free functions for glfw
  */
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-    if (!renderer || height == 0) return;
+// void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    // auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    // if (!renderer || height == 0) return;
 
 
-    renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
-        static_cast<double>(width),
-        static_cast<double>(height)
-    });
+    // renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
+        // static_cast<double>(width),
+        // static_cast<double>(height)
+    // });
 
-    float aspect = static_cast<float>(width) / height;
-    renderer->updateProjectionMatrix(aspect);
-    renderer->drawFrame();
-}
+    // float aspect = static_cast<float>(width) / height;
+    // renderer->updateProjectionMatrix(aspect);
+    // renderer->drawFrame();
+// }
 
 
-void framebuffer_refresh_callback(GLFWwindow* window) {
-    // ! Not currently in use
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-}
-
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (action == GLFW_PRESS)
-    {
-        renderer->keyMap[key] = true;
-    } else if (action == GLFW_RELEASE)
-    {
-        renderer->keyMap[key] = false;
-    }
-    renderer->processInput(key, scancode, action, mods);
-}
+// void framebuffer_refresh_callback(GLFWwindow* window) {
+//     // ! Not currently in use
+//     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+// }
+//
+// void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
+//     auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+//     if (action == GLFW_PRESS)
+//     {
+//         renderer->keyMap[key] = true;
+//     } else if (action == GLFW_RELEASE)
+//     {
+//         renderer->keyMap[key] = false;
+//     }
+//     renderer->processInput(key, scancode, action, mods);
+// }
 /*
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     // ! TODO, make this handle key holds, not just presses.
@@ -521,20 +521,20 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 */
 
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    constexpr float dampen {0.09};      // Slow down trackpad movement
-    constexpr float degreesPerScroll {5.0f};
-    float angleDeg = xoffset * degreesPerScroll;
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        //std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-        //std::cout << "ScrollCallback" << std::endl;
-        renderer->cameraRotate(-xoffset);
-    }else {
-    xoffset *= dampen;
-    yoffset *= dampen;
+// void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
+    // constexpr float dampen {0.09};      // Slow down trackpad movement
+    // constexpr float degreesPerScroll {5.0f};
+    // float angleDeg = xoffset * degreesPerScroll;
+    // auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
+    // if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
+        // std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
+        // std::cout << "ScrollCallback" << std::endl;
+        // renderer->cameraRotate(-xoffset);
+    // }else {
+    // xoffset *= dampen;
+    // yoffset *= dampen;
     // TODO: Make this one function call?
-    renderer->cameraMove(xoffset);
-    renderer->cameraZoom(yoffset);
-    }
-};
+    // renderer->cameraMove(xoffset);
+    // renderer->cameraZoom(yoffset);
+    // }
+// };

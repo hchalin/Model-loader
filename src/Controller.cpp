@@ -8,7 +8,7 @@
 
 
 
-Controller::Controller(Camera &cam, Window * window):camera(cam), window(window) {
+Controller::Controller(Camera &cam, Window * window ):camera(cam), window(window) {
 
     std::cout << " CONTROLLER" << std::endl;
     // ^ Set GLFW Callbacks

@@ -200,7 +200,7 @@ void Model::loadModel() {
 
 
 void Model::processMaterials(std::vector<tinyobj::material_t> &objMaterials) {
-    // clear the materias vector and reserve correct size
+    // clear the materials vector and reserve correct size
     materials.clear();
     materials.reserve(objMaterials.size());
 
@@ -208,9 +208,6 @@ void Model::processMaterials(std::vector<tinyobj::material_t> &objMaterials) {
         Material material{};
         material.ambient = {mat.ambient[0], mat.ambient[1], mat.ambient[2]};
         material.diffuse = {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
-        std::cout <<  "r: " <<  material.diffuse[0] << std::endl;
-        std::cout << "g: " << material.diffuse[1] << std::endl;
-        std::cout << "b: " << material.diffuse[2] << std::endl;
         material.specular = {mat.specular[0], mat.specular[1], mat.specular[2]};
         material.shininess = mat.shininess;
         material.diffuseTexture = mat.diffuse_texname;
@@ -236,15 +233,15 @@ void Model::createMaterialBuffer() {
         gpu.push_back(g);
     }
     if (gpu.empty()) return;
-    if (materialBuffer) { materialBuffer->release(); materialBuffer = nullptr; }
+    if (materialBuffer != nullptr) { materialBuffer->release(); materialBuffer = nullptr; }
     materialBuffer = device->newBuffer(gpu.data(),
                                        gpu.size() * sizeof(GPUMaterial),
                                        MTL::ResourceStorageModeManaged);
     materialBuffer->didModifyRange(NS::Range(0, gpu.size() * sizeof(GPUMaterial)));
     // Debug dump first material bytes
-    auto* f = reinterpret_cast<const float*>(materialBuffer->contents());
-    std::cout << "GPU diffuse read (expected 0.156,0.107,0.8): "
-              << f[4] << "," << f[5] << "," << f[6] << std::endl;
+    // auto* f = reinterpret_cast<const float*>(materialBuffer->contents());
+    // std::cout << "GPU diffuse read (expected 0.156,0.107,0.8): "
+              // << f[4] << "," << f[5] << "," << f[6] << std::endl;
 }
 MTL::Buffer *Model::getMaterialBuffer() const {
     return materialBuffer;

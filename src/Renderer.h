@@ -15,6 +15,7 @@
 #include "shaders/readShaderFile.h"
 #include "./Camera.h"
 #include "./Controller.h"
+#include "Model.h"
 
 
 // Used for offset
@@ -27,7 +28,7 @@ class Renderer {
 
 public:
     Renderer();
-    Renderer(Window &window);
+    Renderer(Window &window, Model *model, Camera *camera);;
     ~Renderer();
 
     void createPipelineState();
@@ -58,16 +59,17 @@ private:
     Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
 
-    // Every frame
-    MTL::CommandBuffer *commandBuffer{nullptr};
+    MTL::CommandBuffer *commandBuffer{nullptr};     // * Created every frame
 
-    // Camera w/ controller
-    Camera camera;
-    Controller controller;
+    Model *model{nullptr};
+
+    Camera *camera{nullptr};
+
 
     // Timeing
     float deltaTime {0.0};    // ^ Time between current and last frame
-    float lastFrame {0.0};
+    float lastTime {0.0};
+    float totalTime {0.0};
 
 };
 

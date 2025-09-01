@@ -10,7 +10,8 @@
 class Controller {
 public:
     // ! Make this a derived camera class
-    Controller(Camera &cam, Window *window); // Controller takes a camera by ref
+    // Controller(Camera &cam, Window *window); // Controller takes a camera by ref
+    Controller(Camera &cam, Window * window); // Controller takes a camera by ref
     ~Controller();
     void handleInput(int key, int scancode, int mods);
     void handleScroll(double xoffset, double yoffset);

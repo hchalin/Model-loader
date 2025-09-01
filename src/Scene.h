@@ -15,17 +15,21 @@
 class Scene {
 public:
     Scene();
-    ~Scene();
+    ~Scene() = default;
     void start();
 
-    Model * loadModel();
+    std::unique_ptr<Model> loadModel();
 
     private:
     //std::vector<Model> models;
-    Model* model;
-    Window* window;
-    Renderer* renderer;
-    MTL::Device* device;
+    MTL::Device * device;
+    std::unique_ptr<Model> model{nullptr};
+    std::unique_ptr<Renderer> renderer{nullptr};
+    std::unique_ptr<Window> window{nullptr};
+
+    // Camera w/ controller
+    Camera camera;
+    Controller controller;
 
 
 
