@@ -56,8 +56,8 @@ Model::~Model() {
 }
 
 
-BroMath::Transform &Model::getTransform() {
-    return transform;
+Eigen::Matrix4f &Model::getModelMatrix(){
+    return modelMatrix;
 }
 
 

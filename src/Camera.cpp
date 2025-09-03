@@ -5,7 +5,7 @@
 #include "Camera.h"
 
 Camera::Camera(const Vector3f& position, const Vector3f& target):
-    camPos(position), camTarget(target) {
+    camPos(position), camTarget(target){
     /*
      *  In the next few lines I will set up the basis vectors required for the camera.
      *  Resource: https://learnopengl.com/Getting-started/Camera
@@ -24,7 +24,12 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     // ^ camUp
     camUp = camDirection.cross(camRight);
 
-    // ^ Look At matrix
+    setProjectionMatrix(aRatio);
+
+}
+
+void Camera::setViewMatrix() {
+    // ^ View Matrix
     // Note: Eigen uses Column Major Order! So set the columns to the basis vectors
     // Note: https://eigen.tuxfamily.org/dox/group__TopicStorageOrders.html
     // ! This could be a problen area with CMO
@@ -40,9 +45,32 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     viewMatrix(2,3) = -camDirection.dot(camPos);
 
 
-
 }
 
+void Camera::setProjectionMatrix(const float aRatio) {
+
+    // ^ Reset projectionMatrix
+    projectionMatrix.setIdentity();
+
+    float tanHalfFovy = std::tan(fovY / 2.0f);
+
+    // Set up perspective matrix (column-major order in Eigen)
+    projectionMatrix(0, 0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
+    projectionMatrix(1, 1) = 1.0f / tanHalfFovy; // Scale Y
+    projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane); // Scale and translate Z
+    projectionMatrix(2, 3) = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane); // Perspective divide term
+    projectionMatrix(3, 2) = -1.0f; // Enables perspective division
+    projectionMatrix(3, 3) = 0.0f; // Required for perspective
+}
+
+void Camera::updateAspectRatio(float aR) {
+    aRatio = aR;
+}
+
+
+Matrix4f &Camera::getProjectionMatrix() {
+    return projectionMatrix;
+}
 Matrix4f &Camera::getViewMatrix() {
     return viewMatrix;
 }

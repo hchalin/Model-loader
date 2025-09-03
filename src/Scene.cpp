@@ -14,6 +14,7 @@ Scene::Scene():
     // @ Try and create the window (will also create the device)
     try {
         window = new Window(this->device);
+        camera.updateAspectRatio(window->getAspectRatio());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
@@ -29,7 +30,7 @@ Scene::Scene():
     // @ After window creation, and model loading, start rendering
     try {
          renderer = new Renderer(this->device, *window, model);
-         renderer->render(camera.getViewMatrix());
+         renderer->render(camera.getViewMatrix(), camera.getProjectionMatrix(), model->getModelMatrix());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

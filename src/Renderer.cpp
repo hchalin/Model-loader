@@ -18,7 +18,7 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     }
 
     // ^ Set model initial rotation
-    model->getTransform().setRotation(1.8, 0.0f, 1.0f, 0.0f);
+    model->getModelMatrix();
 
     // ^ Timing
     lastTime = glfwGetTime();           // Set the initial time
@@ -31,20 +31,13 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     }
 
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Matrix4f) * 3, MTL::ResourceStorageModeManaged); // Room for33 matrices
+    uniformBuffer = device->newBuffer(sizeof(Uniforms), MTL::ResourceStorageModeManaged); // Room for33 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
-    updateProjectionMatrix(aRatio);
 
 
-    // ^ Camera view matrix
-    /*
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-    */
+
 
     // ^ Set GLFW Callbacks
     // glfwSetWindowUserPointer(window->getGLFWWindow(), this);
@@ -54,43 +47,13 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ model matrix, sent into the GPU's uniform buffer
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
-    matrix.setTranslation(0,0.0, 0);
-    *(bufferPtr + 2) = matrix.getMatrix();                  // ^ This returns a type: Eigen::Matrix4f
+     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
+    Eigen::Matrix4f &matrix = model->getModelMatrix();     // ^ This returns a type: BroMath::Transform
+    *(bufferPtr + 2) = matrix;                  // ^ This returns a type: Eigen::Matrix4f
     uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
 
     // ^ Create render pipeline state
     createPipelineState();
-}
-
-void Renderer::updateProjectionMatrix(float aRatio) {
-    // ^ Define the vertical fov to radias, horizontal will be based off of this.
-    // TODO This should be in the Camera, the projection matrix is the 'lens' of the camera
-    const float fovY = 45.0f * (M_PI / 180.0f);
-
-    // ^ Frustrum clipping planes
-    const float near = 0.1f;
-    const float far = 100.0f;
-
-    // ^ Reset projectionMatrix
-    projectionMatrix.setIdentity();
-
-    float tanHalfFovy = std::tan(fovY / 2.0f);
-
-    // Set up perspective matrix (column-major order in Eigen)
-    projectionMatrix(0, 0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
-    projectionMatrix(1, 1) = 1.0f / tanHalfFovy; // Scale Y
-    projectionMatrix(2, 2) = -(far + near) / (far - near); // Scale and translate Z
-    projectionMatrix(2, 3) = -(2.0f * far * near) / (far - near); // Perspective divide term
-    projectionMatrix(3, 2) = -1.0f; // Enables perspective division
-    projectionMatrix(3, 3) = 0.0f; // Required for perspective
-
-    // Update uniform buffer with combined view-projection matrix
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *(bufferPtr + 1) = projectionMatrix;           // @ Put the projection matrix in the 2nd position of the uniform buffer
-    // NOTE, for managed memory(CPU and GPU each have thier own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-    uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));
 }
 
 void Renderer::createPipelineState() {
@@ -252,13 +215,15 @@ Renderer::~Renderer() {
 
 }
 
-void Renderer::render(Matrix4f &viewMatrix) {
+void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix) {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
 
     // Set the cameras viewMatrix in the uniform buffer
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
+    u->viewMatrix       = viewMatrix;
+    u->projectionMatrix = projectionMatrix;
+    u->modelMatrix      = modelMatrix;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
@@ -331,7 +296,7 @@ void Renderer::drawFrame() {
 
   // @ Draw model
   if (model) {
-      model->getTransform().reset();
+      model->getModelMatrix().setIdentity();
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
       encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1

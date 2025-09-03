@@ -30,9 +30,8 @@ public:
     ~Renderer();
 
     void createPipelineState();
-    void render(Matrix4f &viewMatrix);
+    void render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix);
 
-    void updateProjectionMatrix(float aRatio);
 
     Window &getWindow();
     void drawFrame();

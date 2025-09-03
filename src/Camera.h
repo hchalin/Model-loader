@@ -15,7 +15,10 @@ class Camera {
     Camera(const Vector3f& position, const Vector3f& target);
 
     Matrix4f &getViewMatrix();
+    Matrix4f &getProjectionMatrix();
     Vector3f &getPosition();
+
+    void updateAspectRatio(float aR);
 
     // Movement
     void moveUp(float dt);
@@ -27,6 +30,10 @@ class Camera {
     void rotate(float xTurn);   // Only around y basis vector
 
     private:
+    const float fovY {45.0f * (M_PI / 180.0f)};
+    const float nearPlane {0.1f};
+    const float farPlane {100.0f};
+    float aRatio;
     Vector3f camPos;
     Vector3f camTarget = Vector3f(0,0,0); // origin
     Vector3f camDirection;
@@ -35,8 +42,11 @@ class Camera {
     Vector3f camRight;
 
 
+    Matrix4f projectionMatrix;
     Matrix4f viewMatrix;     // Note: World Space -> Camera Space
 
+    void setViewMatrix();
+    void setProjectionMatrix(const float aRatio);
     friend std::ostream & operator<<(std::ostream &os, const Camera &camera);
 };
 
