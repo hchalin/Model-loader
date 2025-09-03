@@ -218,6 +218,12 @@ Renderer::~Renderer() {
 void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix) {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
 
+    // @ Rotate model Matrix
+     std::cout << "Uniform model matrix before transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
+    BroMath::Transform transform;
+    transform.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
+    modelMatrix = modelMatrix * transform.getMatrix(); // local-space rotation
+    std::cout << "Uniform model matrix after transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
     // Set the cameras viewMatrix in the uniform buffer
     auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
     u->viewMatrix       = viewMatrix;
@@ -226,7 +232,7 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
     // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
     // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
     // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
