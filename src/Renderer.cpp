@@ -17,6 +17,9 @@ Renderer::Renderer(Window &windowSrc, Model *model):
         throw std::runtime_error("Failed to create MTL::Device");
     }
 
+    // ^ Set model initial rotation
+    model->getTransform().setRotation(1.8, 0.0f, 1.0f, 0.0f);
+
     // ^ Timing
     lastTime = glfwGetTime();           // Set the initial time
 
@@ -243,10 +246,6 @@ Renderer::~Renderer() {
         renderPipelineState = nullptr;
     }
 
-    if (uniformBuffer) {
-        uniformBuffer->release();
-        uniformBuffer = nullptr;
-    }
 }
 
 void Renderer::render() {
@@ -323,7 +322,6 @@ void Renderer::drawFrame() {
 
   // @ Draw model
   if (model) {
-      std::cout << "dT" << deltaTime << std::endl;
       model->getTransform().reset();
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
@@ -333,21 +331,20 @@ void Renderer::drawFrame() {
       /*
        *      Rotation
        */
-
-      {
-          float spinSpeed = 0.3f;
-          model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-          const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-          auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-          *(bufferPtr + 2) = transformMatrix;
+      // {
+          // float spinSpeed = 0.3f;
+          // model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+          // const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+          // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+          // *(bufferPtr + 2) = transformMatrix;
           // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-          uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+          // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
           // ^ Update the 3rd slot for the uniform buffer
           // Note, this another way to calculate the required offset for the buffer update
           //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
           // Note, below is a FULL buffer flush
           //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
-      }
+      // }
 
 
       // ^ This is the draw call
