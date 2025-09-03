@@ -97,7 +97,7 @@ void Model::loadModel() {
     std::filesystem::path objPath  = std::filesystem::current_path() / ".." / "src" / "assets" / fileName;
     std::filesystem::path baseDir = objPath.parent_path();
 
-    std::cout << "Loading model from: " << objPath << std::endl;
+    // std::cout << "Loading model from: " << objPath << std::endl;
 
     bool ok = tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, objPath.string().c_str(), baseDir.string().c_str(),
                                 /*triangulate*/ true);
@@ -189,8 +189,8 @@ void Model::loadModel() {
         }
     }
 
-    std::cout << "Processed " << vertices.size() << " vertices" << std::endl;
-    std::cout << "Processed " << indices.size() << " indices" << std::endl;
+    // std::cout << "Processed " << vertices.size() << " vertices" << std::endl;
+    // std::cout << "Processed " << indices.size() << " indices" << std::endl;
     indexCount = indices.size();
 
     // Create Metal buffers
@@ -208,9 +208,9 @@ void Model::processMaterials(std::vector<tinyobj::material_t> &objMaterials) {
         Material material{};
         material.ambient = {mat.ambient[0], mat.ambient[1], mat.ambient[2]};
         material.diffuse = {mat.diffuse[0], mat.diffuse[1], mat.diffuse[2]};
-        std::cout <<  "r: " <<  material.diffuse[0] << std::endl;
-        std::cout << "g: " << material.diffuse[1] << std::endl;
-        std::cout << "b: " << material.diffuse[2] << std::endl;
+        // std::cout <<  "r: " <<  material.diffuse[0] << std::endl;
+        // std::cout << "g: " << material.diffuse[1] << std::endl;
+        // std::cout << "b: " << material.diffuse[2] << std::endl;
         material.specular = {mat.specular[0], mat.specular[1], mat.specular[2]};
         material.shininess = mat.shininess;
         material.diffuseTexture = mat.diffuse_texname;
@@ -221,7 +221,7 @@ void Model::processMaterials(std::vector<tinyobj::material_t> &objMaterials) {
 
     if (materials.empty())
         materials.push_back(Material{});
-    std::cout << "Loaded " << materials.size() << " materials" << std::endl;
+    // std::cout << "Loaded " << materials.size() << " materials" << std::endl;
 
 }
 void Model::createMaterialBuffer() {
@@ -241,10 +241,6 @@ void Model::createMaterialBuffer() {
                                        gpu.size() * sizeof(GPUMaterial),
                                        MTL::ResourceStorageModeManaged);
     materialBuffer->didModifyRange(NS::Range(0, gpu.size() * sizeof(GPUMaterial)));
-    // Debug dump first material bytes
-    auto* f = reinterpret_cast<const float*>(materialBuffer->contents());
-    std::cout << "GPU diffuse read (expected 0.156,0.107,0.8): "
-              << f[4] << "," << f[5] << "," << f[6] << std::endl;
 }
 MTL::Buffer *Model::getMaterialBuffer() const {
     return materialBuffer;

@@ -4,8 +4,8 @@
 
 #include "Camera.h"
 
-Camera::Camera(const Vector3f& position, const Vector3f& target):
-    camPos(position), camTarget(target){
+Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
+    camPos(position), camTarget(target), aRatio(aRatio){
     /*
      *  In the next few lines I will set up the basis vectors required for the camera.
      *  Resource: https://learnopengl.com/Getting-started/Camera
@@ -24,6 +24,9 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     // ^ camUp
     camUp = camDirection.cross(camRight);
 
+
+    setViewMatrix();            // I added this to set the viewMatrix on initialization
+    std::cout << "aspect ratio: " << aRatio << std::endl;
     setProjectionMatrix(aRatio);
 
 }

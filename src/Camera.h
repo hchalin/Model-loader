@@ -12,7 +12,7 @@ using namespace Eigen;
 
 class Camera {
     public:
-    Camera(const Vector3f& position, const Vector3f& target);
+    Camera(const Vector3f& position, const Vector3f& target, float aRatio);
 
     Matrix4f &getViewMatrix();
     Matrix4f &getProjectionMatrix();

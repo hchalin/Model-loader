@@ -8,29 +8,26 @@
 #include <ostream>
 
 Scene::Scene():
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
     device(MTL::CreateSystemDefaultDevice())        // Create the GPU device
 {
     // @ Try and create the window (will also create the device)
     try {
         window = new Window(this->device);
-        camera.updateAspectRatio(window->getAspectRatio());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 
+    // @ Create camera w/ windows aspect ratio
+    camera = new Camera(Vector3f(0, 0, 5.0f), Vector3f(0, 0, 0), window->getAspectRatio());
+
     // @ After window creation, load models
-    if (window) {
-        model = loadModel();
-    } else {
-        throw std::runtime_error(std::string("Failed to load model in file: ")+ __FILE__ + " " + std::to_string(__LINE__));
-    }
+    model = loadModel();            // This returns a pointer to a model created
 
 
     // @ After window creation, and model loading, start rendering
     try {
          renderer = new Renderer(this->device, *window, model);
-         renderer->render(camera.getViewMatrix(), camera.getProjectionMatrix(), model->getModelMatrix());
+         renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

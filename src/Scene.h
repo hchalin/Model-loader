@@ -18,18 +18,17 @@ public:
 
     ~Scene();
 
-    void start();
 
     Model *loadModel();
 
 
 private:
 
-    Camera camera;
-    Model *model;
-    Window *window;
-    Renderer *renderer;
-    MTL::Device *device;
+    Camera *camera {nullptr};
+    Model *model {nullptr};
+    Window *window {nullptr};
+    Renderer *renderer {nullptr};
+    MTL::Device *device {nullptr};
 };
 
 

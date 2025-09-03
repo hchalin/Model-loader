@@ -223,6 +223,9 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
     u->viewMatrix       = viewMatrix;
     u->projectionMatrix = projectionMatrix;
     u->modelMatrix      = modelMatrix;
+    // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
+    // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
+    // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
