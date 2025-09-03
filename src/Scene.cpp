@@ -7,22 +7,13 @@
 #include <iostream>
 #include <ostream>
 
-Scene::Scene() {
-}
-Scene::~Scene() {
-    delete window;
-    window = nullptr;
-    delete renderer;
-    renderer = nullptr;
-    delete model;
-    model = nullptr;
-}
-
-void Scene::start() {
+Scene::Scene():
+    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
+    device(MTL::CreateSystemDefaultDevice())        // Create the GPU device
+{
     // @ Try and create the window (will also create the device)
     try {
-        window = new Window();
-        device = window->getMTLLayer()->device();       // Set device after window creation
+        window = new Window(this->device);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
@@ -37,12 +28,21 @@ void Scene::start() {
 
     // @ After window creation, and model loading, start rendering
     try {
-         renderer = new Renderer(*window, model);
-         renderer->render();
+         renderer = new Renderer(this->device, *window, model);
+         renderer->render(camera.getViewMatrix());
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 }
+Scene::~Scene() {
+    delete window;
+    window = nullptr;
+    delete renderer;
+    renderer = nullptr;
+    delete model;
+    model = nullptr;
+}
+
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here

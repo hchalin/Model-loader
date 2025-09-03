@@ -22,20 +22,22 @@ struct Uniforms {
     Matrix4f projectionMatrix;
     Matrix4f modelMatrix;
 };
+
 class Renderer {
 public:
     Renderer();
-    Renderer(Window &window, Model * model);
+    Renderer(MTL::Device * device, Window &window, Model * model);
     ~Renderer();
 
     void createPipelineState();
-    void render();
+    void render(Matrix4f &viewMatrix);
 
     void updateProjectionMatrix(float aRatio);
 
     Window &getWindow();
     void drawFrame();
 
+    /*
     // Camera controls
     void cameraUp();
     void cameraDown();
@@ -45,9 +47,9 @@ public:
     void cameraMove(float aScalar);
     void cameraRotate(float aTurn);
     void processInput(int key, int scancode, int action, int mods);
-
     // Key map
     bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
+    */
 
 private:
     // Once
@@ -66,8 +68,6 @@ private:
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
 
-    // Camera
-    Camera camera;
 
     // Model
     Model* model;

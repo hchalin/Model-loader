@@ -15,20 +15,21 @@
 class Scene {
 public:
     Scene();
+
     ~Scene();
+
     void start();
 
-    Model * loadModel();
-
-    private:
-    //std::vector<Model> models;
-    Model* model;
-    Window* window;
-    Renderer* renderer;
-    MTL::Device* device;
+    Model *loadModel();
 
 
+private:
 
+    Camera camera;
+    Model *model;
+    Window *window;
+    Renderer *renderer;
+    MTL::Device *device;
 };
 
 

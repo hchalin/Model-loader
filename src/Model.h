@@ -64,7 +64,7 @@ private:
     int indexCount;                             // # of indices
     std::string &fileName;                       // File name
     MTL::Device *device{nullptr};               // Device
-    BroMath::Transform transform;                      // ! Namespace error right now
+    BroMath::Transform transform;
     MTL::Texture *vertexTexture{nullptr};       // ptr to texture
     // Buffers
     MTL::Buffer *vertexBuffer;

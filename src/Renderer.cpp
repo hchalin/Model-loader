@@ -5,13 +5,13 @@
 #include "Renderer.h"
 
 
-Renderer::Renderer(Window &windowSrc, Model *model):
+Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     // Get device from the metalLayer in the window
-    device(windowSrc.getMTLLayer()->device()),
+    device(device),
     window(&windowSrc),
-    camera(Vector3f(1.0, 0.0, 5.0), Vector3f(0.0, 0.0, 0.0)), // * camera(camPos, target)
     model(model),
-    totalTime(0.0){
+    totalTime(0.0)
+{
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
@@ -39,19 +39,22 @@ Renderer::Renderer(Window &windowSrc, Model *model):
 
 
     // ^ Camera view matrix
+    /*
     Matrix4f viewMatrix = camera.getViewMatrix();
     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
     *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
+    */
 
     // ^ Set GLFW Callbacks
-    glfwSetWindowUserPointer(window->getGLFWWindow(), this);
-    glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
-    glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
-    glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
-    glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
+    // glfwSetWindowUserPointer(window->getGLFWWindow(), this);
+    // glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
+    // glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
+    // glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
+    // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ model matrix, sent into the GPU's uniform buffer
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
     BroMath::Transform &matrix = model->getTransform();     // ^ This returns a type: BroMath::Transform
     matrix.setTranslation(0,0.0, 0);
     *(bufferPtr + 2) = matrix.getMatrix();                  // ^ This returns a type: Eigen::Matrix4f
@@ -63,6 +66,7 @@ Renderer::Renderer(Window &windowSrc, Model *model):
 
 void Renderer::updateProjectionMatrix(float aRatio) {
     // ^ Define the vertical fov to radias, horizontal will be based off of this.
+    // TODO This should be in the Camera, the projection matrix is the 'lens' of the camera
     const float fovY = 45.0f * (M_PI / 180.0f);
 
     // ^ Frustrum clipping planes
@@ -248,8 +252,13 @@ Renderer::~Renderer() {
 
 }
 
-void Renderer::render() {
+void Renderer::render(Matrix4f &viewMatrix) {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
+
+    // Set the cameras viewMatrix in the uniform buffer
+    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
+    *bufferPtr = viewMatrix; // @ This will do something similar to memcopy into the uniform buffer
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
@@ -373,6 +382,7 @@ Window &Renderer::getWindow() {
       return *window;
 }
 
+/*
 void Renderer::cameraUp() {
     camera.moveUp(0.05);
     // Before you draw a frame, update viewMatrix sent to the gpu
@@ -448,10 +458,11 @@ void Renderer::processInput(int key, int scancode, int action, int mods){
         cameraRight();
     }
 }
-
+*/
 
 /** @note Below are the free functions for glfw
  */
+/*
 void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
     if (!renderer || height == 0) return;
@@ -484,6 +495,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
     }
     renderer->processInput(key, scancode, action, mods);
 }
+*/
 /*
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
     // ! TODO, make this handle key holds, not just presses.
@@ -518,6 +530,8 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 }
 */
 
+/*
+
 void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     constexpr float dampen {0.09};      // Slow down trackpad movement
     constexpr float degreesPerScroll {5.0f};
@@ -535,3 +549,4 @@ void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
     renderer->cameraZoom(yoffset);
     }
 };
+*/

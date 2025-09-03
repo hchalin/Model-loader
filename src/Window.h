@@ -9,7 +9,7 @@
 #include <QuartzCore/CAMetalLayer.hpp>
 class Window {
     public:
-    Window();
+    Window(MTL::Device *device);
     ~Window();
 
     CA::MetalLayer *getMTLLayer() const;

@@ -1,0 +1,1028 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXAggregateTarget section */
+		121A3F6D802F221663721EC4 /* ZERO_CHECK */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = 88B9636D150D4B7587EED9E2 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */;
+			buildPhases = (
+				FD61FA90D038FF618D76AD96 /* Generate CMakeFiles/ZERO_CHECK */,
+			);
+			dependencies = (
+			);
+			name = ZERO_CHECK;
+			productName = ZERO_CHECK;
+		};
+		CCE9F902B3F70DD8568E5090 /* ALL_BUILD */ = {
+			isa = PBXAggregateTarget;
+			buildConfigurationList = C6409D269A2647A3B047096D /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */;
+			buildPhases = (
+				430C30D41BE750207FD25145 /* Generate CMakeFiles/ALL_BUILD */,
+			);
+			dependencies = (
+				2B22699E3C044D6CB0C9B46A /* PBXTargetDependency */,
+				B6C1DBD477844FC7AA24F1D3 /* PBXTargetDependency */,
+				A5F04CEA65C847859E6B3E71 /* PBXTargetDependency */,
+			);
+			name = ALL_BUILD;
+			productName = ALL_BUILD;
+		};
+/* End PBXAggregateTarget section */
+
+/* Begin PBXBuildFile section */
+		054B8FAD105B439EB6D74E31 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.h */ = {isa = PBXBuildFile; fileRef = 20F96840094E42BD9295144C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.h */; };
+		0EC6DA8D03144E29A80E2337 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/tiny_obj_loader.h */ = {isa = PBXBuildFile; fileRef = 7C323128E1684FF19FBAF68F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/tiny_obj_loader.h */; };
+		0F7316554DC149A89EFEB454 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */ = {isa = PBXBuildFile; fileRef = 158A06D88B4542659ECBDEE0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */; };
+		1B44785809CD41EB81780679 /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = A348906A8F904DECBA36F59A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */; };
+		1E91A101C7514DEAB473F57D /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.cpp */ = {isa = PBXBuildFile; fileRef = 0A97E56A7BD34E8E8374F0A0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.cpp */; };
+		24CC1F6A342A401391366977 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */ = {isa = PBXBuildFile; fileRef = DCD88633E4DC472AA225EA1A /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */; };
+		499907E402734C56BA83A50B /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.h */ = {isa = PBXBuildFile; fileRef = F8786621E8834869881DC13F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.h */; };
+		5F565BA6701F423887841D1C /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */ = {isa = PBXBuildFile; fileRef = 379D73A215494422A250B058 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */; };
+		6354EB087D564D32A695785E /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.h */ = {isa = PBXBuildFile; fileRef = 1AEE1505FF17482BB1233FCD /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.h */; };
+		6FBB2B87DE6C4D8EB5F25672 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp */ = {isa = PBXBuildFile; fileRef = FF324EE9C7B74A35843C5B2A /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp */; };
+		94F6835A4A1A4EFF9A884660 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp */ = {isa = PBXBuildFile; fileRef = 52A97877FF15481BA0083995 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp */; };
+		9BE007503BA34D59A50C278C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp */ = {isa = PBXBuildFile; fileRef = BB2A301D73694F83AF69F334 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp */; };
+		9C35F0142CD94AD1B3814D9C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm */ = {isa = PBXBuildFile; fileRef = 3DEECA6A805D4526862709EA /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm */; };
+		9F8F10D51FB14685A92456D1 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/vec4.h */ = {isa = PBXBuildFile; fileRef = CCF947F497144235B104D519 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/vec4.h */; };
+		AFB64D4E1B9842BBB482F95F /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */ = {isa = PBXBuildFile; fileRef = D5C8D59B175F42F1A1A9CB4A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */; };
+		B81539D24CE449F6BEFE358F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp */ = {isa = PBXBuildFile; fileRef = 8221A9855C80423697F22FBB /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp */; };
+		BE0D45842D504E3C8F75B580 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */ = {isa = PBXBuildFile; fileRef = C04FBF33CE9649A9AF4381E9 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */; };
+		DF43DE6E24824AA891D434DC /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/main.cpp */ = {isa = PBXBuildFile; fileRef = 628E4FE2C40743E3A7B71096 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/main.cpp */; };
+		E6D60DDFF2D94CA48A388CC2 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp */ = {isa = PBXBuildFile; fileRef = 6B12CE746B8347FD91F2C6BF /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp */; };
+		E7276121A05A4BB2AC59BE2B /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp */ = {isa = PBXBuildFile; fileRef = CF8912C636EC42CDA91D92A3 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp */; };
+		F0EA42F21B6A4DC19D03192E /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.h */ = {isa = PBXBuildFile; fileRef = 1011553137B84EF0978746BC /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXBuildStyle section */
+		8F2B543CE8E94858A33C2074 /* RelWithDebInfo */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = RelWithDebInfo;
+		};
+		A041D80361EE45BFA65656BF /* MinSizeRel */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = MinSizeRel;
+		};
+		E03AEAE26D0D44A3A99BB9F3 /* Release */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Release;
+		};
+		FC6E3FF2815C423687250AEF /* Debug */ = {
+			isa = PBXBuildStyle;
+			buildSettings = {
+				COPY_PHASE_STRIP = NO;
+			};
+			name = Debug;
+		};
+/* End PBXBuildStyle section */
+
+/* Begin PBXContainerItemProxy section */
+		0858147A4CA84FCBB9CB83BA /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D3A88B589B440B5A3F970A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 121A3F6D802F221663721EC4;
+			remoteInfo = ZERO_CHECK;
+		};
+		0F82392106204C6CB3428F8A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D3A88B589B440B5A3F970A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 121A3F6D802F221663721EC4;
+			remoteInfo = ZERO_CHECK;
+		};
+		9A4AE66104574D11AF57B838 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D3A88B589B440B5A3F970A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 121A3F6D802F221663721EC4;
+			remoteInfo = ZERO_CHECK;
+		};
+		A5793BD81C5A4CCA8083EE1A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D3A88B589B440B5A3F970A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = C0F7A20048AE0E45AC6C17DD;
+			remoteInfo = Model_Viewer;
+		};
+		E5404EB2B9834E2883BB0EF8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6D3A88B589B440B5A3F970A0 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = D75EF0C960C82A349F459C4A;
+			remoteInfo = Model_Viewer_Tests;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A97E56A7BD34E8E8374F0A0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Window.cpp; path = src/Window.cpp; sourceTree = SOURCE_ROOT; };
+		1011553137B84EF0978746BC /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Model.h; path = src/Model.h; sourceTree = SOURCE_ROOT; };
+		158A06D88B4542659ECBDEE0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = test_main.cpp; path = tests/test_main.cpp; sourceTree = SOURCE_ROOT; };
+		19F694ACB15B4B7AB9F298A4 /* Model_Viewer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Model_Viewer; sourceTree = BUILT_PRODUCTS_DIR; };
+		1AEE1505FF17482BB1233FCD /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Scene.h; path = src/Scene.h; sourceTree = SOURCE_ROOT; };
+		20F96840094E42BD9295144C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Camera.h; path = src/Camera.h; sourceTree = SOURCE_ROOT; };
+		32F066A995894B54A83EBD8B /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		379D73A215494422A250B058 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = test_camera.cpp; path = tests/test_camera.cpp; sourceTree = SOURCE_ROOT; };
+		3DEECA6A805D4526862709EA /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.objcpp; fileEncoding = 4; name = glfw_adaptor.mm; path = src/backend/glfw_adaptor.mm; sourceTree = SOURCE_ROOT; };
+		52A97877FF15481BA0083995 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Model.cpp; path = src/Model.cpp; sourceTree = SOURCE_ROOT; };
+		628E4FE2C40743E3A7B71096 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = main.cpp; path = src/main.cpp; sourceTree = SOURCE_ROOT; };
+		6B12CE746B8347FD91F2C6BF /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Camera.cpp; path = src/Camera.cpp; sourceTree = SOURCE_ROOT; };
+		7C323128E1684FF19FBAF68F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/tiny_obj_loader.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = tiny_obj_loader.h; path = src/backend/tiny_obj_loader.h; sourceTree = SOURCE_ROOT; };
+		7D1CECF663AE49F39668B3B7 /* Model_Viewer_Tests */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; path = Model_Viewer_Tests; sourceTree = BUILT_PRODUCTS_DIR; };
+		8221A9855C80423697F22FBB /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Scene.cpp; path = src/Scene.cpp; sourceTree = SOURCE_ROOT; };
+		A348906A8F904DECBA36F59A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		BB2A301D73694F83AF69F334 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Transform.cpp; path = src/common/BroMath/Transform.cpp; sourceTree = SOURCE_ROOT; };
+		C04FBF33CE9649A9AF4381E9 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = test_main.cpp; path = tests/test_main.cpp; sourceTree = SOURCE_ROOT; };
+		CCF947F497144235B104D519 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/vec4.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = vec4.h; path = src/common/BroMath/vec4.h; sourceTree = SOURCE_ROOT; };
+		CF8912C636EC42CDA91D92A3 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = Renderer.cpp; path = src/Renderer.cpp; sourceTree = SOURCE_ROOT; };
+		D5C8D59B175F42F1A1A9CB4A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */ = {isa = PBXFileReference; explicitFileType = sourcecode.text; fileEncoding = 4; name = CMakeLists.txt; path = CMakeLists.txt; sourceTree = SOURCE_ROOT; };
+		DCD88633E4DC472AA225EA1A /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = test_camera.cpp; path = tests/test_camera.cpp; sourceTree = SOURCE_ROOT; };
+		F8786621E8834869881DC13F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.h; fileEncoding = 4; name = Transform.h; path = src/common/BroMath/Transform.h; sourceTree = SOURCE_ROOT; };
+		FF324EE9C7B74A35843C5B2A /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; name = readShaderFile.cpp; path = src/shaders/readShaderFile.cpp; sourceTree = SOURCE_ROOT; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1CA69AB210184D1CBB3E8529 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		C3545860207A4A778A24E557 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		22A5C846C81247B89A0840BB /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				379D73A215494422A250B058 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */,
+				C04FBF33CE9649A9AF4381E9 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		271B0E77F2C74396A747FD71 /* ALL_BUILD */ = {
+			isa = PBXGroup;
+			children = (
+				41465A93DE1B40DFB743E6F6 /* CMake Rules */,
+				32F066A995894B54A83EBD8B /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */,
+			);
+			name = ALL_BUILD;
+			sourceTree = "<group>";
+		};
+		330EE0ADD4844B5DB0FDEE27 /* Source Files */ = {
+			isa = PBXGroup;
+			children = (
+				6B12CE746B8347FD91F2C6BF /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp */,
+				52A97877FF15481BA0083995 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp */,
+				CF8912C636EC42CDA91D92A3 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp */,
+				8221A9855C80423697F22FBB /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp */,
+				0A97E56A7BD34E8E8374F0A0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.cpp */,
+				3DEECA6A805D4526862709EA /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm */,
+				BB2A301D73694F83AF69F334 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp */,
+				628E4FE2C40743E3A7B71096 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/main.cpp */,
+				FF324EE9C7B74A35843C5B2A /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp */,
+				DCD88633E4DC472AA225EA1A /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */,
+				158A06D88B4542659ECBDEE0 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */,
+			);
+			name = "Source Files";
+			sourceTree = "<group>";
+		};
+		3D883A2848E44029AA2B5AC6 /* Header Files */ = {
+			isa = PBXGroup;
+			children = (
+				20F96840094E42BD9295144C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.h */,
+				1011553137B84EF0978746BC /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.h */,
+				1AEE1505FF17482BB1233FCD /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.h */,
+				7C323128E1684FF19FBAF68F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/tiny_obj_loader.h */,
+				F8786621E8834869881DC13F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.h */,
+				CCF947F497144235B104D519 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/vec4.h */,
+			);
+			name = "Header Files";
+			sourceTree = "<group>";
+		};
+		41465A93DE1B40DFB743E6F6 /* CMake Rules */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "CMake Rules";
+			sourceTree = "<group>";
+		};
+		4B1E2791D193410C88A2990E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		85E0528D96A04B0AAE3C6478 = {
+			isa = PBXGroup;
+			children = (
+				BECA75896956448D99B2B882 /* Model_Viewer */,
+				D09E28588B754710961C0C36 /* Model_Viewer_Tests */,
+				271B0E77F2C74396A747FD71 /* ALL_BUILD */,
+				AEE2A96C53874B89AC8F18FA /* Products */,
+				4B1E2791D193410C88A2990E /* Frameworks */,
+				E49C5550FDD24E3CAD562CE1 /* Resources */,
+			);
+			sourceTree = "<group>";
+		};
+		AEE2A96C53874B89AC8F18FA /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				19F694ACB15B4B7AB9F298A4 /* Model_Viewer */,
+				7D1CECF663AE49F39668B3B7 /* Model_Viewer_Tests */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		BECA75896956448D99B2B882 /* Model_Viewer */ = {
+			isa = PBXGroup;
+			children = (
+				330EE0ADD4844B5DB0FDEE27 /* Source Files */,
+				3D883A2848E44029AA2B5AC6 /* Header Files */,
+				D5C8D59B175F42F1A1A9CB4A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */,
+			);
+			name = Model_Viewer;
+			sourceTree = "<group>";
+		};
+		D09E28588B754710961C0C36 /* Model_Viewer_Tests */ = {
+			isa = PBXGroup;
+			children = (
+				22A5C846C81247B89A0840BB /* Source Files */,
+				A348906A8F904DECBA36F59A /* /Users/haydenchalin/CLionProjects/Model_Viewer/CMakeLists.txt */,
+			);
+			name = Model_Viewer_Tests;
+			sourceTree = "<group>";
+		};
+		E49C5550FDD24E3CAD562CE1 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Resources;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		C0F7A20048AE0E45AC6C17DD /* Model_Viewer */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 067009CE18B94CFAB5234C90 /* Build configuration list for PBXNativeTarget "Model_Viewer" */;
+			buildPhases = (
+				52EE126D394145AFB293CA9F /* Sources */,
+				C3545860207A4A778A24E557 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				927BD5E3509A449BB62FE233 /* PBXTargetDependency */,
+			);
+			name = Model_Viewer;
+			productName = Model_Viewer;
+			productReference = 19F694ACB15B4B7AB9F298A4 /* Model_Viewer */;
+			productType = "com.apple.product-type.tool";
+		};
+		D75EF0C960C82A349F459C4A /* Model_Viewer_Tests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 28F14106768E4C4EBFF6482E /* Build configuration list for PBXNativeTarget "Model_Viewer_Tests" */;
+			buildPhases = (
+				B676C1C664DD42C79D96B1B3 /* Sources */,
+				1CA69AB210184D1CBB3E8529 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				12C9BB96F76A49949240EB7C /* PBXTargetDependency */,
+			);
+			name = Model_Viewer_Tests;
+			productName = Model_Viewer_Tests;
+			productReference = 7D1CECF663AE49F39668B3B7 /* Model_Viewer_Tests */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		6D3A88B589B440B5A3F970A0 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1540;
+			};
+			buildConfigurationList = CE7195D542214A1E886F356A /* Build configuration list for PBXProject "Model_Viewer" */;
+			buildSettings = {
+			};
+			buildStyles = (
+				FC6E3FF2815C423687250AEF /* Debug */,
+				E03AEAE26D0D44A3A99BB9F3 /* Release */,
+				A041D80361EE45BFA65656BF /* MinSizeRel */,
+				8F2B543CE8E94858A33C2074 /* RelWithDebInfo */,
+			);
+			compatibilityVersion = "Xcode 3.2";
+			hasScannedForEncodings = 0;
+			mainGroup = 85E0528D96A04B0AAE3C6478;
+			projectDirPath = /Users/haydenchalin/CLionProjects/Model_Viewer;
+			projectRoot = "";
+			targets = (
+				CCE9F902B3F70DD8568E5090 /* ALL_BUILD */,
+				C0F7A20048AE0E45AC6C17DD /* Model_Viewer */,
+				D75EF0C960C82A349F459C4A /* Model_Viewer_Tests */,
+				121A3F6D802F221663721EC4 /* ZERO_CHECK */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		3C0110FC8322DE7E50886E21 = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		430C30D41BE750207FD25145 /* Generate CMakeFiles/ALL_BUILD */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ALL_BUILD";
+			outputPaths = (
+"/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/ALL_BUILD"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  echo Build\\ all\\ projects
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  echo Build\\ all\\ projects
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+		9B50530E35CC49C82C2FACCF = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# shell script goes here
+exit 0";
+			showEnvVarsInLog = 0;
+		};
+		FD61FA90D038FF618D76AD96 /* Generate CMakeFiles/ZERO_CHECK */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Generate CMakeFiles/ZERO_CHECK";
+			outputPaths = (
+"/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/ZERO_CHECK"			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e
+if test \"$CONFIGURATION\" = \"Debug\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  make -f /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"Release\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  make -f /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"MinSizeRel\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  make -f /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeScripts/ReRunCMake.make
+fi
+if test \"$CONFIGURATION\" = \"RelWithDebInfo\"; then :
+  cd /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode
+  make -f /Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeScripts/ReRunCMake.make
+fi
+";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		52EE126D394145AFB293CA9F /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				E6D60DDFF2D94CA48A388CC2 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Camera.cpp */,
+				94F6835A4A1A4EFF9A884660 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Model.cpp */,
+				E7276121A05A4BB2AC59BE2B /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Renderer.cpp */,
+				B81539D24CE449F6BEFE358F /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Scene.cpp */,
+				1E91A101C7514DEAB473F57D /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/Window.cpp */,
+				9C35F0142CD94AD1B3814D9C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/backend/glfw_adaptor.mm */,
+				9BE007503BA34D59A50C278C /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/common/BroMath/Transform.cpp */,
+				DF43DE6E24824AA891D434DC /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/main.cpp */,
+				6FBB2B87DE6C4D8EB5F25672 /* /Users/haydenchalin/CLionProjects/Model_Viewer/src/shaders/readShaderFile.cpp */,
+				24CC1F6A342A401391366977 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */,
+				0F7316554DC149A89EFEB454 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B676C1C664DD42C79D96B1B3 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				5F565BA6701F423887841D1C /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_camera.cpp */,
+				BE0D45842D504E3C8F75B580 /* /Users/haydenchalin/CLionProjects/Model_Viewer/tests/test_main.cpp */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		12C9BB96F76A49949240EB7C /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 121A3F6D802F221663721EC4 /* ZERO_CHECK */;
+			targetProxy = 0F82392106204C6CB3428F8A /* PBXContainerItemProxy */;
+		};
+		2B22699E3C044D6CB0C9B46A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 121A3F6D802F221663721EC4 /* ZERO_CHECK */;
+			targetProxy = 0858147A4CA84FCBB9CB83BA /* PBXContainerItemProxy */;
+		};
+		927BD5E3509A449BB62FE233 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 121A3F6D802F221663721EC4 /* ZERO_CHECK */;
+			targetProxy = 9A4AE66104574D11AF57B838 /* PBXContainerItemProxy */;
+		};
+		A5F04CEA65C847859E6B3E71 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = D75EF0C960C82A349F459C4A /* Model_Viewer_Tests */;
+			targetProxy = E5404EB2B9834E2883BB0EF8 /* PBXContainerItemProxy */;
+		};
+		B6C1DBD477844FC7AA24F1D3 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = C0F7A20048AE0E45AC6C17DD /* Model_Viewer */;
+			targetProxy = A5793BD81C5A4CCA8083EE1A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		08A19C78FFAC4983A2D7AC1A /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 14.3;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build";
+			};
+			name = RelWithDebInfo;
+		};
+		1D65A95E79294B60BE8DC905 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/MinSizeRel";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libgtest_main.a,/opt/homebrew/lib/libgtest.a,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer_Tests;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer_Tests.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		2DA85EDC51824A31BE47C759 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		2ED914D6ABFE46098BF8EBF7 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/Release";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen,/Users/haydenchalin/CLionProjects/Model_Viewer/src/backend,/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks,/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies,"$(inherited)");
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libglfw.3.4.dylib,"-lstdc++","-framework Metal","-framework MetalKit","-framework ModelIO","-framework Foundation","-framework QuartzCore","-framework Accelerate","-framework AppKit","-lobjc",/opt/homebrew/lib/libjsoncpp.26.dylib,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		3C49952A72D345EFACA1970F /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 14.3;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build";
+			};
+			name = MinSizeRel;
+		};
+		4690A9FEFE1345E28DD645F6 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		4D1BA257F2A54FA7B9327E18 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		5C715A361A0C4C809353DCBB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 14.3;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SYMROOT = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build";
+			};
+			name = Debug;
+		};
+		5F6D3FDA3A4C4D5DA32F3880 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		613DEDB88A9C490594407AEC /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ZERO_CHECK;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		7F5DE007C2F54A268914E762 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/Release";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libgtest_main.a,/opt/homebrew/lib/libgtest.a,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer_Tests;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer_Tests.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+		8C38BB257E4D4674B639B74A /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/RelWithDebInfo";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libgtest_main.a,/opt/homebrew/lib/libgtest.a,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer_Tests;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer_Tests.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		8D1D911AD33C4BFDBE978361 /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/RelWithDebInfo";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 2;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen,/Users/haydenchalin/CLionProjects/Model_Viewer/src/backend,/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks,/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies,"$(inherited)");
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "       -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libglfw.3.4.dylib,"-lstdc++","-framework Metal","-framework MetalKit","-framework ModelIO","-framework Foundation","-framework QuartzCore","-framework Accelerate","-framework AppKit","-lobjc",/opt/homebrew/lib/libjsoncpp.26.dylib,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		934186BC9DB643DFBEE9631B /* RelWithDebInfo */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = RelWithDebInfo;
+		};
+		BD4B38D644944FC3A058D17B /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/MinSizeRel";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = s;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen,/Users/haydenchalin/CLionProjects/Model_Viewer/src/backend,/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks,/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies,"$(inherited)");
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "    -DNDEBUG '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libglfw.3.4.dylib,"-lstdc++","-framework Metal","-framework MetalKit","-framework ModelIO","-framework Foundation","-framework QuartzCore","-framework Accelerate","-framework AppKit","-lobjc",/opt/homebrew/lib/libjsoncpp.26.dylib,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		D143320A3970442EAD06AA9B /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				MACOSX_DEPLOYMENT_TARGET = 14.3;
+				SDKROOT = /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX14.5.sdk;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SYMROOT = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build";
+			};
+			name = Release;
+		};
+		D248F33D5CAD4729ABCEB6E1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/Debug";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/src,"$(inherited)");
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libgtest_main.a,/opt/homebrew/lib/libgtest.a,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer_Tests;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer_Tests.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		D98940C980134893AC8255EE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				CONFIGURATION_BUILD_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/Debug";
+				EXECUTABLE_PREFIX = "";
+				EXECUTABLE_SUFFIX = "";
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				HEADER_SEARCH_PATHS = (/Users/haydenchalin/CLionProjects/Model_Viewer/dependencies/eigen,/Users/haydenchalin/CLionProjects/Model_Viewer/src/backend,/Users/haydenchalin/CLionProjects/Model_Viewer/SYSTEM,/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks,/Users/haydenchalin/CLionProjects/Model_Viewer/Dependencies,"$(inherited)");
+				INSTALL_PATH = "";
+				LD_RUNPATH_SEARCH_PATHS = (/opt/homebrew/lib,"$(inherited)");
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CPLUSPLUSFLAGS = "   '-std=gnu++20' ";
+				OTHER_LDFLAGS = (" -Wl,-search_paths_first -Wl,-headerpad_max_install_names",/opt/homebrew/lib/libglfw.3.4.dylib,"-lstdc++","-framework Metal","-framework MetalKit","-framework ModelIO","-framework Foundation","-framework QuartzCore","-framework Accelerate","-framework AppKit","-lobjc",/opt/homebrew/lib/libjsoncpp.26.dylib,"$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = Model_Viewer;
+				SECTORDER_FLAGS = "";
+				SYSTEM_HEADER_SEARCH_PATHS = (/opt/homebrew/include,"$(inherited)");
+				TARGET_TEMP_DIR = "/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/build/Model_Viewer.build/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Debug;
+		};
+		DDAF28BD181344AD88340C84 /* MinSizeRel */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = MinSizeRel;
+		};
+		DF8A0A2A0DF04DC08415702D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				COMBINE_HIDPI_IMAGES = YES;
+				GCC_GENERATE_DEBUGGING_SYMBOLS = YES;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = ("'CMAKE_INTDIR=\"$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)\"'","$(inherited)");
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = ("","$(inherited)");
+				OTHER_REZFLAGS = "";
+				PRODUCT_NAME = ALL_BUILD;
+				SECTORDER_FLAGS = "";
+				USE_HEADERMAP = NO;
+				WARNING_CFLAGS = ("$(inherited)");
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		067009CE18B94CFAB5234C90 /* Build configuration list for PBXNativeTarget "Model_Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D98940C980134893AC8255EE /* Debug */,
+				2ED914D6ABFE46098BF8EBF7 /* Release */,
+				BD4B38D644944FC3A058D17B /* MinSizeRel */,
+				8D1D911AD33C4BFDBE978361 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		28F14106768E4C4EBFF6482E /* Build configuration list for PBXNativeTarget "Model_Viewer_Tests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				D248F33D5CAD4729ABCEB6E1 /* Debug */,
+				7F5DE007C2F54A268914E762 /* Release */,
+				1D65A95E79294B60BE8DC905 /* MinSizeRel */,
+				8C38BB257E4D4674B639B74A /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		88B9636D150D4B7587EED9E2 /* Build configuration list for PBXAggregateTarget "ZERO_CHECK" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				4D1BA257F2A54FA7B9327E18 /* Debug */,
+				2DA85EDC51824A31BE47C759 /* Release */,
+				613DEDB88A9C490594407AEC /* MinSizeRel */,
+				4690A9FEFE1345E28DD645F6 /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		C6409D269A2647A3B047096D /* Build configuration list for PBXAggregateTarget "ALL_BUILD" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5F6D3FDA3A4C4D5DA32F3880 /* Debug */,
+				DF8A0A2A0DF04DC08415702D /* Release */,
+				DDAF28BD181344AD88340C84 /* MinSizeRel */,
+				934186BC9DB643DFBEE9631B /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+		CE7195D542214A1E886F356A /* Build configuration list for PBXProject "Model_Viewer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				5C715A361A0C4C809353DCBB /* Debug */,
+				D143320A3970442EAD06AA9B /* Release */,
+				3C49952A72D345EFACA1970F /* MinSizeRel */,
+				08A19C78FFAC4983A2D7AC1A /* RelWithDebInfo */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Debug;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 6D3A88B589B440B5A3F970A0 /* Project object */;
+}

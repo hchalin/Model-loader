@@ -8,7 +8,7 @@
 #include <ostream>
 #include <Metal/MTLDevice.hpp>
 
-Window::Window() {
+Window::Window(MTL::Device *device) {
     // disable GLFW's default behavior of creating an OpenGL context
     // Look at declaration for better explination
     glfwWindowHint(GLFW_CLIENT_API, GLFW_NO_API);
@@ -24,7 +24,7 @@ Window::Window() {
 
     // Set the metal layer on the window
     metalLayer = CA::MetalLayer::layer()->retain();
-    metalLayer->setDevice(MTL::CreateSystemDefaultDevice());    // Create metal device and set it as the metal layer for glfw
+    metalLayer->setDevice(device);    // Create metal device and set it as the metal layer for glfw
     metalLayer->setPixelFormat(MTL::PixelFormatBGRA8Unorm);     // Standard 8-bit format.
     metalLayer->setFramebufferOnly(true);                       // Textures only as render targets
 
