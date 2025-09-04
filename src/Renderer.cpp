@@ -220,15 +220,16 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
 
     // @ Rotate model Matrix
      std::cout << "Uniform model matrix before transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
-    BroMath::Transform transform;
-    transform.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
-    modelMatrix = modelMatrix * transform.getMatrix(); // local-space rotation
+    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
+    modelTransformMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
+    // modelMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
+    //modelMatrix = modelMatrix * transform.getMatrix(); // local-space rotation
     std::cout << "Uniform model matrix after transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
     // Set the cameras viewMatrix in the uniform buffer
     auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
     u->viewMatrix       = viewMatrix;
     u->projectionMatrix = projectionMatrix;
-    u->modelMatrix      = modelMatrix;
+    u->modelMatrix      = modelTransformMatrix.getMatrix();
     // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
     // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
     // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;

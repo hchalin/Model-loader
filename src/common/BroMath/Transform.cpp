@@ -80,7 +80,7 @@ void BroMath::Transform::reset() {
  *
  * @return A constant reference to the 4x4 transformation matrix.
  */
-const Eigen::Matrix4f& BroMath::Transform::getMatrix() const {
+Eigen::Matrix4f& BroMath::Transform::getMatrix() {
     return transformMatrix;
 }
 
@@ -95,7 +95,7 @@ const Eigen::Matrix4f& BroMath::Transform::getMatrix() const {
  * @param transform The Transform object to output.
  * @return A reference to the output stream.
  */
-std::ostream& operator<<(std::ostream& os, const BroMath::Transform& transform) {
+std::ostream& operator<<(std::ostream& os,  BroMath::Transform& transform) {
     os << transform.getMatrix();
     return os;
 }

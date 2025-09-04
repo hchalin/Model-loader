@@ -39,7 +39,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Transform& transform);
     //friend void operator*(float scale);         // Scale entire matrix by single value
 
-    const Matrix4f &getMatrix() const;
+    Eigen::Matrix4f &getMatrix();
 
 private:
     // Hide implementation
