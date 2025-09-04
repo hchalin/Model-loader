@@ -215,6 +215,37 @@ Renderer::~Renderer() {
 
 }
 
+void Renderer::render(Camera * cam, Model * model) {
+    // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
+
+    // @ Rotate model Matrix
+     std::cout << "Uniform model matrix before transfrom: " << __FILE__<<__LINE__<< "\n" << model->getModelMatrix() << std::endl;
+    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
+    modelTransformMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
+    // modelMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
+    std::cout << "Uniform model matrix after transfrom: " << __FILE__<<__LINE__<< "\n" << model->getModelMatrix()<< std::endl;
+    // Set the cameras viewMatrix in the uniform buffer
+    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
+    // u->viewMatrix       = viewMatrix;
+    // u->projectionMatrix = projectionMatrix;
+     u->modelMatrix      = modelTransformMatrix.getMatrix();
+    u->viewProjectionMatrix = cam->getViewProjectionMatrix();
+    // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
+    // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
+    // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
+
+    while (!glfwWindowShouldClose(window->getGLFWWindow())) {
+        // ^ Timeing
+        auto currentFrame = static_cast<double>(glfwGetTime());
+        deltaTime = currentFrame - lastTime;
+        lastTime = currentFrame;
+        totalTime += deltaTime;
+
+        glfwPollEvents();
+        drawFrame();
+    }
+}
 void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix) {
     // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
 
@@ -247,12 +278,12 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
     }
 }
 
+
+void Renderer::drawFrame() {
 /*
  *     This function draws a single frame
  *
  */
-
-void Renderer::drawFrame() {
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
     // ^  Get the next drawable

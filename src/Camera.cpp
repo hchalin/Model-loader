@@ -4,32 +4,35 @@
 
 #include "Camera.h"
 
+#include <__ranges/transform_view.h>
+
 Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
     camPos(position), camTarget(target), aRatio(aRatio){
     /*
      *  In the next few lines I will set up the basis vectors required for the camera.
      *  Resource: https://learnopengl.com/Getting-started/Camera
      */
+    Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
-    // ! Use this to NOT look at the origin.
-    //camDirection = Vector3f(0, 0, 1);               // * Use this if you want no perspective
-    //camDirection.normalize();
-
-    // ^ camRight
-    Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
-    camRight = up.cross(camDirection);
-    camRight.normalize();                   // Note: This is more efficient than using normalized()
-
+    camRight = up.cross(camDirection).normalized();
     // ^ camUp
     camUp = camDirection.cross(camRight);
+
+    // @ Set up the transform
 
 
     setViewMatrix();            // I added this to set the viewMatrix on initialization
     std::cout << "aspect ratio: " << aRatio << std::endl;
     setProjectionMatrix(aRatio);
 
+
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+
+    std::cout << "view projection matrix: " << viewProjectionMatrix << std::endl;
+
 }
+
 
 void Camera::setViewMatrix() {
     // ^ View Matrix
@@ -76,6 +79,13 @@ Matrix4f &Camera::getProjectionMatrix() {
 }
 Matrix4f &Camera::getViewMatrix() {
     return viewMatrix;
+}
+Matrix4f &Camera::getViewProjectionMatrix() {
+    return viewProjectionMatrix;
+}
+
+BroMath::Transform &Camera::getTransform() {
+    return cameraTransform;
 }
 
 Vector3f &Camera::getPosition() {

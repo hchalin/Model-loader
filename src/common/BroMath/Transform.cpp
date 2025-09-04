@@ -14,9 +14,9 @@
  * It provides methods to apply translation, rotation, and scaling transformations, as well as
  * to reset the transformation matrix to the identity matrix.
  */
-BroMath::Transform::Transform() {
-    std::cout << "Transform::Transform()" << std::endl;
-    transformMatrix = Eigen::Matrix4f::Identity();
+BroMath::Transform::Transform():
+    transformMatrix(Eigen::Matrix4f::Identity())    // Set the matrix to a identity matrix
+{
 }
 /**
  * @brief Applies a translation transformation to the current transformation matrix.

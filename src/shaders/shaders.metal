@@ -20,6 +20,7 @@ struct Uniforms {
     float4x4 viewMatrix;
     float4x4 projectionMatrix;
     float4x4 modelMatrix;
+    float4x4 viewProjectionMatrix;
 };
 
 struct Material {
@@ -36,7 +37,8 @@ vertex VertexOut vertex_main(
         ) {
     VertexOut out;
 
-    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * in.position;
+//    out.position = uniforms.projectionMatrix * uniforms.viewMatrix * uniforms.modelMatrix * in.position;
+    out.position = uniforms.viewProjectionMatrix * uniforms.modelMatrix * in.position;
     out.color = in.color;
     out.materialIndex = in.materialIndex;
     return out;

@@ -7,6 +7,8 @@
 #include <iostream>
 #include <simd/simd.h>
 
+#include "common/BroMath/Transform.h"
+
 using namespace Eigen;
 
 
@@ -16,6 +18,8 @@ class Camera {
 
     Matrix4f &getViewMatrix();
     Matrix4f &getProjectionMatrix();
+    Matrix4f &getViewProjectionMatrix();
+    BroMath::Transform &getTransform();
     Vector3f &getPosition();
 
     void updateAspectRatio(float aR);
@@ -42,8 +46,10 @@ class Camera {
     Vector3f camRight;
 
 
-    Matrix4f projectionMatrix;
+    BroMath::Transform cameraTransform;
+    Matrix4f projectionMatrix;  // Note: Camera Space -> clip space
     Matrix4f viewMatrix;     // Note: World Space -> Camera Space
+    Matrix4f viewProjectionMatrix;
 
     void setViewMatrix();
     void setProjectionMatrix(const float aRatio);

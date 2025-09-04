@@ -18,7 +18,7 @@ Scene::Scene():
     }
 
     // @ Create camera w/ windows aspect ratio
-    camera = new Camera(Vector3f(0, 0, 5.0f), Vector3f(0, 0, 0), window->getAspectRatio());
+    camera = new Camera(Vector3f(0, 0, 10.0f), Vector3f(0, 0, 0), window->getAspectRatio());
 
     // @ After window creation, load models
     model = loadModel();            // This returns a pointer to a model created
@@ -27,7 +27,8 @@ Scene::Scene():
     // @ After window creation, and model loading, start rendering
     try {
          renderer = new Renderer(this->device, *window, model);
-         renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
+         // renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
+         renderer->render(camera, model);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

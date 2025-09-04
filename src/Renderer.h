@@ -21,6 +21,7 @@ struct Uniforms {
     Matrix4f viewMatrix;
     Matrix4f projectionMatrix;
     Matrix4f modelMatrix;
+    Matrix4f viewProjectionMatrix;      // This is the matrix multiple of view and proj
 };
 
 class Renderer {
@@ -31,6 +32,7 @@ public:
 
     void createPipelineState();
     void render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix);
+    void render(Camera * cam, Model * model);
 
 
     Window &getWindow();

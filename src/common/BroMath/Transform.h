@@ -26,6 +26,7 @@ using Matrix4f = Eigen::Matrix4f;
 class Transform final {
 public:
     Transform();
+    Transform(Eigen::Vector3f position, Eigen::Vector3f rotation);
     ~Transform() = default;
 
     void setTranslation(float x, float y, float z);
@@ -43,7 +44,6 @@ public:
 
 private:
     // Hide implementation
-    //Matrix4f translation;
     Matrix4f transformMatrix;
 };
 
