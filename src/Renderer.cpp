@@ -323,6 +323,7 @@ void Renderer::drawFrame() {
   // @ Draw model
   if (model) {
       model->getTransform().reset();
+
       // Bind buffers
       encoder->setVertexBuffer(model->getVertexBuffer(), 0, 0);
       encoder->setVertexBuffer(model->getMaterialBuffer(), 0, 1);        // Send the materials for the vertex fn in buffer 1
@@ -332,13 +333,13 @@ void Renderer::drawFrame() {
        *      Rotation
        */
       // {
-          // float spinSpeed = 0.3f;
-          // model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-          // const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-          // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-          // *(bufferPtr + 2) = transformMatrix;
+          float spinSpeed = 1.0f;
+          model->getTransform().setRotation(totalTime * spinSpeed,0.8f , -.2f, -.4f);
+          const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
+          auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
+           *(bufferPtr + 2) = transformMatrix;
           // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-          // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+          uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
           // ^ Update the 3rd slot for the uniform buffer
           // Note, this another way to calculate the required offset for the buffer update
           //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
