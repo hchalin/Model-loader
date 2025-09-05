@@ -228,11 +228,8 @@ void Renderer::render(Camera * cam, Model * model) {
     auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
     // u->viewMatrix       = viewMatrix;
     // u->projectionMatrix = projectionMatrix;
-     u->modelMatrix      = modelTransformMatrix.getMatrix();
+    u->modelMatrix = modelTransformMatrix.getMatrix();
     u->viewProjectionMatrix = cam->getViewProjectionMatrix();
-    // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
-    // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
-    // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
     uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {

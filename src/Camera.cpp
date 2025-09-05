@@ -15,6 +15,7 @@ Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
     Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
+    // camDirection = (camTarget-camPos).normalized();    // * the position minus the target - This will test perspective
     camRight = up.cross(camDirection).normalized();
     // ^ camUp
     camUp = camDirection.cross(camRight);
@@ -84,7 +85,7 @@ Matrix4f &Camera::getViewProjectionMatrix() {
     return viewProjectionMatrix;
 }
 
-BroMath::Transform &Camera::getTransform() {
+BroMath::Transform &Camera::getTransformMatrix() {
     return cameraTransform;
 }
 

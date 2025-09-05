@@ -11,6 +11,17 @@
 
 using namespace Eigen;
 
+// TODO: the cameras view matrix and projection matrix needs to be derived from the transform class,
+// TODO: (cont) not the way it is now, setting the transform based off the view/proj matrices
+
+// Camera invariants / TODO:
+// - Single source of truth: Camera::transform (position + rotation; no scale).
+// - viewMatrix = inverseRigid(transform)  // recompute whenever transform changes
+// - projectionMatrix = perspective(fovY, aspect, near, far)  // recompute on param changes
+// - viewProjectionMatrix = projectionMatrix * viewMatrix
+// Avoid setting transform FROM view/projection. If using lookAt, set transform from target,
+// then rebuild view (and VP) from transform.
+
 
 class Camera {
     public:
@@ -19,7 +30,7 @@ class Camera {
     Matrix4f &getViewMatrix();
     Matrix4f &getProjectionMatrix();
     Matrix4f &getViewProjectionMatrix();
-    BroMath::Transform &getTransform();
+    BroMath::Transform &getTransformMatrix();
     Vector3f &getPosition();
 
     void updateAspectRatio(float aR);
