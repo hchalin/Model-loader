@@ -4,6 +4,7 @@
 
 #include "Renderer.h"
 
+using namespace Eigen;
 
 Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     // Get device from the metalLayer in the window
@@ -47,10 +48,10 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 
     // ^ model matrix, sent into the GPU's uniform buffer
-     auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    Eigen::Matrix4f &matrix = model->getModelMatrix();     // ^ This returns a type: BroMath::Transform
-    *(bufferPtr + 2) = matrix;                  // ^ This returns a type: Eigen::Matrix4f
-    uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+     // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
+    // Eigen::Matrix4f &matrix = model->getModelMatrix();     // ^ This returns a type: BroMath::Transform
+    // *(bufferPtr + 2) = matrix;                  // ^ This returns a type: Eigen::Matrix4f
+    // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
 
     // ^ Create render pipeline state
     createPipelineState();

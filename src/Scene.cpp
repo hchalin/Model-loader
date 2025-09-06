@@ -7,10 +7,12 @@
 #include <iostream>
 #include <ostream>
 
+using namespace Eigen;
+
 Scene::Scene():
     device(MTL::CreateSystemDefaultDevice())        // Create the GPU device
 {
-    // @ Try and create the window (will also create the device)
+    // @ Try and create the window
     try {
         window = new Window(this->device);
     } catch (const std::exception &e) {
@@ -24,6 +26,12 @@ Scene::Scene():
     model = loadModel();            // This returns a pointer to a model created
 
 
+    // @ Before you render, after creating a window and camera, create a controller
+    controller = new Controller();
+
+    // @ GLFW
+     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
+
     // @ After window creation, and model loading, start rendering
     try {
          renderer = new Renderer(this->device, *window, model);
@@ -32,6 +40,7 @@ Scene::Scene():
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
+
 }
 Scene::~Scene() {
     delete window;
@@ -45,7 +54,7 @@ Scene::~Scene() {
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
-    device = window->getMTLLayer()->device();
+    // device = window->getMTLLayer()->device();
     std::string fileName = "CC2.obj";
     // std::string fileName = "scene_test.obj";
     if (!device) {
@@ -55,4 +64,19 @@ Model * Scene::loadModel() {
     model = new Model(device, fileName);
 
     return model;
+}
+void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+    std::cout << "Framebuffer size: " << width << " x " << height << std::endl;
+    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+    if (!renderer || height == 0) return;
+
+
+    renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
+        static_cast<double>(width),
+        static_cast<double>(height)
+    });
+
+    float aspect = static_cast<float>(width) / height;
+    // renderer->updateProjectionMatrix(aspect);
+    // renderer->drawFrame();
 }

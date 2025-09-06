@@ -5,11 +5,9 @@
 #pragma once
 #include <eigen/Eigen/Dense>
 #include <iostream>
-#include <simd/simd.h>
 
 #include "common/BroMath/Transform.h"
 
-using namespace Eigen;
 
 // TODO: the cameras view matrix and projection matrix needs to be derived from the transform class,
 // TODO: (cont) not the way it is now, setting the transform based off the view/proj matrices
@@ -25,13 +23,13 @@ using namespace Eigen;
 
 class Camera {
     public:
-    Camera(const Vector3f& position, const Vector3f& target, float aRatio);
+    Camera(const Eigen::Vector3f& position, const Eigen::Vector3f& target, float aRatio);
 
-    Matrix4f &getViewMatrix();
-    Matrix4f &getProjectionMatrix();
-    Matrix4f &getViewProjectionMatrix();
+    Eigen::Matrix4f &getViewMatrix();
+    Eigen::Matrix4f &getProjectionMatrix();
+    Eigen::Matrix4f &getViewProjectionMatrix();
     BroMath::Transform &getTransformMatrix();
-    Vector3f &getPosition();
+    Eigen::Vector3f &getPosition();
 
     void updateAspectRatio(float aR);
 
@@ -49,18 +47,18 @@ class Camera {
     const float nearPlane {0.1f};
     const float farPlane {100.0f};
     float aRatio;
-    Vector3f camPos;
-    Vector3f camTarget = Vector3f(0,0,0); // origin
-    Vector3f camDirection;
-    Vector3f camLookAt;
-    Vector3f camUp;
-    Vector3f camRight;
+    Eigen::Vector3f camPos;
+    Eigen::Vector3f camTarget = Eigen::Vector3f(0,0,0); // origin
+    Eigen::Vector3f camDirection;
+    Eigen::Vector3f camLookAt;
+    Eigen::Vector3f camUp;
+    Eigen::Vector3f camRight;
 
 
     BroMath::Transform cameraTransform;
-    Matrix4f projectionMatrix;  // Note: Camera Space -> clip space
-    Matrix4f viewMatrix;     // Note: World Space -> Camera Space
-    Matrix4f viewProjectionMatrix;
+    Eigen::Matrix4f projectionMatrix;  // Note: Camera Space -> clip space
+    Eigen::Matrix4f viewMatrix;     // Note: World Space -> Camera Space
+    Eigen::Matrix4f viewProjectionMatrix;
 
     void setViewMatrix();
     void setProjectionMatrix(const float aRatio);

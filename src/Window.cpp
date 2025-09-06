@@ -3,6 +3,7 @@
 //
 
 #include "Window.h"
+#include "Renderer.h"
 
 #include <iostream>
 #include <ostream>
@@ -31,6 +32,9 @@ Window::Window(MTL::Device *device) {
 
     nsWindow = get_ns_window(glfwWindow, metalLayer)->retain(); // Next Step window
 
+
+     // glfwSetFramebufferSizeCallback(this->glfwWindow, framebuffer_size_callback);
+
 }
 
 Window::~Window() {
@@ -55,3 +59,18 @@ GLFWwindow *Window::getGLFWWindow() const {
 float Window::getAspectRatio() const {
     return aspectRatio;
 }
+
+// void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
+//     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
+//     if (!renderer || height == 0) return;
+//
+//
+//     renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
+//         static_cast<double>(width),
+//         static_cast<double>(height)
+//     });
+//
+//     float aspect = static_cast<float>(width) / height;
+//     // renderer->updateProjectionMatrix(aspect);
+//     // renderer->drawFrame();
+// }

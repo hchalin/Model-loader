@@ -5,6 +5,7 @@
 #include "Camera.h"
 
 #include <__ranges/transform_view.h>
+using namespace Eigen;
 
 Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
     camPos(position), camTarget(target), aRatio(aRatio){

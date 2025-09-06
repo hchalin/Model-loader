@@ -18,10 +18,10 @@
 
 // ^ Used for offset, make sure this matches the Uniforms struct in shaders.metal at all times
 struct Uniforms {
-    Matrix4f viewMatrix;
-    Matrix4f projectionMatrix;
-    Matrix4f modelMatrix;
-    Matrix4f viewProjectionMatrix;      // This is the matrix multiple of view and proj
+    Eigen::Matrix4f viewMatrix;
+    Eigen::Matrix4f projectionMatrix;
+    Eigen::Matrix4f modelMatrix;
+    Eigen::Matrix4f viewProjectionMatrix;      // This is the matrix multiple of view and proj
 };
 
 class Renderer {
@@ -31,7 +31,7 @@ public:
     ~Renderer();
 
     void createPipelineState();
-    void render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix);
+    void render(Eigen::Matrix4f &viewMatrix, Eigen::Matrix4f &projectionMatrix, Eigen::Matrix4f &modelMatrix);
     void render(Camera * cam, Model * model);
 
 
@@ -63,7 +63,7 @@ private:
     MTL::Buffer *floorVertexBuffer{nullptr};
     MTL::Buffer *floorIndexBuffer{nullptr};
 
-    Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
+    Eigen::Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
 
     // Every frame

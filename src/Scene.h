@@ -9,8 +9,9 @@
 #include "Model.h"
 
 #include "Renderer.h"
-#include "Window.h"
-#include <fstream>
+// #include "Window.h"
+// #include "Camera.h"
+#include "Controller.h"
 
 class Scene {
 public:
@@ -24,6 +25,7 @@ public:
 
 private:
 
+    Controller *controller{nullptr};
     Camera *camera {nullptr};
     Model *model {nullptr};
     Window *window {nullptr};
