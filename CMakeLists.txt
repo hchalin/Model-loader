@@ -20,8 +20,8 @@ set(SOURCE_FILES
         src/Renderer.cpp
         src/Camera.cpp
         src/Model.cpp
-        src/MyAppDelegate.mm
-        src/MyMTKViewDelegate.mm
+#        src/MyAppDelegate.mm
+#        src/MyMTKViewDelegate.mm
         src/backend/glfw_adaptor.mm
         src/shaders/readShaderFile.cpp
         src/common/BroMath/Transform.cpp
@@ -37,7 +37,7 @@ set(HEADER_FILES
         src/Model.h
         src/backend/tiny_obj_loader.h
         src/MyAppDelegate.h
-        src/MyMTKViewDelegate.h
+#        src/MyMTKViewDelegate.h
 )
 
 # Add executable
