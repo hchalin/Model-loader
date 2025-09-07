@@ -11,17 +11,18 @@
 
 #pragma once
 
-
+class Camera;
 class Controller {
     public:
     Controller();
     ~Controller();
 
-    void pollEvents();
+    void pollEvents(Camera * camera);
 
     private:
 
 };
+
 
 
 

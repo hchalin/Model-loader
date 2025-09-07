@@ -8,6 +8,9 @@
 #include <iostream>
 #include <ostream>
 #include <Metal/MTLDevice.hpp>
+// Forward-declare static callbacks at file scope
+static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height);
+static void framebuffer_refresh_callback(GLFWwindow* glfwWindow);
 
 Window::Window(MTL::Device *device) {
     // disable GLFW's default behavior of creating an OpenGL context
@@ -33,7 +36,10 @@ Window::Window(MTL::Device *device) {
     nsWindow = get_ns_window(glfwWindow, metalLayer)->retain(); // Next Step window
 
 
-     // glfwSetFramebufferSizeCallback(this->glfwWindow, framebuffer_size_callback);
+    // ^ Set GLFW Callbacks
+    glfwSetWindowUserPointer(this->glfwWindow, this);
+    glfwSetWindowRefreshCallback(this->glfwWindow, framebuffer_refresh_callback);       // ! Not in use
+    glfwSetFramebufferSizeCallback(this->glfwWindow, framebuffer_size_callback);        // @ On Resize
 
 }
 
@@ -41,6 +47,10 @@ Window::~Window() {
     if (metalLayer) {
         metalLayer->release();
     }
+}
+
+void Window::setCamera(Camera *camera) {
+    this->camera = camera;
 }
 
 CA::MetalLayer *Window::getMTLLayer() const {
@@ -60,17 +70,46 @@ float Window::getAspectRatio() const {
     return aspectRatio;
 }
 
-// void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-//     auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-//     if (!renderer || height == 0) return;
-//
-//
-//     renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
-//         static_cast<double>(width),
-//         static_cast<double>(height)
-//     });
-//
-//     float aspect = static_cast<float>(width) / height;
-//     // renderer->updateProjectionMatrix(aspect);
-//     // renderer->drawFrame();
-// }
+void framebuffer_refresh_callback(GLFWwindow *glfwWindow) {
+    std::cout << "Refresh" << std::endl;
+    auto* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+    if (!window) return;
+    // Draw a frame while the OS runs the modal refresh cycle
+    window->requestRedraw();
+
+}
+
+void Window::setRenderer(Renderer *renderer) {
+    if (renderer) {
+        this->renderer = renderer;
+    }
+    if (renderer)
+        std::cout << "Renderer set" << std::endl;
+}
+
+
+
+
+
+void Window::requestRedraw() {
+    std::cout << "DeltaTime: " << this->deltaTime() << std::endl;
+    if (renderer)
+        renderer->drawFrame(this->deltaTime());
+}
+
+static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height) {
+    auto* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
+    if (!window || height == 0) return;
+
+    window->getMTLLayer()->setDrawableSize(CGSize{
+        static_cast<double>(width),
+        static_cast<double>(height)
+    });
+
+    float aspect = static_cast<float>(width) / height;
+    window->aspectRatio = aspect; // keep cached aspect in sync
+    if (window->camera) {
+        window->camera->updateAspectRatio(aspect);
+    }
+    window->requestRedraw();
+}

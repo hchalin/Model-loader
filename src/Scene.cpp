@@ -21,6 +21,7 @@ Scene::Scene():
 
     // @ Create camera w/ windows aspect ratio
     camera = new Camera(Vector3f(0, 0, 10.0f), Vector3f(0, 0, 0), window->getAspectRatio());
+    window->setCamera(camera);
 
     // @ After window creation, load models
     model = loadModel();            // This returns a pointer to a model created
@@ -29,12 +30,11 @@ Scene::Scene():
     // @ Before you render, after creating a window and camera, create a controller
     controller = new Controller();
 
-    // @ GLFW
-     glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
 
     // @ After window creation, and model loading, start rendering
     try {
-         renderer = new Renderer(this->device, *window, model, camera);
+        renderer = new Renderer(this->device, *window, model, camera);
+        window->setRenderer(renderer);
          // renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
          // renderer->render(camera, model);
     } catch (const std::exception &e) {
@@ -60,8 +60,9 @@ void Scene::run() {
         // ^ Timeing
 
         deltaTime = computeDelta();
+        window->setDeltaTime(deltaTime);
 
-        // controller->pollEvents();
+        // controller->pollEvents(camera);
 
         glfwPollEvents();
         renderer->drawFrame(deltaTime);
@@ -88,19 +89,4 @@ Model * Scene::loadModel() {
     model = new Model(device, fileName);
 
     return model;
-}
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    std::cout << "Framebuffer size: " << width << " x " << height << std::endl;
-    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-    if (!renderer || height == 0) return;
-
-
-    renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
-        static_cast<double>(width),
-        static_cast<double>(height)
-    });
-
-    float aspect = static_cast<float>(width) / height;
-    // renderer->updateProjectionMatrix(aspect);
-    // renderer->drawFrame();
 }

@@ -6,6 +6,7 @@
 #include <eigen/Eigen/Dense>
 #include <iostream>
 
+#include "Window.h"
 #include "common/BroMath/Transform.h"
 
 
@@ -31,7 +32,7 @@ class Camera {
     BroMath::Transform &getTransformMatrix();
     Eigen::Vector3f &getPosition();
 
-    void updateAspectRatio(float aR);
+    void updateAspectRatio(float aspect_ratio);
 
     // Movement
     void moveUp(float dt);
@@ -42,7 +43,9 @@ class Camera {
     void move(float aTurn);
     void rotate(float xTurn);   // Only around y basis vector
 
-    private:
+    void setProjectionMatrix(const float aR);
+
+private:
     const float fovY {45.0f * (M_PI / 180.0f)};
     const float nearPlane {0.1f};
     const float farPlane {100.0f};
@@ -61,7 +64,6 @@ class Camera {
     Eigen::Matrix4f viewProjectionMatrix;
 
     void setViewMatrix();
-    void setProjectionMatrix(const float aRatio);
     friend std::ostream & operator<<(std::ostream &os, const Camera &camera);
 };
 

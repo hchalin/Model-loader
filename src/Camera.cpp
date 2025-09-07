@@ -69,10 +69,16 @@ void Camera::setProjectionMatrix(const float aRatio) {
     projectionMatrix(2, 3) = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane); // Perspective divide term
     projectionMatrix(3, 2) = -1.0f; // Enables perspective division
     projectionMatrix(3, 3) = 0.0f; // Required for perspective
+
+    // Keep view-projection in sync when projection changes
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
 
 void Camera::updateAspectRatio(float aR) {
     aRatio = aR;
+    setProjectionMatrix(aR);
+
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
 }
 
 
@@ -83,6 +89,8 @@ Matrix4f &Camera::getViewMatrix() {
     return viewMatrix;
 }
 Matrix4f &Camera::getViewProjectionMatrix() {
+    // Always compute latest VP in case view or projection changed
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
     return viewProjectionMatrix;
 }
 

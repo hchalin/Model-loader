@@ -10,9 +10,14 @@
 #include "GLFW/glfw3.h"
 
 Controller::Controller() {
+
+    // glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
+    // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
 }
 
-void Controller::pollEvents() {
+Controller::~Controller(){}
+
+void Controller::pollEvents(Camera * camera) {
     glfwPollEvents();
 }
 

@@ -7,6 +7,11 @@
 #include <GLFW/glfw3.h>
 #include "backend/glfw_adaptor.h"
 #include <QuartzCore/CAMetalLayer.hpp>
+
+
+class Camera;
+class Renderer;
+
 class Window {
     public:
     Window(MTL::Device *device);
@@ -15,8 +20,20 @@ class Window {
     CA::MetalLayer *getMTLLayer() const;
     GLFWwindow *getGLFWWindow() const;
 
+    void setCamera(Camera *camera);
+    void setRenderer(Renderer *renderer);
+
+    Camera* camera;
+    Renderer* renderer;
+
+    float deltaTime(){return deltatime;};
+    void setDeltaTime(float dt){deltatime = dt;};
+
     // Getters
     float getAspectRatio() const;
+
+    float aspectRatio;
+    void requestRedraw();
 
 
 private:
@@ -24,13 +41,13 @@ private:
     GLFWwindow* glfwWindow{nullptr};
     NS::Window* nsWindow{nullptr};
 
-    float aspectRatio;
+    float deltatime{0.0};
+
 
     std::function<void(int, int)> resizeCallback;
 
 
-};
 
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+};
 
 

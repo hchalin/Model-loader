@@ -275,6 +275,7 @@ void Renderer::drawFrame(double dT) {
 /*
  *     This function draws a single frame
  *
+ *      NOTE: Try to avoid per frame allocations
  */
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
@@ -286,14 +287,22 @@ void Renderer::drawFrame(double dT) {
         glfwDestroyWindow(window->getGLFWWindow());
         return;
     }
+    // Update per-frame uniforms BEFORE encoding:
+    {
+        auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
+        // Update VP from camera (handles aspect changes and camera motion)
+        u->viewProjectionMatrix = camera->getViewProjectionMatrix();
+        // If only updating VP here, you can mark just that range:
+        uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
+    }
 
-    // Rotate model
-    float spinSpeed {0.3};
-    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
-    modelTransformMatrix.setRotation((dT * spinSpeed)* 2.0f, 0.f, 1.f, 0.1f);
-    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
-    u->modelMatrix = modelTransformMatrix.getMatrix();
-    uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, modelMatrix), sizeof(Uniforms)));          // ^ This is a complete flush
+    // Update per-frame camera VP in the uniform buffer
+    {
+        auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
+        u->viewProjectionMatrix = camera->getViewProjectionMatrix();
+        uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
+    }
+
 
     // * Create command buffer
     MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();
@@ -316,22 +325,9 @@ void Renderer::drawFrame(double dT) {
     encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set the uniform buffer
 
     // cull mode
-    encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
+     encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
     // create a depth stencil state
 
-    // Draw floor
-    encoder->setVertexBuffer(floorVertexBuffer, 0, 0);
-    Eigen::Matrix4f identity = Eigen::Matrix4f::Identity();
-    //encoder->setVertexBytes(identity.data(), sizeof(identity), 11);
-
-    // @ Uncomment to draw a red floor
-  /* encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
-                                 6, // 6 indices
-                                 MTL::IndexTypeUInt32,
-                                 floorIndexBuffer,
-                                 0, // offset
-                                 1); // i
-                                 */
 
 
   // @ Draw model
@@ -345,20 +341,20 @@ void Renderer::drawFrame(double dT) {
       /*
        *      Rotation
        */
-      // {
-          // float spinSpeed = 0.3f;
-          // model->getTransform().setRotation(totalTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-          // const Eigen::Matrix4f &transformMatrix = model->getTransform().getMatrix();
-          // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-          // *(bufferPtr + 2) = transformMatrix;
-          // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-          // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
-          // ^ Update the 3rd slot for the uniform buffer
-          // Note, this another way to calculate the required offset for the buffer update
-          //uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, projectionMatrix), sizeof(Matrix4f)));         // ^ Update the 3rd slot for the uniform buffer
-          // Note, below is a FULL buffer flush
-          //uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
-      // }
+       {
+           float spinSpeed = 0.3f;
+           BroMath::Transform &transformMatrix = model->getTransformMatrix();
+           transformMatrix.setRotation(dT * spinSpeed, 0.0f, 1.0f, 0.0f);
+           auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
+             u->modelMatrix = transformMatrix.getMatrix();
+           // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
+           // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
+           // ^ Update the 3rd slot for the uniform buffer
+           // Note, this another way to calculate the required offset for the buffer update
+          uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, modelMatrix), sizeof(Eigen::Matrix4f)));         // Update modelMatrix range
+           // Note, below is a FULL buffer flush
+          // uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+       }
 
 
       // ^ This is the draw call
