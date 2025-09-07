@@ -35,6 +35,8 @@ public:
     void render(Camera * cam, Model * model);
 
 
+
+    float getDeltaTime(){return deltaTime;};
     Window &getWindow();
     void drawFrame(double dT);
 

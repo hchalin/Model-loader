@@ -92,9 +92,8 @@ void Window::setRenderer(Renderer *renderer) {
 
 
 void Window::requestRedraw() {
-    std::cout << "DeltaTime: " << this->deltaTime() << std::endl;
     if (renderer)
-        renderer->drawFrame(this->deltaTime());
+        renderer->drawFrame(renderer->getDeltaTime());
 }
 
 static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height) {
