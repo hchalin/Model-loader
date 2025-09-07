@@ -65,7 +65,7 @@ void Scene::run() {
         // controller->pollEvents(camera);
 
         glfwPollEvents();
-        renderer->drawFrame(deltaTime);
+        renderer->drawFrame();
     }
 }
 

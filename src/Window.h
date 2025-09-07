@@ -26,8 +26,8 @@ class Window {
     Camera* camera;
     Renderer* renderer;
 
-    float deltaTime(){return deltatime;};
-    void setDeltaTime(float dt){deltatime = dt;};
+    float getDeltaTime();
+    void setDeltaTime(float dt);
 
     // Getters
     float getAspectRatio() const;
@@ -41,11 +41,7 @@ private:
     GLFWwindow* glfwWindow{nullptr};
     NS::Window* nsWindow{nullptr};
 
-    float deltatime{0.0};
-
-
-    std::function<void(int, int)> resizeCallback;
-
+    float deltaTime{0.0};
 
 
 };

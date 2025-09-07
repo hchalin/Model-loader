@@ -271,12 +271,18 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
 }
 
 
-void Renderer::drawFrame(double dT) {
+void Renderer::drawFrame() {
 /*
  *     This function draws a single frame
  *
  *      NOTE: Try to avoid per frame allocations
  */
+    // Compute delta time here so both main loop and callbacks animate
+    const double now = glfwGetTime();
+    deltaTime = now - lastTime;
+    lastTime = now;
+    totalTime += deltaTime;
+
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
     // ^  Get the next drawable
@@ -344,7 +350,7 @@ void Renderer::drawFrame(double dT) {
        {
            float spinSpeed = 0.3f;
            BroMath::Transform &transformMatrix = model->getTransformMatrix();
-           transformMatrix.setRotation(dT * spinSpeed, 0.0f, 1.0f, 0.0f);
+           transformMatrix.setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
            auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
              u->modelMatrix = transformMatrix.getMatrix();
            // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync

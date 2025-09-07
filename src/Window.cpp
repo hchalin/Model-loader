@@ -49,6 +49,14 @@ Window::~Window() {
     }
 }
 
+float Window::getDeltaTime(){return deltaTime;}
+
+void Window::setDeltaTime(float dt) {
+    deltaTime = dt;
+    std::cout << "Delta time: " << deltaTime << std::endl;
+}
+
+
 void Window::setCamera(Camera *camera) {
     this->camera = camera;
 }
@@ -92,8 +100,9 @@ void Window::setRenderer(Renderer *renderer) {
 
 
 void Window::requestRedraw() {
-    if (renderer)
-        renderer->drawFrame(renderer->getDeltaTime());
+    if (renderer) {
+        renderer->drawFrame();
+    }
 }
 
 static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height) {

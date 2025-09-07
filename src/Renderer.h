@@ -38,7 +38,7 @@ public:
 
     float getDeltaTime(){return deltaTime;};
     Window &getWindow();
-    void drawFrame(double dT);
+    void drawFrame();
 
 
 private:
