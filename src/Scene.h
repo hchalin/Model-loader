@@ -21,9 +21,12 @@ public:
 
 
     Model *loadModel();
+    void run();
 
 
 private:
+
+    float computeDelta();
 
     Controller *controller{nullptr};
     Camera *camera {nullptr};
@@ -31,6 +34,11 @@ private:
     Window *window {nullptr};
     Renderer *renderer {nullptr};
     MTL::Device *device {nullptr};
+
+
+    float deltaTime {0.0};    // ^ Time between current and last frame
+    float lastTime {0.0};
+    float totalTime {0.0};
 };
 
 

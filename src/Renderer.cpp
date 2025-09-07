@@ -6,20 +6,18 @@
 
 using namespace Eigen;
 
-Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
+Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera *camera):
     // Get device from the metalLayer in the window
     device(device),
     window(&windowSrc),
     model(model),
+    camera(camera),
     totalTime(0.0)
 {
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
         throw std::runtime_error("Failed to create MTL::Device");
     }
-
-    // ^ Set model initial rotation
-    model->getModelMatrix();
 
     // ^ Timing
     lastTime = glfwGetTime();           // Set the initial time
@@ -38,20 +36,16 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model):
     }
 
 
+    // @ Rotate model Matrix
+    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
+    modelTransformMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
 
+    // Set the cameras viewMatrix in the uniform buffer
+    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
+    u->modelMatrix = modelTransformMatrix.getMatrix();
+    u->viewProjectionMatrix = camera->getViewProjectionMatrix();
+    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
-    // ^ Set GLFW Callbacks
-    // glfwSetWindowUserPointer(window->getGLFWWindow(), this);
-    // glfwSetWindowRefreshCallback(window->getGLFWWindow(), framebuffer_refresh_callback);
-    // glfwSetFramebufferSizeCallback(window->getGLFWWindow(), framebuffer_size_callback);
-    // glfwSetKeyCallback(window->getGLFWWindow(), keyCallback);
-    // glfwSetScrollCallback(window->getGLFWWindow(), scrollCallback);
-
-    // ^ model matrix, sent into the GPU's uniform buffer
-     // auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents()); // @ Get pointer to buffers contents
-    // Eigen::Matrix4f &matrix = model->getModelMatrix();     // ^ This returns a type: BroMath::Transform
-    // *(bufferPtr + 2) = matrix;                  // ^ This returns a type: Eigen::Matrix4f
-    // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
 
     // ^ Create render pipeline state
     createPipelineState();
@@ -241,7 +235,7 @@ void Renderer::render(Camera * cam, Model * model) {
         totalTime += deltaTime;
 
         glfwPollEvents();
-        drawFrame();
+        // drawFrame();
     }
 }
 void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix) {
@@ -272,12 +266,12 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
         totalTime += deltaTime;
 
         glfwPollEvents();
-        drawFrame();
+        // drawFrame();
     }
 }
 
 
-void Renderer::drawFrame() {
+void Renderer::drawFrame(double dT) {
 /*
  *     This function draws a single frame
  *
@@ -293,6 +287,13 @@ void Renderer::drawFrame() {
         return;
     }
 
+    // Rotate model
+    float spinSpeed {0.3};
+    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
+    modelTransformMatrix.setRotation((dT * spinSpeed)* 2.0f, 0.f, 1.f, 0.1f);
+    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
+    u->modelMatrix = modelTransformMatrix.getMatrix();
+    uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, modelMatrix), sizeof(Uniforms)));          // ^ This is a complete flush
 
     // * Create command buffer
     MTL::CommandBuffer *commandBuffer = commandQueue->commandBuffer();

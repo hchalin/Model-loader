@@ -7,6 +7,12 @@
 #include <iostream>
 #include <ostream>
 
+#include "GLFW/glfw3.h"
+
 Controller::Controller() {
-    std::cout << "Creating controller before renderer" << std::endl;
 }
+
+void Controller::pollEvents() {
+    glfwPollEvents();
+}
+

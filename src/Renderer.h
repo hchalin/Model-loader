@@ -27,7 +27,7 @@ struct Uniforms {
 class Renderer {
 public:
     Renderer();
-    Renderer(MTL::Device * device, Window &window, Model * model);
+    Renderer(MTL::Device * device, Window &window, Model * model, Camera *camera);
     ~Renderer();
 
     void createPipelineState();
@@ -36,21 +36,8 @@ public:
 
 
     Window &getWindow();
-    void drawFrame();
+    void drawFrame(double dT);
 
-    /*
-    // Camera controls
-    void cameraUp();
-    void cameraDown();
-    void cameraRight();
-    void cameraLeft();
-    void cameraZoom(float aZoom);
-    void cameraMove(float aScalar);
-    void cameraRotate(float aTurn);
-    void processInput(int key, int scancode, int action, int mods);
-    // Key map
-    bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
-    */
 
 private:
     // Once
@@ -73,6 +60,7 @@ private:
     // Model
     Model* model;
 
+    Camera* camera;
 
     // Timeing
     double deltaTime {0.0};    // ^ Time between current and last frame

@@ -17,6 +17,8 @@ class Controller {
     Controller();
     ~Controller();
 
+    void pollEvents();
+
     private:
 
 };

@@ -34,13 +34,15 @@ Scene::Scene():
 
     // @ After window creation, and model loading, start rendering
     try {
-         renderer = new Renderer(this->device, *window, model);
+         renderer = new Renderer(this->device, *window, model, camera);
          // renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
-         renderer->render(camera, model);
+         // renderer->render(camera, model);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
 
+    // Run the scene
+    run();
 }
 Scene::~Scene() {
     delete window;
@@ -51,6 +53,28 @@ Scene::~Scene() {
     model = nullptr;
 }
 
+void Scene::run() {
+
+
+    while (!glfwWindowShouldClose(window->getGLFWWindow())) {
+        // ^ Timeing
+
+        deltaTime = computeDelta();
+
+        // controller->pollEvents();
+
+        glfwPollEvents();
+        renderer->drawFrame(deltaTime);
+    }
+}
+
+float Scene::computeDelta() {
+    const auto currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastTime;
+    lastTime = currentFrame;
+    totalTime += deltaTime;
+    return deltaTime;
+}
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
