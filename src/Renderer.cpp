@@ -11,8 +11,7 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
     device(device),
     window(&windowSrc),
     model(model),
-    camera(camera),
-    totalTime(0.0)
+    camera(camera)
 {
     const float aRatio = windowSrc.getAspectRatio();
     if (!device) {
