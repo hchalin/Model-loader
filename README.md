@@ -21,11 +21,11 @@ This is my first graphics engineering project — aimed at learning modern rende
 ## 🖥️ Demo
 | Cube Example | Model Loading Example |
 |--------------|------------------------|
-| ![Cube Render](docs/screenshots/cube.png) | ![Model Loader](docs/screenshots/cube.png) |
+| ![Cube Render](docs/screenshots/cube.png) 
 
 | Fox Example | Model Loading Example |
 |--------------|------------------------|
-| ![Fox Render](docs/screenshots/fox.png) | ![Model Loader](docs/screenshots/fox.png) |
+| ![Fox Render](docs/screenshots/fox.png) 
 
 ---
 
