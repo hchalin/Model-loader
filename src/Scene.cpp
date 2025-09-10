@@ -76,7 +76,7 @@ float Scene::computeDelta() {
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
-    std::string fileName = "fox.obj";
+    std::string fileName = "CC3.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");
     }

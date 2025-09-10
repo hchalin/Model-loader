@@ -245,13 +245,13 @@ void Renderer::drawFrame() {
       /*
        *      Rotation Scope
        */
-       // {
-       //     float spinSpeed = 0.7f;
-       //     BroMath::Transform &transformMatrix = model->getTransformMatrix();
-       //     transformMatrix.setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
-       //     auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
-       //     u->modelMatrix = transformMatrix.getMatrix();
-       // }
+       {
+           float spinSpeed = 0.7f;
+           BroMath::Transform &transformMatrix = model->getTransformMatrix();
+           transformMatrix.setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+           auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
+           u->modelMatrix = transformMatrix.getMatrix();
+       }
 
 
       // ^ This is the draw call
