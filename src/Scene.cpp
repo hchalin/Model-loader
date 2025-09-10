@@ -20,7 +20,7 @@ Scene::Scene():
     }
 
     // @ Create camera w/ windows aspect ratio
-    camera = new Camera(Vector3f(0, 0, 10.0f), Vector3f(0, 0, 0), window->getAspectRatio());
+    camera = new Camera(Vector3f(0, 0, 15.0f), Vector3f(0, 0, 0), window->getAspectRatio());
     window->setCamera(camera);
 
     // @ After window creation, load models
@@ -61,7 +61,7 @@ void Scene::run() {
         computeDelta();
         controller->pollEvents();
         controller->update(window->getDeltaTime());
-        renderer->drawFrame(computeDelta());
+        renderer->drawFrame();
     }
 }
 
@@ -76,7 +76,7 @@ float Scene::computeDelta() {
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
-    std::string fileName = "CC3.obj";
+    std::string fileName = "fox.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");
     }

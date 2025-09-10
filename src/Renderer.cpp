@@ -18,6 +18,9 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
         throw std::runtime_error("Failed to create MTL::Device");
     }
 
+    // ^ Timing
+    lastTime = glfwGetTime();           // Set the initial time
+
     // ^ Command Queue
     constexpr int maxBufferAmt{64};
     commandQueue = device->newCommandQueue(maxBufferAmt);
@@ -173,12 +176,17 @@ Renderer::~Renderer() {
 }
 
 
-void Renderer::drawFrame(const float dT) {
+void Renderer::drawFrame() {
 /*
  *     This function draws a single frame
  *
  *      NOTE: Try to avoid per frame allocations
  */
+    // Compute delta time here so both main loop and callbacks animate
+    const double now = glfwGetTime();
+    deltaTime = now - lastTime;
+    lastTime = now;
+    totalTime += deltaTime;
 
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
@@ -190,12 +198,13 @@ void Renderer::drawFrame(const float dT) {
         glfwDestroyWindow(window->getGLFWWindow());
         return;
     }
+    // Update per-frame uniforms BEFORE encoding:
 
     // Update per-frame camera VP in the uniform buffer
     {
         auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
         u->viewProjectionMatrix = camera->getViewProjectionMatrix();
-        // ^ Uniform buffer is declared as MTL::ResourceStorageModeShared - didModifyRange() is obsolete. Keep for ref.
+        // ^ Uniform buffer is declared as MTL::ResourceStorageModeShared - didModifyRange() is obsole
         // uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
     }
 
@@ -207,7 +216,7 @@ void Renderer::drawFrame(const float dT) {
         throw std::runtime_error("Failed to render command buffer");
     }
 
-    // * Create a render pass descriptor
+    // * Create render pass descriptor
     MTL::RenderPassDescriptor *renderPassDescriptor = MTL::RenderPassDescriptor::alloc()->init();
     MTL::RenderPassColorAttachmentDescriptor *colorAttachment = renderPassDescriptor->colorAttachments()->object(0);
     colorAttachment->setTexture(drawable->texture());
@@ -220,8 +229,8 @@ void Renderer::drawFrame(const float dT) {
     encoder->setRenderPipelineState(renderPipelineState);
     encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set (write) the uniform buffer
 
-    // Culling the front works - Check winding order of the model loader??
-     encoder->setCullMode(MTL::CullMode::CullModeFront);
+    // cull mode
+     encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
 
 
 
@@ -236,13 +245,13 @@ void Renderer::drawFrame(const float dT) {
       /*
        *      Rotation Scope
        */
-       {
-           float spinSpeed = 0.7f;
-           BroMath::Transform &transformMatrix = model->getTransformMatrix();
-           transformMatrix.setRotation(dT * spinSpeed, 0.0f, 1.0f, 0.0f);
-           auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
-           u->modelMatrix = transformMatrix.getMatrix();
-       }
+       // {
+       //     float spinSpeed = 0.7f;
+       //     BroMath::Transform &transformMatrix = model->getTransformMatrix();
+       //     transformMatrix.setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
+       //     auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
+       //     u->modelMatrix = transformMatrix.getMatrix();
+       // }
 
 
       // ^ This is the draw call

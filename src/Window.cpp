@@ -96,7 +96,7 @@ void Window::setRenderer(Renderer *renderer) {
 
 void Window::requestRedraw() {
     if (renderer) {
-        renderer->drawFrame(getDeltaTime());
+        renderer->drawFrame();
     }
 }
 

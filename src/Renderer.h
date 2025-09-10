@@ -32,8 +32,9 @@ public:
 
     void createPipelineState();
 
+    float getDeltaTime(){return deltaTime;};
     Window &getWindow();
-    void drawFrame(const float dT);
+    void drawFrame();
 
 
 private:
@@ -55,6 +56,10 @@ private:
 
     Camera* camera;
 
+    // Timeing
+    double deltaTime {0.0};    // ^ Time between current and last frame
+    double lastTime {0.0};
+    double totalTime {0.0};
 };
 
 
