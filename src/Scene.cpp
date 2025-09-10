@@ -36,8 +36,6 @@ Scene::Scene():
     try {
         renderer = new Renderer(this->device, *window, model, camera);
         window->setRenderer(renderer);
-         // renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
-         // renderer->render(camera, model);
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
@@ -78,9 +76,7 @@ float Scene::computeDelta() {
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
-    // device = window->getMTLLayer()->device();
     std::string fileName = "CC3.obj";
-    // std::string fileName = "scene_test.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");
     }

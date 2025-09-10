@@ -112,28 +112,6 @@ void Renderer::createPipelineState() {
     colorAttachment->setBlendingEnabled(false);
 
 
-    /*
-     *      Floor
-     */
-    Vertex floorVertices[] = {
-        {{-1.5, -0.501, 1.5, 1.0}, {0.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
-        {{-1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
-        {{1.5, -0.501, -1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
-        {{1.5, -0.501, 1.5, 1.0}, {.5, 0.0, 0.0, 1.0}, Eigen::Vector3f::Zero(), Eigen::Vector2f::Zero()},
-    };
-
-    int floorIndices[] = {0, 1, 3, 1, 2, 3};
-
-    floorIndexBuffer = device->newBuffer(floorIndices, sizeof(floorIndices), MTL::ResourceStorageModeManaged);
-    if (!floorIndexBuffer) {
-        throw std::runtime_error("Failed to create index buffer");
-    }
-
-    floorVertexBuffer = device->newBuffer(floorVertices, sizeof(floorVertices), MTL::ResourceStorageModeManaged);
-    if (!floorVertexBuffer) {
-        throw std::runtime_error("Failed to create vertex buffer");
-    }
-
     // ^ Describe the Vertex in memory
     MTL::VertexDescriptor *vertexDescriptor = MTL::VertexDescriptor::alloc()->init();
 
@@ -190,83 +168,11 @@ Renderer::~Renderer() {
         uniformBuffer->release();
         uniformBuffer = nullptr;
     }
-    if (triangleVertexBuffer) {
-        triangleVertexBuffer->release();
-        triangleVertexBuffer = nullptr;
-    }
-    if (floorVertexBuffer) {
-        floorVertexBuffer->release();
-        floorVertexBuffer = nullptr;
-    }
-    if (floorIndexBuffer) {
-        floorIndexBuffer->release();
-        floorIndexBuffer = nullptr;
-    }
     if (renderPipelineState) {
         renderPipelineState->release();
         renderPipelineState = nullptr;
     }
 
-}
-
-void Renderer::render(Camera * cam, Model * model) {
-    // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
-
-    // @ Rotate model Matrix
-     std::cout << "Uniform model matrix before transfrom: " << __FILE__<<__LINE__<< "\n" << model->getModelMatrix() << std::endl;
-    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
-    modelTransformMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
-    // modelMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
-    std::cout << "Uniform model matrix after transfrom: " << __FILE__<<__LINE__<< "\n" << model->getModelMatrix()<< std::endl;
-    // Set the cameras viewMatrix in the uniform buffer
-    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
-    // u->viewMatrix       = viewMatrix;
-    // u->projectionMatrix = projectionMatrix;
-    u->modelMatrix = modelTransformMatrix.getMatrix();
-    u->viewProjectionMatrix = cam->getViewProjectionMatrix();
-    // uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
-
-    while (!glfwWindowShouldClose(window->getGLFWWindow())) {
-        // ^ Timeing
-        auto currentFrame = static_cast<double>(glfwGetTime());
-        deltaTime = currentFrame - lastTime;
-        lastTime = currentFrame;
-        totalTime += deltaTime;
-
-        glfwPollEvents();
-        // drawFrame();
-    }
-}
-void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f &modelMatrix) {
-    // ^ https://stackoverflow.com/questions/23858454/glfw-poll-waits-until-window-resize-finished-how-to-fix
-
-    // @ Rotate model Matrix
-     std::cout << "Uniform model matrix before transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
-    BroMath::Transform &modelTransformMatrix = model->getTransformMatrix();
-    modelTransformMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
-    // modelMatrix.setRotation(2.0f, 0.f, 1.f, 0.1f); // 0.4 rad ≈ 22.9°
-    //modelMatrix = modelMatrix * transform.getMatrix(); // local-space rotation
-    std::cout << "Uniform model matrix after transfrom: " << __FILE__<<__LINE__<< "\n" << modelMatrix << std::endl;
-    // Set the cameras viewMatrix in the uniform buffer
-    auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
-    u->viewMatrix       = viewMatrix;
-    u->projectionMatrix = projectionMatrix;
-    u->modelMatrix      = modelTransformMatrix.getMatrix();
-    // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
-    // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
-    // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
-    // uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
-
-    while (!glfwWindowShouldClose(window->getGLFWWindow())) {
-        // ^ Timeing
-        auto currentFrame = static_cast<double>(glfwGetTime());
-        deltaTime = currentFrame - lastTime;
-        lastTime = currentFrame;
-        totalTime += deltaTime;
-
-        glfwPollEvents();
-        // drawFrame();
-    }
 }
 
 
@@ -331,7 +237,6 @@ void Renderer::drawFrame() {
 
     // cull mode
      encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
-    // create a depth stencil state
 
 
 
@@ -344,7 +249,7 @@ void Renderer::drawFrame() {
       encoder->setFragmentBuffer(model->getMaterialBuffer(), 0, 0);     // Send the materials for the fragment fn in buffer 0
 
       /*
-       *      Rotation
+       *      Rotation Scope
        */
        {
            float spinSpeed = 0.7f;
@@ -380,172 +285,3 @@ void Renderer::drawFrame() {
 Window &Renderer::getWindow() {
       return *window;
 }
-
-/*
-void Renderer::cameraUp() {
-    camera.moveUp(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-
-}
-
-void Renderer::cameraDown() {
-    camera.moveDown(0.05);
-    // Before you draw a frame, update viewMatrix sent to the gpu
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;  // Copy updated view matrix to uniform buffer
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-
-
-}
-
-void Renderer::cameraRight() {
-    camera.moveRight(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-void Renderer::cameraLeft() {
-    camera.moveLeft(0.05);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::cameraZoom(float aZoom) {
-    camera.zoom(aZoom);
-    // ! TODO: abstract this repeated code for movement
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto *bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-void Renderer::cameraMove(float scalar) {
-    camera.move(scalar);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::cameraRotate(float aTurn) {
-    camera.rotate(aTurn);
-    Matrix4f viewMatrix = camera.getViewMatrix();
-    auto* bufferPtr = static_cast<Matrix4f *>(uniformBuffer->contents());
-    *bufferPtr = viewMatrix;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Matrix4f)));
-}
-
-void Renderer::processInput(int key, int scancode, int action, int mods){
-
-    if (keyMap[GLFW_KEY_W]) {
-        cameraUp();
-    }
-    if (keyMap[GLFW_KEY_S]) {
-        cameraDown();
-    }
-    if (keyMap[GLFW_KEY_A]) {
-        cameraLeft();
-    }
-    if (keyMap[GLFW_KEY_D]) {
-        cameraRight();
-    }
-}
-*/
-
-/** @note Below are the free functions for glfw
- */
-/*
-void framebuffer_size_callback(GLFWwindow *window, int width, int height) {
-    auto *renderer = static_cast<Renderer *>(glfwGetWindowUserPointer(window));
-    if (!renderer || height == 0) return;
-
-
-    renderer->getWindow().getMTLLayer()->setDrawableSize(CGSize{
-        static_cast<double>(width),
-        static_cast<double>(height)
-    });
-
-    float aspect = static_cast<float>(width) / height;
-    renderer->updateProjectionMatrix(aspect);
-    renderer->drawFrame();
-}
-
-
-void framebuffer_refresh_callback(GLFWwindow* window) {
-    // ! Not currently in use
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-}
-
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (action == GLFW_PRESS)
-    {
-        renderer->keyMap[key] = true;
-    } else if (action == GLFW_RELEASE)
-    {
-        renderer->keyMap[key] = false;
-    }
-    renderer->processInput(key, scancode, action, mods);
-}
-*/
-/*
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods) {
-    // ! TODO, make this handle key holds, not just presses.
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    // ^ W Press
-    if (key == GLFW_KEY_W && action == GLFW_PRESS) {
-        std::cout << "KEY PRESSED" << std::endl;
-        while (renderer->keyDown) {
-            renderer->cameraUp();
-            if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
-                renderer->keyDown = false;
-            }
-        }
-    }
-    // ^ W Release
-    if (key == GLFW_KEY_W && action == GLFW_RELEASE) {
-        renderer->keyDown = false;
-        std::cout << "KEY Released" << std::endl;
-    }
-    // ^ A
-    if (key == GLFW_KEY_A && action == GLFW_PRESS) {
-        renderer->cameraLeft();
-    }
-    // ^ S
-    if (key == GLFW_KEY_S && action == GLFW_PRESS) {
-        renderer->cameraDown();
-    }
-    // ^ D
-    if (key == GLFW_KEY_D && action == GLFW_PRESS) {
-        renderer->cameraRight();
-    }
-}
-*/
-
-/*
-
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset) {
-    constexpr float dampen {0.09};      // Slow down trackpad movement
-    constexpr float degreesPerScroll {5.0f};
-    float angleDeg = xoffset * degreesPerScroll;
-    auto* renderer = static_cast<Renderer*>(glfwGetWindowUserPointer(window));
-    if (glfwGetKey(window, GLFW_KEY_LEFT_SHIFT) == GLFW_PRESS) {
-        //std::cout << "Scroll: x = " << xoffset << ", y = " << yoffset << std::endl;
-        //std::cout << "ScrollCallback" << std::endl;
-        renderer->cameraRotate(-xoffset);
-    }else {
-    xoffset *= dampen;
-    yoffset *= dampen;
-    // TODO: Make this one function call?
-    renderer->cameraMove(xoffset);
-    renderer->cameraZoom(yoffset);
-    }
-};
-*/

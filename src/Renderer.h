@@ -31,10 +31,6 @@ public:
     ~Renderer();
 
     void createPipelineState();
-    void render(Eigen::Matrix4f &viewMatrix, Eigen::Matrix4f &projectionMatrix, Eigen::Matrix4f &modelMatrix);
-    void render(Camera * cam, Model * model);
-
-
 
     float getDeltaTime(){return deltaTime;};
     Window &getWindow();
@@ -47,10 +43,6 @@ private:
     Window *window{nullptr};
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
-    MTL::Buffer *triangleVertexBuffer{nullptr};
-    MTL::Buffer* modelBuffer{nullptr};
-    MTL::Buffer *floorVertexBuffer{nullptr};
-    MTL::Buffer *floorIndexBuffer{nullptr};
 
     Eigen::Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
