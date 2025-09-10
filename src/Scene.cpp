@@ -28,7 +28,8 @@ Scene::Scene():
 
 
     // @ Before you render, after creating a window and camera, create a controller
-    controller = new Controller();
+    controller = new Controller(camera, window);
+    window->setController(controller);
 
 
     // @ After window creation, and model loading, start rendering
@@ -40,6 +41,7 @@ Scene::Scene():
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }
+
 
     // Run the scene
     run();
@@ -58,13 +60,9 @@ void Scene::run() {
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
-
-        deltaTime = computeDelta();
-        window->setDeltaTime(deltaTime);
-
-        // controller->pollEvents(camera);
-
-        glfwPollEvents();
+        computeDelta();
+        controller->pollEvents();
+        controller->update(window->getDeltaTime());
         renderer->drawFrame();
     }
 }
@@ -74,13 +72,14 @@ float Scene::computeDelta() {
     deltaTime = currentFrame - lastTime;
     lastTime = currentFrame;
     totalTime += deltaTime;
+    window->setDeltaTime(deltaTime);
     return deltaTime;
 }
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
     // device = window->getMTLLayer()->device();
-    std::string fileName = "CC2.obj";
+    std::string fileName = "CC3.obj";
     // std::string fileName = "scene_test.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");

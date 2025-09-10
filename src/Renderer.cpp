@@ -29,7 +29,7 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
     }
 
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Uniforms), MTL::ResourceStorageModeManaged); // Room for33 matrices
+    uniformBuffer = device->newBuffer(sizeof(Uniforms), MTL::ResourceStorageModeShared); // Room for33 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
@@ -43,7 +43,7 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
     auto* u = static_cast<Uniforms*>(uniformBuffer->contents());
     u->modelMatrix = modelTransformMatrix.getMatrix();
     u->viewProjectionMatrix = camera->getViewProjectionMatrix();
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
+    // uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
 
     // ^ Create render pipeline state
@@ -224,7 +224,7 @@ void Renderer::render(Camera * cam, Model * model) {
     // u->projectionMatrix = projectionMatrix;
     u->modelMatrix = modelTransformMatrix.getMatrix();
     u->viewProjectionMatrix = cam->getViewProjectionMatrix();
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
+    // uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
@@ -255,7 +255,7 @@ void Renderer::render(Matrix4f &viewMatrix, Matrix4f &projectionMatrix, Matrix4f
     // std::cout << "Uniform view matrix:" << __FILE__ << __LINE__ << "\n" << u->viewMatrix << std::endl;
     // std::cout << "Uniform projection matrix: " << __FILE__<<__LINE__<< "\n" << u->projectionMatrix << std::endl;
     // std::cout << "Uniform model matrix: " << __FILE__<<__LINE__<< "\n" << u->modelMatrix << std::endl;
-    uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
+    // uniformBuffer->didModifyRange(NS::Range(0, sizeof(Uniforms)));          // ^ This is a complete flush
 
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
@@ -305,7 +305,7 @@ void Renderer::drawFrame() {
     {
         auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
         u->viewProjectionMatrix = camera->getViewProjectionMatrix();
-        uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
+        // uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
     }
 
 
@@ -327,7 +327,7 @@ void Renderer::drawFrame() {
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
-    encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set the uniform buffer
+    encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set (write) the uniform buffer
 
     // cull mode
      encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
@@ -347,18 +347,11 @@ void Renderer::drawFrame() {
        *      Rotation
        */
        {
-           float spinSpeed = 0.3f;
+           float spinSpeed = 0.7f;
            BroMath::Transform &transformMatrix = model->getTransformMatrix();
            transformMatrix.setRotation(deltaTime * spinSpeed, 0.0f, 1.0f, 0.0f);
            auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
-             u->modelMatrix = transformMatrix.getMatrix();
-           // NOTE, for managed memory(CPU and GPU each have their own copy), didModifyRange() tells metal the CPU updated this region so the GPU's copy stays in sync
-           // uniformBuffer->didModifyRange(NS::Range(2 * sizeof(Matrix4f), sizeof(Matrix4f)));
-           // ^ Update the 3rd slot for the uniform buffer
-           // Note, this another way to calculate the required offset for the buffer update
-          uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, modelMatrix), sizeof(Eigen::Matrix4f)));         // Update modelMatrix range
-           // Note, below is a FULL buffer flush
-          // uniformBuffer->didModifyRange(NS::Range(0, uniformBuffer->length()));
+           u->modelMatrix = transformMatrix.getMatrix();
        }
 
 

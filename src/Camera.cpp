@@ -104,7 +104,7 @@ Vector3f &Camera::getPosition() {
 
 void Camera::moveUp(float dt) {
     // Move camera position along the up vector
-    camPos += camUp * dt;
+    camPos += camUp * dt * CAMERA_SPEED;
 
     // Update the view matrix's translation components
     viewMatrix(0,3) = -camRight.dot(camPos);
@@ -114,7 +114,7 @@ void Camera::moveUp(float dt) {
 
 void Camera::moveDown(float dt) {
     // Move camera position along the up vector
-    camPos -= camUp * dt;
+    camPos -= camUp * dt * CAMERA_SPEED;
 
     // Update the view matrix's translation components
     viewMatrix(0,3) = -camRight.dot(camPos);
@@ -123,13 +123,13 @@ void Camera::moveDown(float dt) {
 }
 
 void Camera::moveLeft(float dt) {
-    camPos -= camRight * dt;
+    camPos -= camRight * dt * CAMERA_SPEED;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
 void Camera::moveRight(float dt) {
-    camPos += camRight * dt;
+    camPos += camRight * dt * CAMERA_SPEED;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);

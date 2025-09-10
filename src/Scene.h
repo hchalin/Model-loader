@@ -23,6 +23,7 @@ public:
     Model *loadModel();
     void run();
 
+    void test();
 
 private:
 

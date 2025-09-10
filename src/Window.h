@@ -9,8 +9,10 @@
 #include <QuartzCore/CAMetalLayer.hpp>
 
 
+// * Trust me bro (compiler)
 class Camera;
 class Renderer;
+class Controller;
 
 class Window {
     public:
@@ -22,12 +24,16 @@ class Window {
 
     void setCamera(Camera *camera);
     void setRenderer(Renderer *renderer);
+    void setController(Controller *controller);
 
     Camera* camera;
     Renderer* renderer;
+    Controller* controller;
 
     float getDeltaTime();
     void setDeltaTime(float dt);
+
+    void test();
 
     // Getters
     float getAspectRatio() const;

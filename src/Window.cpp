@@ -53,7 +53,6 @@ float Window::getDeltaTime(){return deltaTime;}
 
 void Window::setDeltaTime(float dt) {
     deltaTime = dt;
-    std::cout << "Delta time: " << deltaTime << std::endl;
 }
 
 
@@ -95,20 +94,25 @@ void Window::setRenderer(Renderer *renderer) {
         std::cout << "Renderer set" << std::endl;
 }
 
-
-
-
-
 void Window::requestRedraw() {
     if (renderer) {
         renderer->drawFrame();
     }
 }
 
+void Window::setController(Controller *controller) {
+    if (controller) {
+        this->controller = controller;
+    }
+}
+
+
+
 static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height) {
     auto* window = static_cast<Window*>(glfwGetWindowUserPointer(glfwWindow));
     if (!window || height == 0) return;
 
+    // Reset the window's size
     window->getMTLLayer()->setDrawableSize(CGSize{
         static_cast<double>(width),
         static_cast<double>(height)

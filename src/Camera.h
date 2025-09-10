@@ -21,6 +21,7 @@
 // Avoid setting transform FROM view/projection. If using lookAt, set transform from target,
 // then rebuild view (and VP) from transform.
 
+const float CAMERA_SPEED = 5.0f;
 
 class Camera {
     public:
