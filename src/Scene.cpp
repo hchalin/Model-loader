@@ -7,7 +7,44 @@
 #include <iostream>
 #include <ostream>
 
-Scene::Scene() {
+using namespace Eigen;
+
+Scene::Scene():
+    device(MTL::CreateSystemDefaultDevice())        // Create the GPU device
+{
+    // @ Try and create the window
+    try {
+        window = new Window(this->device);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+    // @ Create camera w/ windows aspect ratio
+    camera = new Camera(Vector3f(0, 0, 10.0f), Vector3f(0, 0, 0), window->getAspectRatio());
+    window->setCamera(camera);
+
+    // @ After window creation, load models
+    model = loadModel();            // This returns a pointer to a model created
+
+
+    // @ Before you render, after creating a window and camera, create a controller
+    controller = new Controller(camera, window);
+    window->setController(controller);
+
+
+    // @ After window creation, and model loading, start rendering
+    try {
+        renderer = new Renderer(this->device, *window, model, camera);
+        window->setRenderer(renderer);
+         // renderer->render(camera->getViewMatrix(), camera->getProjectionMatrix(), model->getModelMatrix());
+         // renderer->render(camera, model);
+    } catch (const std::exception &e) {
+        std::cerr << e.what() << std::endl;
+    }
+
+
+    // Run the scene
+    run();
 }
 Scene::~Scene() {
     delete window;
@@ -18,36 +55,31 @@ Scene::~Scene() {
     model = nullptr;
 }
 
-void Scene::start() {
-    // @ Try and create the window (will also create the device)
-    try {
-        window = new Window();
-        device = window->getMTLLayer()->device();       // Set device after window creation
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
-    }
-
-    // @ After window creation, load models
-    if (window) {
-        model = loadModel();
-    } else {
-        throw std::runtime_error(std::string("Failed to load model in file: ")+ __FILE__ + " " + std::to_string(__LINE__));
-    }
+void Scene::run() {
 
 
-    // @ After window creation, and model loading, start rendering
-    try {
-         renderer = new Renderer(*window, model);
-         renderer->render();
-    } catch (const std::exception &e) {
-        std::cerr << e.what() << std::endl;
+    while (!glfwWindowShouldClose(window->getGLFWWindow())) {
+        // ^ Timeing
+        computeDelta();
+        controller->pollEvents();
+        controller->update(window->getDeltaTime());
+        renderer->drawFrame();
     }
+}
+
+float Scene::computeDelta() {
+    const auto currentFrame = glfwGetTime();
+    deltaTime = currentFrame - lastTime;
+    lastTime = currentFrame;
+    totalTime += deltaTime;
+    window->setDeltaTime(deltaTime);
+    return deltaTime;
 }
 
 Model * Scene::loadModel() {
     // Define which obj file you want to load here
-    device = window->getMTLLayer()->device();
-    std::string fileName = "CC2.obj";
+    // device = window->getMTLLayer()->device();
+    std::string fileName = "CC3.obj";
     // std::string fileName = "scene_test.obj";
     if (!device) {
         throw std::runtime_error("No device in loadModels()");

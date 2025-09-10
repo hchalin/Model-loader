@@ -3,10 +3,7 @@
 #define CA_PRIVATE_IMPLEMENTATION
 #define MTL_PRIVATE_IMPLEMENTATION
 #define MTK_PRIVATE_IMPLEMENTATION
-#include <Foundation/Foundation.hpp>
-#include <Metal/Metal.hpp>
-#include <QuartzCore/QuartzCore.hpp>
-#include <print>
+// #include <Foundation/Foundation.hpp>
 
 //------------------------------
 
@@ -28,7 +25,6 @@ int main() {
     // * Create the window and renderer instances
     try {
         Scene scene;
-        scene.start();
     } catch (const std::exception &e) {
         std::cerr << e.what() << std::endl;
     }

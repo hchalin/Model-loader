@@ -9,26 +9,37 @@
 #include "Model.h"
 
 #include "Renderer.h"
-#include "Window.h"
-#include <fstream>
+// #include "Window.h"
+// #include "Camera.h"
+#include "Controller.h"
 
 class Scene {
 public:
     Scene();
+
     ~Scene();
-    void start();
-
-    Model * loadModel();
-
-    private:
-    //std::vector<Model> models;
-    Model* model;
-    Window* window;
-    Renderer* renderer;
-    MTL::Device* device;
 
 
+    Model *loadModel();
+    void run();
 
+    void test();
+
+private:
+
+    float computeDelta();
+
+    Controller *controller{nullptr};
+    Camera *camera {nullptr};
+    Model *model {nullptr};
+    Window *window {nullptr};
+    Renderer *renderer {nullptr};
+    MTL::Device *device {nullptr};
+
+
+    float deltaTime {0.0};    // ^ Time between current and last frame
+    float lastTime {0.0};
+    float totalTime {0.0};
 };
 
 

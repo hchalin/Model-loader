@@ -55,7 +55,8 @@ public:
     MTL::Buffer *getVertexBuffer();
     MTL::Buffer *getIndexBuffer();
     const int getIndexCount();
-    BroMath::Transform &getTransform();
+    Eigen::Matrix4f &getModelMatrix();
+    BroMath::Transform &getTransformMatrix();
     MTL::Buffer *getMaterialBuffer() const;
 
 
@@ -64,8 +65,10 @@ private:
     int indexCount;                             // # of indices
     std::string &fileName;                       // File name
     MTL::Device *device{nullptr};               // Device
-    BroMath::Transform transform;                      // ! Namespace error right now
+    BroMath::Transform transform; // Old
+    Eigen::Matrix4f modelMatrix {Eigen::Matrix4f::Identity()};
     MTL::Texture *vertexTexture{nullptr};       // ptr to texture
+
     // Buffers
     MTL::Buffer *vertexBuffer;
     MTL::Buffer *indexBuffer;

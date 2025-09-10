@@ -34,6 +34,8 @@ set(HEADER_FILES
         src/Scene.h
         src/Model.h
         src/backend/tiny_obj_loader.h
+        src/Controller.cpp
+        src/Controller.h
 )
 
 # Add executable
@@ -72,7 +74,6 @@ find_library(APPKIT AppKit)
 find_library(ACCELERATE Accelerate)
 
 target_link_libraries(Model_Viewer PRIVATE
-        stdc++
         "-framework Metal"
         "-framework MetalKit"
         "-framework ModelIO"

@@ -4,6 +4,25 @@
 
 #pragma once
 
+/*  TODO - Rewrite this to work better with cameras and models etc...
+Transform class
+
+Stores: position, rotation (matrix or quaternion), optional scale.
+
+Offers: toMatrix() (model matrix), inverseRigid() (for cameras), and ways to get the basis vectors (Right/Up/Forward) from rotation.
+
+Camera
+
+Owns a Transform (position+rotation).
+
+Builds view = transform.inverseRigid() whenever transform changes.
+
+Builds proj when FOV/aspect/near/far change.
+
+Exposes view(), proj(), and maybe viewProj().*
+ *
+ *
+ */
 
 #include <eigen/Eigen/Dense>
 namespace BroMath {
@@ -26,6 +45,7 @@ using Matrix4f = Eigen::Matrix4f;
 class Transform final {
 public:
     Transform();
+    Transform(Eigen::Vector3f position, Eigen::Vector3f rotation);
     ~Transform() = default;
 
     void setTranslation(float x, float y, float z);
@@ -39,11 +59,10 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const Transform& transform);
     //friend void operator*(float scale);         // Scale entire matrix by single value
 
-    const Matrix4f &getMatrix() const;
+    Eigen::Matrix4f &getMatrix();       // toMatrix()
 
 private:
     // Hide implementation
-    //Matrix4f translation;
     Matrix4f transformMatrix;
 };
 

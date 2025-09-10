@@ -18,36 +18,28 @@
 
 // ^ Used for offset, make sure this matches the Uniforms struct in shaders.metal at all times
 struct Uniforms {
-    Matrix4f viewMatrix;
-    Matrix4f projectionMatrix;
-    Matrix4f modelMatrix;
+    Eigen::Matrix4f viewMatrix;
+    Eigen::Matrix4f projectionMatrix;
+    Eigen::Matrix4f modelMatrix;
+    Eigen::Matrix4f viewProjectionMatrix;      // This is the matrix multiple of view and proj
 };
+
 class Renderer {
 public:
     Renderer();
-    Renderer(Window &window, Model * model);
+    Renderer(MTL::Device * device, Window &window, Model * model, Camera *camera);
     ~Renderer();
 
     void createPipelineState();
-    void render();
+    void render(Eigen::Matrix4f &viewMatrix, Eigen::Matrix4f &projectionMatrix, Eigen::Matrix4f &modelMatrix);
+    void render(Camera * cam, Model * model);
 
-    void updateProjectionMatrix(float aRatio);
 
+
+    float getDeltaTime(){return deltaTime;};
     Window &getWindow();
     void drawFrame();
 
-    // Camera controls
-    void cameraUp();
-    void cameraDown();
-    void cameraRight();
-    void cameraLeft();
-    void cameraZoom(float aZoom);
-    void cameraMove(float aScalar);
-    void cameraRotate(float aTurn);
-    void processInput(int key, int scancode, int action, int mods);
-
-    // Key map
-    bool keyMap[GLFW_KEY_LAST + 1] = {false}; // Initialize all keys to false
 
 private:
     // Once
@@ -60,18 +52,17 @@ private:
     MTL::Buffer *floorVertexBuffer{nullptr};
     MTL::Buffer *floorIndexBuffer{nullptr};
 
-    Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
+    Eigen::Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
 
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
 
-    // Camera
-    Camera camera;
 
     // Model
     Model* model;
 
+    Camera* camera;
 
     // Timeing
     double deltaTime {0.0};    // ^ Time between current and last frame
@@ -83,7 +74,7 @@ private:
 /*
   *  Callback functions for GLFW. These must be free functions or static class methods.
  */
-void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-void framebuffer_refresh_callback(GLFWwindow *window);
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+// void framebuffer_size_callback(GLFWwindow *window, int width, int height);
+// void framebuffer_refresh_callback(GLFWwindow *window);
+// void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
+// void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);

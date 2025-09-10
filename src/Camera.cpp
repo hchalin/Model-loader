@@ -4,27 +4,40 @@
 
 #include "Camera.h"
 
-Camera::Camera(const Vector3f& position, const Vector3f& target):
-    camPos(position), camTarget(target) {
+#include <__ranges/transform_view.h>
+using namespace Eigen;
+
+Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
+    camPos(position), camTarget(target), aRatio(aRatio){
     /*
      *  In the next few lines I will set up the basis vectors required for the camera.
      *  Resource: https://learnopengl.com/Getting-started/Camera
      */
+    Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
-    // ! Use this to NOT look at the origin.
-    //camDirection = Vector3f(0, 0, 1);               // * Use this if you want no perspective
-    //camDirection.normalize();
-
-    // ^ camRight
-    Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
-    camRight = up.cross(camDirection);
-    camRight.normalize();                   // Note: This is more efficient than using normalized()
-
+    // camDirection = (camTarget-camPos).normalized();    // * the position minus the target - This will test perspective
+    camRight = up.cross(camDirection).normalized();
     // ^ camUp
     camUp = camDirection.cross(camRight);
 
-    // ^ Look At matrix
+    // @ Set up the transform
+
+
+    setViewMatrix();            // I added this to set the viewMatrix on initialization
+    std::cout << "aspect ratio: " << aRatio << std::endl;
+    setProjectionMatrix(aRatio);
+
+
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+
+    std::cout << "view projection matrix: " << viewProjectionMatrix << std::endl;
+
+}
+
+
+void Camera::setViewMatrix() {
+    // ^ View Matrix
     // Note: Eigen uses Column Major Order! So set the columns to the basis vectors
     // Note: https://eigen.tuxfamily.org/dox/group__TopicStorageOrders.html
     // ! This could be a problen area with CMO
@@ -40,11 +53,49 @@ Camera::Camera(const Vector3f& position, const Vector3f& target):
     viewMatrix(2,3) = -camDirection.dot(camPos);
 
 
-
 }
 
+void Camera::setProjectionMatrix(const float aRatio) {
+
+    // ^ Reset projectionMatrix
+    projectionMatrix.setIdentity();
+
+    float tanHalfFovy = std::tan(fovY / 2.0f);
+
+    // Set up perspective matrix (column-major order in Eigen)
+    projectionMatrix(0, 0) = 1.0f / (aRatio * tanHalfFovy); // Scale X
+    projectionMatrix(1, 1) = 1.0f / tanHalfFovy; // Scale Y
+    projectionMatrix(2, 2) = -(farPlane + nearPlane) / (farPlane - nearPlane); // Scale and translate Z
+    projectionMatrix(2, 3) = -(2.0f * farPlane * nearPlane) / (farPlane - nearPlane); // Perspective divide term
+    projectionMatrix(3, 2) = -1.0f; // Enables perspective division
+    projectionMatrix(3, 3) = 0.0f; // Required for perspective
+
+    // Keep view-projection in sync when projection changes
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+}
+
+void Camera::updateAspectRatio(float aR) {
+    aRatio = aR;
+    setProjectionMatrix(aR);
+
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+}
+
+
+Matrix4f &Camera::getProjectionMatrix() {
+    return projectionMatrix;
+}
 Matrix4f &Camera::getViewMatrix() {
     return viewMatrix;
+}
+Matrix4f &Camera::getViewProjectionMatrix() {
+    // Always compute latest VP in case view or projection changed
+    viewProjectionMatrix = projectionMatrix * viewMatrix;
+    return viewProjectionMatrix;
+}
+
+BroMath::Transform &Camera::getTransformMatrix() {
+    return cameraTransform;
 }
 
 Vector3f &Camera::getPosition() {
@@ -53,7 +104,7 @@ Vector3f &Camera::getPosition() {
 
 void Camera::moveUp(float dt) {
     // Move camera position along the up vector
-    camPos += camUp * dt;
+    camPos += camUp * dt * CAMERA_SPEED;
 
     // Update the view matrix's translation components
     viewMatrix(0,3) = -camRight.dot(camPos);
@@ -63,7 +114,7 @@ void Camera::moveUp(float dt) {
 
 void Camera::moveDown(float dt) {
     // Move camera position along the up vector
-    camPos -= camUp * dt;
+    camPos -= camUp * dt * CAMERA_SPEED;
 
     // Update the view matrix's translation components
     viewMatrix(0,3) = -camRight.dot(camPos);
@@ -72,13 +123,13 @@ void Camera::moveDown(float dt) {
 }
 
 void Camera::moveLeft(float dt) {
-    camPos -= camRight * dt;
+    camPos -= camRight * dt * CAMERA_SPEED;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
 void Camera::moveRight(float dt) {
-    camPos += camRight * dt;
+    camPos += camRight * dt * CAMERA_SPEED;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
@@ -90,8 +141,6 @@ void Camera::zoom(float aZoom) {
     viewMatrix(2,3) = -camDirection.dot(camPos);
 }
 void Camera::move(float aTurn) {
-    // ! check this logic, should this apply a rotation instead?
-    // ! Move left / Righe
     camPos -= camRight * aTurn;
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);

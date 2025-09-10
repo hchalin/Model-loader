@@ -1,0 +1,4 @@
+/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/Model_Viewer.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/Model_Viewer_Tests.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/ALL_BUILD.dir
+/Users/haydenchalin/CLionProjects/Model_Viewer/build-xcode/CMakeFiles/ZERO_CHECK.dir
