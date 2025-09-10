@@ -10,16 +10,6 @@
 #include "common/BroMath/Transform.h"
 
 
-// TODO: the cameras view matrix and projection matrix needs to be derived from the transform class,
-// TODO: (cont) not the way it is now, setting the transform based off the view/proj matrices
-
-// Camera invariants / TODO:
-// - Single source of truth: Camera::transform (position + rotation; no scale).
-// - viewMatrix = inverseRigid(transform)  // recompute whenever transform changes
-// - projectionMatrix = perspective(fovY, aspect, near, far)  // recompute on param changes
-// - viewProjectionMatrix = projectionMatrix * viewMatrix
-// Avoid setting transform FROM view/projection. If using lookAt, set transform from target,
-// then rebuild view (and VP) from transform.
 
 const float CAMERA_SPEED = 5.0f;
 
@@ -62,7 +52,7 @@ private:
     BroMath::Transform cameraTransform;
     Eigen::Matrix4f projectionMatrix;  // Note: Camera Space -> clip space
     Eigen::Matrix4f viewMatrix;     // Note: World Space -> Camera Space
-    Eigen::Matrix4f viewProjectionMatrix;
+    Eigen::Matrix4f viewProjectionMatrix;       //VP = P * V    NOTE the multiplication order!
 
     void setViewMatrix();
     friend std::ostream & operator<<(std::ostream &os, const Camera &camera);

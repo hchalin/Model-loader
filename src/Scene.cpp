@@ -61,7 +61,7 @@ void Scene::run() {
         computeDelta();
         controller->pollEvents();
         controller->update(window->getDeltaTime());
-        renderer->drawFrame();
+        renderer->drawFrame(computeDelta());
     }
 }
 

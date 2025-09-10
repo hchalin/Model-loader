@@ -32,9 +32,8 @@ public:
 
     void createPipelineState();
 
-    float getDeltaTime(){return deltaTime;};
     Window &getWindow();
-    void drawFrame();
+    void drawFrame(const float dT);
 
 
 private:
@@ -56,17 +55,7 @@ private:
 
     Camera* camera;
 
-    // Timeing
-    double deltaTime {0.0};    // ^ Time between current and last frame
-    double lastTime {0.0};
-    double totalTime {0.0};
 };
 
 
-/*
-  *  Callback functions for GLFW. These must be free functions or static class methods.
- */
-// void framebuffer_size_callback(GLFWwindow *window, int width, int height);
-// void framebuffer_refresh_callback(GLFWwindow *window);
-// void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
-// void scrollCallback(GLFWwindow *window, double xoffset, double yoffset);
+
