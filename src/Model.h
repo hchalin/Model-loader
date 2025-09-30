@@ -38,9 +38,18 @@ struct Material {
 };
 
 struct GPUMaterial {
-    float ambient[3];  float _pad0{0.f};
-    float diffuse[3];  float _pad1{0.f};
-    float specular[3]; float shininess{32.f};
+    /**
+     * @brief Represents the ambient color of a material.
+     *
+     * This variable defines the RGB components of the ambient color in a 3D graphics material.
+     * The ambient component influences the base color of an object under indirect or ambient lighting
+     * conditions, contributing to the object's overall appearance when global lighting is applied.
+     *
+     * The array is aligned to 16 bytes to ensure optimized memory access when used in GPU operations.
+     */
+    alignas(16) float ambient[3];  float _pad0{0.f};
+    alignas(16) float diffuse[3];  float _pad1{0.f};
+    alignas(16) float specular[3]; float shininess{32.f};
 
     // Later: uint32_t diffuseTexIndex; uint32_t normalTexIndex; uint32_t flags; uint32_t _pad;
 };
