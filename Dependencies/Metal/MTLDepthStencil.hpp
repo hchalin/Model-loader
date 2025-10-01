@@ -99,6 +99,8 @@ public:
 
     NS::String*                          label() const;
     void                                 setLabel(const NS::String* label);
+
+    void depthCompareFunction(CompareFunction compare_function);
 };
 
 class DepthStencilState : public NS::Referencing<DepthStencilState>

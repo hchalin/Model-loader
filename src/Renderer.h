@@ -4,6 +4,7 @@
 
 #pragma once
 #include <eigen/Eigen/Dense>
+#include <MetalKit/MetalKit.hpp>
 #include <Metal/Metal.hpp>
 
 #include <iostream>
@@ -31,6 +32,8 @@ public:
     ~Renderer();
 
     void createPipelineState();
+    void createDepthStencilState();
+    void createDepthTexture(uint32_t w, uint32_t h);
 
     float getDeltaTime(){return deltaTime;};
     Window &getWindow();
@@ -43,6 +46,8 @@ private:
     Window *window{nullptr};
     MTL::CommandQueue *commandQueue{nullptr};
     MTL::RenderPipelineState *renderPipelineState{nullptr};
+    MTL::DepthStencilState *depthStencilState{nullptr};
+    MTL::Texture *depthTexture{nullptr};
 
     Eigen::Matrix4f projectionMatrix;          // ^ Camera space to clip space (screen)
     MTL::Buffer *uniformBuffer{nullptr};        // * For sending uniforms
@@ -50,11 +55,13 @@ private:
     // Every frame
     MTL::CommandBuffer *commandBuffer{nullptr};
 
-
     // Model
     Model* model;
 
     Camera* camera;
+
+    uint32_t width{0};
+    uint32_t height{0};
 
     // Timeing
     double deltaTime {0.0};    // ^ Time between current and last frame

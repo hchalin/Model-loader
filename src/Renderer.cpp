@@ -48,8 +48,43 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
 
     // ^ Create render pipeline state
     createPipelineState();
+    createDepthStencilState();
+
+    CGSize size = window->getMTLLayer()->drawableSize();
+    createDepthTexture(
+        static_cast<uint32_t>(size.width),
+        static_cast<uint32_t>(size.height)
+    );
+}
+void Renderer::createDepthTexture(uint32_t w, uint32_t h) {
+    if (depthTexture) {
+        depthTexture->release();
+        depthTexture = nullptr;
+    }
+
+    if (w == 0 || h == 0) {
+        return;
+    }
+
+    MTL::TextureDescriptor *depthTextureDescriptor = MTL::TextureDescriptor::alloc()->init();
+    depthTextureDescriptor->setPixelFormat(MTL::PixelFormat::PixelFormatDepth32Float);
+    depthTextureDescriptor->setWidth(w);
+    depthTextureDescriptor->setHeight(h);
+    depthTextureDescriptor->setUsage(MTL::TextureUsageRenderTarget);
+    depthTextureDescriptor->setStorageMode(MTL::StorageModePrivate);
+    depthTexture = device->newTexture(depthTextureDescriptor);
+    depthTextureDescriptor->release();
+    width = w;
+    height = h;
 }
 
+void Renderer::createDepthStencilState() {
+    MTL::DepthStencilDescriptor *depthStencilDescriptor = MTL::DepthStencilDescriptor::alloc()->init();
+    depthStencilDescriptor->setDepthWriteEnabled(true);
+    depthStencilDescriptor->setDepthCompareFunction(MTL::CompareFunctionLess);
+    depthStencilState = device->newDepthStencilState(depthStencilDescriptor);
+    depthStencilDescriptor->release();
+}
 void Renderer::createPipelineState() {
     /*
      * Shaders
@@ -102,6 +137,8 @@ void Renderer::createPipelineState() {
     MTL::RenderPipelineDescriptor *renderPipelineDescriptor = MTL::RenderPipelineDescriptor::alloc()->init();
     renderPipelineDescriptor->setVertexFunction(vertexFunction);
     renderPipelineDescriptor->setFragmentFunction(fragmentFunction);
+
+    renderPipelineDescriptor->setDepthAttachmentPixelFormat(MTL::PixelFormat::PixelFormatDepth32Float);
 
     // ^ Configure color attachment - NOTE: The color attachment represents the output target for the fragment shader.
     MTL::RenderPipelineColorAttachmentDescriptor *colorAttachment = renderPipelineDescriptor->colorAttachments()->
@@ -224,15 +261,23 @@ void Renderer::drawFrame() {
     colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
     colorAttachment->setStoreAction(MTL::StoreActionStore);
 
+    // Depth attachment - ADD THIS
+    MTL::RenderPassDepthAttachmentDescriptor *depthAttachment = renderPassDescriptor->depthAttachment();
+    depthAttachment->setTexture(depthTexture);
+    depthAttachment->setLoadAction(MTL::LoadActionClear);
+    depthAttachment->setClearDepth(1.0);
+    depthAttachment->setStoreAction(MTL::StoreActionDontCare);
+
+
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
+    encoder->setDepthStencilState(depthStencilState);
+
     encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set (write) the uniform buffer
 
-    // cull mode
-     encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
-
-
+// cull mode
+// encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
 
   // @ Draw model
   if (model) {
@@ -273,6 +318,8 @@ void Renderer::drawFrame() {
     // ! CLEAN UP
     renderPassDescriptor->release();
     pool->release();
+    // depthStencilDescriptor->release();
+    // depthStencilState->release();
 }
 
 

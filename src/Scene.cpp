@@ -56,6 +56,8 @@ Scene::~Scene() {
 void Scene::run() {
 
 
+
+
     while (!glfwWindowShouldClose(window->getGLFWWindow())) {
         // ^ Timeing
         computeDelta();
