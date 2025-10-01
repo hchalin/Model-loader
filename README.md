@@ -1,4 +1,4 @@
-# Model Loader (metal-cpp)
+# Model Loader v1 (metal-cpp)
 
 A lightweight **3D model loader and renderer** built with [metal-cpp](https://developer.apple.com/metal/cpp/), Apple’s C++ interface for the Metal graphics API.  
 This is my first graphics engineering project — aimed at learning modern rendering pipelines while keeping everything in pure C++.
