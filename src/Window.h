@@ -7,6 +7,10 @@
 #include <GLFW/glfw3.h>
 #include "backend/glfw_adaptor.h"
 #include <QuartzCore/CAMetalLayer.hpp>
+#include <iostream>
+#include <ostream>
+#include <AppKit/NSMenuItem.hpp>
+#include <Foundation/NSString.hpp>
 
 
 // * Trust me bro (compiler)
@@ -25,6 +29,7 @@ class Window {
     void setCamera(Camera *camera);
     void setRenderer(Renderer *renderer);
     void setController(Controller *controller);
+    void setupMenu(void);
 
     Camera* camera;
     Renderer* renderer;

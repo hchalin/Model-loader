@@ -5,9 +5,6 @@
 #include "Window.h"
 #include "Renderer.h"
 
-#include <iostream>
-#include <ostream>
-#include <Metal/MTLDevice.hpp>
 // Forward-declare static callbacks at file scope
 static void framebuffer_size_callback(GLFWwindow* glfwWindow, int width, int height);
 static void framebuffer_refresh_callback(GLFWwindow* glfwWindow);
@@ -34,6 +31,12 @@ Window::Window(MTL::Device *device) {
 
 
     nsWindow = get_ns_window(glfwWindow, metalLayer)->retain(); // Next Step window
+
+
+    // Set up the menu bar
+    setupMenu();
+
+
 
 
     // ^ Set GLFW Callbacks
@@ -105,6 +108,76 @@ void Window::setController(Controller *controller) {
         this->controller = controller;
     }
 }
+
+void Window::setupMenu(void) {
+    // Get the shared app
+    NS::Application *app = NS::Application::sharedApplication();
+
+    // Create menu bar
+    NS::Menu *mainMenu = NS::Menu::alloc()->init();
+
+    // Create file menu
+    NS::MenuItem *fileMenuItem = NS::MenuItem::alloc()->init();
+    NS::Menu *fileMenu = NS::Menu::alloc()->init();
+
+    // Add open menu item
+    NS::MenuItem *openItems = fileMenu->addItem(
+        NS::String::string("Open Model", NS::UTF8StringEncoding),
+        nullptr,
+        NS::String::string("o", NS::UTF8StringEncoding)
+    );
+
+    // Add separator
+    //fileMenu->addItem(NS::MenuItem::separatorItem());
+    // Add "Quit" menu item
+    NS::MenuItem* quitItem = fileMenu->addItem(
+        NS::String::string("Quit", NS::UTF8StringEncoding),
+        nullptr,
+        NS::String::string("q", NS::UTF8StringEncoding)
+    );
+
+    fileMenuItem->setSubmenu(fileMenu);
+    mainMenu->addItem(fileMenuItem);
+
+    // Create "View" menu
+    NS::MenuItem* viewMenuItem = NS::MenuItem::alloc()->init();
+    NS::Menu* viewMenu = NS::Menu::alloc()->init(NS::String::string("View", NS::UTF8StringEncoding));
+
+    // Add "Reset Camera" menu item
+    NS::MenuItem* resetCameraItem = viewMenu->addItem(
+        NS::String::string("Reset Camera", NS::UTF8StringEncoding),
+        nullptr,
+        NS::String::string("r", NS::UTF8StringEncoding)
+    );
+
+    // Add "Wireframe Mode" menu item
+    NS::MenuItem* wireframeItem = viewMenu->addItem(
+        NS::String::string("Toggle Wireframe", NS::UTF8StringEncoding),
+        nullptr,
+        NS::String::string("w", NS::UTF8StringEncoding)
+    );
+    {
+        // Testing
+        NS::Menu* testMenu = NS::Menu::alloc()->init(NS::String::string("Test", NS::UTF8StringEncoding));
+        NS::MenuItem *button = testMenu->addItem(NS::String::string("Test Button", NS::UTF8StringEncoding), nullptr, NS::String::string("t", NS::UTF8StringEncoding));
+        testMenu->release();
+    }
+
+    viewMenuItem->setSubmenu(viewMenu);
+    mainMenu->addItem(viewMenuItem);
+
+    // Set the main menu
+    app->setMainMenu(mainMenu);
+
+    // Clean up (don't release if you need to keep references)
+    fileMenu->release();
+    fileMenuItem->release();
+    viewMenu->release();
+    viewMenuItem->release();
+
+
+}
+
 
 
 
