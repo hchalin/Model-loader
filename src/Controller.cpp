@@ -43,6 +43,10 @@ void Controller::processKey(int key, int scancode, int action, int mods) {
 
 // Smooth per-frame movement using current key states and dt
 void Controller::update(float dt) {
+    /*
+     *      Change controller mapping here
+     *
+     */
     if (!camera || !window) return;
 
     // Continuous input -> movement
@@ -50,6 +54,10 @@ void Controller::update(float dt) {
     if (keyMap[GLFW_KEY_D]) camera->moveRight(dt);
     if (keyMap[GLFW_KEY_S]) camera->moveDown(dt);
     if (keyMap[GLFW_KEY_W]) camera->moveUp(dt);
+    //if (keyMap[GLFW_KEY_LEFT_CONTROL] && keyMap[GLFW_KEY_W]) {
+       //std::cout << "CONTROL PRESSED" << std::endl;
+        //camera->moveUp(dt);
+    //}
 }
 
 // * glfw free functions

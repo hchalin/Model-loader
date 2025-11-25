@@ -30,6 +30,8 @@ class Camera {
     void moveDown(float dt);
     void moveLeft(float dt);
     void moveRight(float dt);
+    void moveForward(float dt); // TODO Impliment
+    void moveBackward(float dt); // TODO Impliment
     void zoom(float aZoom);
     void move(float aTurn);
     void rotate(float xTurn);   // Only around y basis vector

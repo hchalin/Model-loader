@@ -16,7 +16,6 @@ Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
     Vector3f up(0.0f, 1.0f, 0.0f);      // * Arbitrary up direction
     // ^ Cameras direction
     camDirection = (camPos-camTarget).normalized();    // * the position minus the target - This will test perspective
-    // camDirection = (camTarget-camPos).normalized();    // * the position minus the target - This will test perspective
     camRight = up.cross(camDirection).normalized();
     // ^ camUp
     camUp = camDirection.cross(camRight);
@@ -25,13 +24,10 @@ Camera::Camera(const Vector3f& position, const Vector3f& target, float aRatio):
 
 
     setViewMatrix();            // I added this to set the viewMatrix on initialization
-    std::cout << "aspect ratio: " << aRatio << std::endl;
     setProjectionMatrix(aRatio);
 
 
     viewProjectionMatrix = projectionMatrix * viewMatrix;
-
-    std::cout << "view projection matrix: " << viewProjectionMatrix << std::endl;
 
 }
 
@@ -51,8 +47,6 @@ void Camera::setViewMatrix() {
     viewMatrix(0,3) = -camRight.dot(camPos);
     viewMatrix(1,3) = -camUp.dot(camPos);
     viewMatrix(2,3) = -camDirection.dot(camPos);
-
-
 }
 
 void Camera::setProjectionMatrix(const float aRatio) {
@@ -166,6 +160,14 @@ void Camera::rotate(float xTurn) {
     rotationMatrix(2,2) = cos(degress);
     // z = 1
 }
+
+void Camera::moveBackward(float dt) {
+
+}
+void Camera::moveForward(float dt) {
+
+}
+
 
 std::ostream & operator<<(std::ostream &os, const Camera &camera) {
     os << "_____________________\n";

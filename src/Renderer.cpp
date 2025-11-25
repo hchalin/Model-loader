@@ -29,7 +29,7 @@ Renderer::Renderer(MTL::Device * device, Window &windowSrc, Model *model, Camera
     }
 
     // ^ Allocate memory for the uniform buffer
-    uniformBuffer = device->newBuffer(sizeof(Uniforms), MTL::ResourceStorageModeShared); // Room for33 matrices
+    uniformBuffer = device->newBuffer(sizeof(Uniforms), MTL::ResourceStorageModeShared); // Room for 3 matrices
     if (!uniformBuffer) {
         throw std::runtime_error("Failed to create uniform buffer");
     }
@@ -66,6 +66,7 @@ void Renderer::createDepthTexture(uint32_t w, uint32_t h) {
         return;
     }
 
+    // @ Allocate and set up the texture descriptive
     MTL::TextureDescriptor *depthTextureDescriptor = MTL::TextureDescriptor::alloc()->init();
     depthTextureDescriptor->setPixelFormat(MTL::PixelFormat::PixelFormatDepth32Float);
     depthTextureDescriptor->setWidth(w);
@@ -219,7 +220,7 @@ void Renderer::drawFrame() {
  *
  *      NOTE: Try to avoid per frame allocations
  */
-    // Compute delta time here so both main loop and callbacks animate
+    // Compute delta time here so both the main loop and callbacks animate
     const double now = glfwGetTime();
     deltaTime = now - lastTime;
     lastTime = now;
@@ -227,7 +228,7 @@ void Renderer::drawFrame() {
 
     // * Auto release pool for memory management
     NS::AutoreleasePool *pool = NS::AutoreleasePool::alloc()->init();
-    // ^  Get the next drawable
+    // ^ Get the next drawable
     CA::MetalDrawable *drawable = window->getMTLLayer()->nextDrawable();        // Get the next drawable
     if (!drawable) {
         // * Clean up
@@ -241,7 +242,7 @@ void Renderer::drawFrame() {
     {
         auto *u = static_cast<Uniforms *>(uniformBuffer->contents());
         u->viewProjectionMatrix = camera->getViewProjectionMatrix();
-        // ^ Uniform buffer is declared as MTL::ResourceStorageModeShared - didModifyRange() is obsole
+        // ^ Uniform buffer is declared as MTL::ResourceStorageModeShared - didModifyRange() is not needed, keep for notes
         // uniformBuffer->didModifyRange(NS::Range(offsetof(Uniforms, viewProjectionMatrix), sizeof(Eigen::Matrix4f)));
     }
 
@@ -261,23 +262,22 @@ void Renderer::drawFrame() {
     colorAttachment->setClearColor(MTL::ClearColor(0.1, 0.1, 0.1, 1.0));
     colorAttachment->setStoreAction(MTL::StoreActionStore);
 
-    // Depth attachment - ADD THIS
-    MTL::RenderPassDepthAttachmentDescriptor *depthAttachment = renderPassDescriptor->depthAttachment();
-    depthAttachment->setTexture(depthTexture);
-    depthAttachment->setLoadAction(MTL::LoadActionClear);
-    depthAttachment->setClearDepth(1.0);
-    depthAttachment->setStoreAction(MTL::StoreActionDontCare);
+    // Depth attachment
+    //MTL::RenderPassDepthAttachmentDescriptor *depthAttachment = renderPassDescriptor->depthAttachment();
+    //depthAttachment->setTexture(depthTexture);
+    //depthAttachment->setLoadAction(MTL::LoadActionClear);
+    //depthAttachment->setClearDepth(1.0);
+    //depthAttachment->setStoreAction(MTL::StoreActionDontCare);
 
 
     // *  Encoding
     MTL::RenderCommandEncoder *encoder = commandBuffer->renderCommandEncoder(renderPassDescriptor);
     encoder->setRenderPipelineState(renderPipelineState);
     encoder->setDepthStencilState(depthStencilState);
-
     encoder->setVertexBuffer(uniformBuffer, 0, 11);          // Set (write) the uniform buffer
 
 // cull mode
-// encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
+ encoder->setCullMode(MTL::CullMode::CullModeFront); // Culling the front works??
 
   // @ Draw model
   if (model) {
@@ -299,6 +299,8 @@ void Renderer::drawFrame() {
        }
 
 
+
+
       // ^ This is the draw call
       encoder->drawIndexedPrimitives(MTL::PrimitiveTypeTriangle,
                                      model->getIndexCount(),
@@ -318,8 +320,6 @@ void Renderer::drawFrame() {
     // ! CLEAN UP
     renderPassDescriptor->release();
     pool->release();
-    // depthStencilDescriptor->release();
-    // depthStencilState->release();
 }
 
 
