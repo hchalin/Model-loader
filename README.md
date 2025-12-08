@@ -6,7 +6,7 @@ This is my first graphics engineering project — aimed at learning modern rende
 ---
 
 ## ✨ Features
-- Written entirely in **C++20** with [metal-cpp](https://developer.apple.com/metal/cpp/) (no Objective-C required).
+- Written entirely with [metal-cpp](https://developer.apple.com/metal/cpp/).
 - Loads and renders 3D models with vertex data and basic materials.
 - Implements a clean separation of concerns:  
   - `Window` – window/context creation (GLFW-backed).  
